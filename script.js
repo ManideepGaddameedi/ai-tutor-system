@@ -88,4 +88,3 @@ welcome.innerHTML="Welcome "+user.name;
 }
 
 }
-```

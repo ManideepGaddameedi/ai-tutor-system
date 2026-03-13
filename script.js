@@ -1,13 +1,13 @@
-```javascript id="8db84o"
+```javascript id="7g31si"
 
-// ===============================
+// =====================
 // REGISTER USER
-// ===============================
+// =====================
 function registerUser(){
 
-let name=document.getElementById("name").value.trim();
-let email=document.getElementById("email").value.trim();
-let password=document.getElementById("password").value.trim();
+let name=document.getElementById("name").value;
+let email=document.getElementById("email").value;
+let password=document.getElementById("password").value;
 
 if(name=="" || email=="" || password==""){
 alert("Please fill all fields");
@@ -16,10 +16,10 @@ return;
 
 let users=JSON.parse(localStorage.getItem("users")) || [];
 
-let userExists=users.find(user=>user.email===email);
+let exists=users.find(user=>user.email===email);
 
-if(userExists){
-alert("User already registered");
+if(exists){
+alert("User already exists");
 return;
 }
 
@@ -41,18 +41,13 @@ window.location.href="login.html";
 
 
 
-// ===============================
+// =====================
 // LOGIN USER
-// ===============================
+// =====================
 function loginUser(){
 
-let email=document.getElementById("loginEmail").value.trim();
-let password=document.getElementById("loginPassword").value.trim();
-
-if(email=="" || password==""){
-alert("Please enter email and password");
-return;
-}
+let email=document.getElementById("loginEmail").value;
+let password=document.getElementById("loginPassword").value;
 
 let users=JSON.parse(localStorage.getItem("users")) || [];
 
@@ -62,47 +57,13 @@ if(validUser){
 
 localStorage.setItem("loggedInUser",JSON.stringify(validUser));
 
+alert("Login successful");
+
 window.location.href="dashboard.html";
 
 }else{
 
 alert("Invalid email or password");
-
-}
-
-}
-
-
-
-// ===============================
-// LOGOUT USER
-// ===============================
-function logout(){
-
-localStorage.removeItem("loggedInUser");
-
-window.location.href="login.html";
-
-}
-
-
-
-// ===============================
-// SESSION CHECK + DASHBOARD USER
-// ===============================
-window.onload=function(){
-
-let user=JSON.parse(localStorage.getItem("loggedInUser"));
-
-let welcome=document.getElementById("welcomeText");
-
-if(welcome){
-
-if(!user){
-window.location.href="login.html";
-}
-
-welcome.innerHTML="Welcome "+user.name;
 
 }
 

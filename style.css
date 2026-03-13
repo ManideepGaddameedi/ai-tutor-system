@@ -9,7 +9,6 @@ header{
 background:#4a6cf7;
 color:white;
 padding:25px;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
 
 .container{
@@ -45,50 +44,34 @@ padding:12px;
 margin:10px 0;
 border:1px solid #ddd;
 border-radius:5px;
-font-size:14px;
-}
-
-input:focus{
-outline:none;
-border-color:#4a6cf7;
 }
 
 .btn{
-padding:12px 20px;
+padding:12px;
 background:#4a6cf7;
 color:white;
 border:none;
 border-radius:6px;
 cursor:pointer;
-font-size:14px;
 margin-top:10px;
 width:100%;
-}
-
-.btn:hover{
-background:#3454d1;
 }
 
 .secondary{
 background:#6c757d;
 }
 
-.secondary:hover{
-background:#5a6268;
-}
-
 .danger{
 background:#e63946;
-}
-
-.danger:hover{
-background:#c62828;
 }
 
 .buttons{
 margin-top:20px;
 }
 
-p{
-color:#555;
+#chatbox{
+text-align:left;
+margin-bottom:20px;
+max-height:200px;
+overflow-y:auto;
 }

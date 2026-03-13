@@ -12,9 +12,9 @@ return;
 
 let users=JSON.parse(localStorage.getItem("users")) || [];
 
-let userExists=users.find(user=>user.email===email);
+let exists=users.find(user=>user.email===email);
 
-if(userExists){
+if(exists){
 alert("User already registered");
 return;
 }
@@ -72,7 +72,7 @@ window.location.href="login.html";
 }
 
 
-// DASHBOARD SESSION CHECK
+// SESSION CHECK
 window.onload=function(){
 
 let user=JSON.parse(localStorage.getItem("loggedInUser"));

@@ -1,4 +1,4 @@
-// REGISTER USER
+
 function registerUser(){
 
 let name=document.getElementById("name").value.trim();
@@ -35,7 +35,7 @@ window.location.href="login.html";
 }
 
 
-// LOGIN USER
+
 function loginUser(){
 
 let email=document.getElementById("loginEmail").value.trim();
@@ -60,7 +60,7 @@ alert("Invalid email or password");
 }
 
 
-// LOGOUT
+
 function logout(){
 
 localStorage.removeItem("loggedInUser");
@@ -70,7 +70,7 @@ window.location.href="login.html";
 }
 
 
-// SESSION CHECK
+
 window.onload=function(){
 
 let user=JSON.parse(localStorage.getItem("loggedInUser"));

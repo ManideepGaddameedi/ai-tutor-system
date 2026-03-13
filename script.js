@@ -1,5 +1,8 @@
-```javascript id="wqdyu6"
+```javascript id="8db84o"
+
+// ===============================
 // REGISTER USER
+// ===============================
 function registerUser(){
 
 let name=document.getElementById("name").value.trim();
@@ -13,9 +16,9 @@ return;
 
 let users=JSON.parse(localStorage.getItem("users")) || [];
 
-let exists=users.find(user=>user.email===email);
+let userExists=users.find(user=>user.email===email);
 
-if(exists){
+if(userExists){
 alert("User already registered");
 return;
 }
@@ -33,14 +36,23 @@ localStorage.setItem("users",JSON.stringify(users));
 alert("Registration successful");
 
 window.location.href="login.html";
+
 }
 
 
+
+// ===============================
 // LOGIN USER
+// ===============================
 function loginUser(){
 
 let email=document.getElementById("loginEmail").value.trim();
 let password=document.getElementById("loginPassword").value.trim();
+
+if(email=="" || password==""){
+alert("Please enter email and password");
+return;
+}
 
 let users=JSON.parse(localStorage.getItem("users")) || [];
 
@@ -61,32 +73,10 @@ alert("Invalid email or password");
 }
 
 
-// QUIZ FUNCTION
-function submitQuiz(){
 
-let q1=document.querySelector('input[name="q1"]:checked');
-let q2=document.querySelector('input[name="q2"]:checked');
-
-if(!q1 || !q2){
-alert("Please answer all questions");
-return;
-}
-
-let score=0;
-
-if(q1.value==="correct") score++;
-if(q2.value==="correct") score++;
-
-localStorage.setItem("quizScore",score);
-
-alert("Quiz submitted! Your score: "+score);
-
-window.location.href="dashboard.html";
-
-}
-
-
-// LOGOUT
+// ===============================
+// LOGOUT USER
+// ===============================
 function logout(){
 
 localStorage.removeItem("loggedInUser");
@@ -96,10 +86,14 @@ window.location.href="login.html";
 }
 
 
-// SESSION + RESULT DISPLAY
+
+// ===============================
+// SESSION CHECK + DASHBOARD USER
+// ===============================
 window.onload=function(){
 
 let user=JSON.parse(localStorage.getItem("loggedInUser"));
+
 let welcome=document.getElementById("welcomeText");
 
 if(welcome){
@@ -110,13 +104,6 @@ window.location.href="login.html";
 
 welcome.innerHTML="Welcome "+user.name;
 
-}
-
-let score=localStorage.getItem("quizScore");
-let result=document.getElementById("quizResult");
-
-if(result && score){
-result.innerHTML="Your Skill Assessment Score: "+score;
 }
 
 }

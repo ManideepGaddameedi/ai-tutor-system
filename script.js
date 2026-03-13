@@ -1,4 +1,4 @@
-```html
+```html id="1l2nsc"
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,12 +21,12 @@ A data structure storing elements in contiguous memory
 
 <label>
 <input type="radio" name="q1" value="wrong">
-Linked structure
+A linked structure
 </label><br>
 
 <label>
 <input type="radio" name="q1" value="wrong">
-Tree structure
+A tree structure
 </label><br><br>
 
 

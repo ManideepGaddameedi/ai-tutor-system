@@ -1,0 +1,55 @@
+body{
+font-family: Arial;
+background:#f5f6fa;
+text-align:center;
+}
+
+header{
+background:#4a6cf7;
+color:white;
+padding:20px;
+}
+
+.hero{
+margin-top:80px;
+}
+
+.btn{
+padding:10px 20px;
+background:#4a6cf7;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+.login-box{
+width:300px;
+margin:100px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+input{
+width:80%;
+padding:10px;
+margin:10px;
+}
+
+.card{
+background:white;
+padding:20px;
+width:300px;
+margin:auto;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.chatbox{
+background:white;
+width:400px;
+margin:auto;
+padding:20px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}

@@ -1,90 +1,72 @@
-
 function registerUser(){
 
-let name=document.getElementById("name").value.trim();
-let email=document.getElementById("email").value.trim();
-let password=document.getElementById("password").value.trim();
+let name = document.getElementById("name").value
+let email = document.getElementById("email").value
+let password = document.getElementById("password").value
 
-if(name=="" || email=="" || password==""){
-alert("Please fill all fields");
-return;
+localStorage.setItem("name", name)
+localStorage.setItem("email", email)
+localStorage.setItem("password", password)
+
+alert("Registration Successful")
+
+window.location.href = "login.html"
+
 }
-
-let users=JSON.parse(localStorage.getItem("users")) || [];
-
-let exists=users.find(user=>user.email===email);
-
-if(exists){
-alert("User already registered");
-return;
-}
-
-let newUser={
-name:name,
-email:email,
-password:password
-};
-
-users.push(newUser);
-
-localStorage.setItem("users",JSON.stringify(users));
-
-alert("Registration successful");
-
-window.location.href="login.html";
-}
-
-
 
 function loginUser(){
 
-let email=document.getElementById("loginEmail").value.trim();
-let password=document.getElementById("loginPassword").value.trim();
+let email = document.getElementById("loginEmail").value
+let password = document.getElementById("loginPassword").value
 
-let users=JSON.parse(localStorage.getItem("users")) || [];
+let savedEmail = localStorage.getItem("email")
+let savedPassword = localStorage.getItem("password")
 
-let validUser=users.find(user=>user.email===email && user.password===password);
+if(email === savedEmail && password === savedPassword){
 
-if(validUser){
+window.location.href = "dashboard.html"
 
-localStorage.setItem("loggedInUser",JSON.stringify(validUser));
+}
+else{
 
-window.location.href="dashboard.html";
-
-}else{
-
-alert("Invalid email or password");
+alert("Invalid Login")
 
 }
 
 }
 
+window.onload = function(){
 
+let name = localStorage.getItem("name")
+
+let welcome = document.getElementById("welcomeText")
+
+if(welcome && name){
+
+welcome.innerText = "Welcome " + name
+
+}
+
+}
 
 function logout(){
 
-localStorage.removeItem("loggedInUser");
+localStorage.clear()
 
-window.location.href="login.html";
-
-}
-
-
-
-window.onload=function(){
-
-let user=JSON.parse(localStorage.getItem("loggedInUser"));
-
-let welcome=document.getElementById("welcomeText");
-
-if(welcome){
-
-if(!user){
-window.location.href="login.html";
-}
-
-welcome.innerHTML="Welcome "+user.name;
+window.location.href = "login.html"
 
 }
+
+function askQuestion(){
+
+let question = document.getElementById("question").value
+
+let chatbox = document.getElementById("chatbox")
+
+chatbox.innerHTML += "<p><b>Student:</b> " + question + "</p>"
+
+chatbox.innerHTML += "<p><b>AI Tutor:</b> I am learning. AI response coming soon.</p>"
+
+document.getElementById("question").value = ""
 
 }

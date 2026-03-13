@@ -1,26 +1,36 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 <title>AI Tutor</title>
-<link rel="stylesheet" href="css/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<header>
 <h1>AI Tutor</h1>
+</header>
 
-<div class="chatbox">
+<div class="container">
 
-<p><b>Student:</b> Explain Binary Search</p>
+<div class="card big">
 
-<p><b>AI Tutor:</b> Binary search is used to find an element in a sorted array by repeatedly dividing the search space.</p>
+<div id="chatbox">
+
+<p><b>AI Tutor:</b> Ask any programming question.</p>
 
 </div>
 
-<input type="text" placeholder="Ask a question">
+<input id="question" type="text" placeholder="Ask a question">
 
-<button class="btn">Send</button>
+<button class="btn" onclick="askQuestion()">Send</button>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>

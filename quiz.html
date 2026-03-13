@@ -7,21 +7,27 @@
 
 <body>
 
-<h2>Skill Quiz</h2>
+<header>
+<h1>AI Quiz</h1>
+</header>
 
-<p>1. What is Array?</p>
+<div class="container">
 
-<input type="radio" name="q1" value="correct">Correct definition<br>
-<input type="radio" name="q1" value="wrong">Tree<br>
-<input type="radio" name="q1" value="wrong">Graph<br><br>
+<div class="card">
 
-<p>2. LIFO structure?</p>
+<h3>Arrays Quiz</h3>
 
-<input type="radio" name="q2" value="correct">Stack<br>
-<input type="radio" name="q2" value="wrong">Queue<br>
-<input type="radio" name="q2" value="wrong">Array<br><br>
+<p>1. Arrays store elements in?</p>
 
-<button onclick="submitQuiz()">Submit Quiz</button>
+<button class="btn" onclick="checkAnswer('a')">Random Memory</button>
+
+<button class="btn secondary" onclick="checkAnswer('b')">Contiguous Memory</button>
+
+<p id="result"></p>
+
+</div>
+
+</div>
 
 <script src="script.js"></script>
 

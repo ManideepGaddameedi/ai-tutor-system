@@ -65,13 +65,9 @@ background:#6c757d;
 background:#e63946;
 }
 
-.buttons{
-margin-top:20px;
-}
-
 #chatbox{
 text-align:left;
-margin-bottom:20px;
 max-height:200px;
 overflow-y:auto;
+margin-bottom:10px;
 }

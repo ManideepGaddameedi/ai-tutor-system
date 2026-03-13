@@ -1,3 +1,4 @@
+```javascript
 // REGISTER USER
 function registerUser(){
 
@@ -32,7 +33,6 @@ localStorage.setItem("users",JSON.stringify(users));
 alert("Registration successful");
 
 window.location.href="login.html";
-
 }
 
 
@@ -52,13 +52,36 @@ localStorage.setItem("loggedInUser",JSON.stringify(validUser));
 
 window.location.href="dashboard.html";
 
-}
-else{
+}else{
 
 alert("Invalid email or password");
 
 }
 
+}
+
+
+// QUIZ SUBMISSION
+function submitQuiz(){
+
+let q1=document.querySelector('input[name="q1"]:checked');
+let q2=document.querySelector('input[name="q2"]:checked');
+
+if(!q1 || !q2){
+alert("Please answer all questions");
+return;
+}
+
+let score=0;
+
+if(q1.value==="correct") score++;
+if(q2.value==="correct") score++;
+
+localStorage.setItem("quizScore",score);
+
+alert("Quiz completed. Score: "+score);
+
+window.location.href="dashboard.html";
 }
 
 
@@ -72,11 +95,10 @@ window.location.href="login.html";
 }
 
 
-// SESSION CHECK
+// SESSION CHECK + SHOW DATA
 window.onload=function(){
 
 let user=JSON.parse(localStorage.getItem("loggedInUser"));
-
 let welcome=document.getElementById("welcomeText");
 
 if(welcome){
@@ -89,4 +111,12 @@ welcome.innerHTML="Welcome "+user.name;
 
 }
 
+let score=localStorage.getItem("quizScore");
+let result=document.getElementById("quizResult");
+
+if(result && score){
+result.innerHTML="Your Skill Assessment Score: "+score;
 }
+
+}
+```

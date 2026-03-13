@@ -1,30 +1,58 @@
+```html
 <!DOCTYPE html>
 <html>
-
 <head>
-<title>Skill Assessment</title>
-<link rel="stylesheet" href="css/style.css">
+<title>Skill Assessment Quiz</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <h1>Skill Assessment Quiz</h1>
 
-<div class="quiz">
+<div class="card">
 
-<p>What is an Array?</p>
+<p>1. What is an Array?</p>
 
-<label><input type="radio"> A data structure storing elements in contiguous memory</label>
+<label>
+<input type="radio" name="q1" value="correct">
+A data structure storing elements in contiguous memory
+</label><br>
 
-<label><input type="radio"> A linked structure</label>
+<label>
+<input type="radio" name="q1" value="wrong">
+A linked structure
+</label><br>
 
-<label><input type="radio"> A tree structure</label>
+<label>
+<input type="radio" name="q1" value="wrong">
+A tree structure
+</label><br><br>
 
-<br><br>
 
-<button class="btn">Next Question</button>
+<p>2. Which data structure uses LIFO?</p>
+
+<label>
+<input type="radio" name="q2" value="correct">
+Stack
+</label><br>
+
+<label>
+<input type="radio" name="q2" value="wrong">
+Queue
+</label><br>
+
+<label>
+<input type="radio" name="q2" value="wrong">
+Graph
+</label><br><br>
+
+<button class="btn" onclick="submitQuiz()">Submit Quiz</button>
 
 </div>
 
+<script src="script.js"></script>
+
 </body>
 </html>
+```

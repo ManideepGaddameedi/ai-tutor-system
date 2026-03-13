@@ -1,58 +1,123 @@
-```html id="1l2nsc"
-<!DOCTYPE html>
-<html>
-<head>
-<title>Skill Assessment Quiz</title>
-<link rel="stylesheet" href="style.css">
-</head>
+```javascript id="wqdyu6"
+// REGISTER USER
+function registerUser(){
 
-<body>
+let name=document.getElementById("name").value.trim();
+let email=document.getElementById("email").value.trim();
+let password=document.getElementById("password").value.trim();
 
-<h1>Skill Assessment Quiz</h1>
+if(name=="" || email=="" || password==""){
+alert("Please fill all fields");
+return;
+}
 
-<div class="card">
+let users=JSON.parse(localStorage.getItem("users")) || [];
 
-<p>1. What is an Array?</p>
+let exists=users.find(user=>user.email===email);
 
-<label>
-<input type="radio" name="q1" value="correct">
-A data structure storing elements in contiguous memory
-</label><br>
+if(exists){
+alert("User already registered");
+return;
+}
 
-<label>
-<input type="radio" name="q1" value="wrong">
-A linked structure
-</label><br>
+let newUser={
+name:name,
+email:email,
+password:password
+};
 
-<label>
-<input type="radio" name="q1" value="wrong">
-A tree structure
-</label><br><br>
+users.push(newUser);
+
+localStorage.setItem("users",JSON.stringify(users));
+
+alert("Registration successful");
+
+window.location.href="login.html";
+}
 
 
-<p>2. Which data structure uses LIFO?</p>
+// LOGIN USER
+function loginUser(){
 
-<label>
-<input type="radio" name="q2" value="correct">
-Stack
-</label><br>
+let email=document.getElementById("loginEmail").value.trim();
+let password=document.getElementById("loginPassword").value.trim();
 
-<label>
-<input type="radio" name="q2" value="wrong">
-Queue
-</label><br>
+let users=JSON.parse(localStorage.getItem("users")) || [];
 
-<label>
-<input type="radio" name="q2" value="wrong">
-Graph
-</label><br><br>
+let validUser=users.find(user=>user.email===email && user.password===password);
 
-<button class="btn" onclick="submitQuiz()">Submit Quiz</button>
+if(validUser){
 
-</div>
+localStorage.setItem("loggedInUser",JSON.stringify(validUser));
 
-<script src="script.js"></script>
+window.location.href="dashboard.html";
 
-</body>
-</html>
+}else{
+
+alert("Invalid email or password");
+
+}
+
+}
+
+
+// QUIZ FUNCTION
+function submitQuiz(){
+
+let q1=document.querySelector('input[name="q1"]:checked');
+let q2=document.querySelector('input[name="q2"]:checked');
+
+if(!q1 || !q2){
+alert("Please answer all questions");
+return;
+}
+
+let score=0;
+
+if(q1.value==="correct") score++;
+if(q2.value==="correct") score++;
+
+localStorage.setItem("quizScore",score);
+
+alert("Quiz submitted! Your score: "+score);
+
+window.location.href="dashboard.html";
+
+}
+
+
+// LOGOUT
+function logout(){
+
+localStorage.removeItem("loggedInUser");
+
+window.location.href="login.html";
+
+}
+
+
+// SESSION + RESULT DISPLAY
+window.onload=function(){
+
+let user=JSON.parse(localStorage.getItem("loggedInUser"));
+let welcome=document.getElementById("welcomeText");
+
+if(welcome){
+
+if(!user){
+window.location.href="login.html";
+}
+
+welcome.innerHTML="Welcome "+user.name;
+
+}
+
+let score=localStorage.getItem("quizScore");
+let result=document.getElementById("quizResult");
+
+if(result && score){
+result.innerHTML="Your Skill Assessment Score: "+score;
+}
+
+}
 ```

@@ -1,4 +1,3 @@
-```javascript
 // REGISTER USER
 function registerUser(){
 

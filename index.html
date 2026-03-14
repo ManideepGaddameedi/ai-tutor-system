@@ -1,47 +1,140 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>🎯 AI Tutor</title>
+    <title>✨ Login / Register - AI Tutor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
-        
-        .login-container{
-            background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));
-            backdrop-filter:blur(25px);
-            padding:60px 40px;
-            border-radius:30px;
-            box-shadow:0 30px 100px rgba(0,0,0,0.3);
-            max-width:450px;
-            width:100%;
-            text-align:center;
-        }
-        
-        .logo{font-size:3.5em;margin-bottom:20px;background:linear-gradient(135deg,#4a6cf7,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-        h1{font-size:2.2em;color:#2c3e50;margin-bottom:15px;}
-        .tagline{font-size:1.3em;color:#666;margin-bottom:30px;}
-        .login-btn{display:inline-block;padding:22px 50px;background:linear-gradient(135deg,#48bb78,#68d391);color:white;text-decoration:none;border-radius:25px;font-size:18px;font-weight:800;box-shadow:0 15px 45px rgba(72,187,120,0.4);transition:all 0.3s;margin:25px 0;}
-        .login-btn:hover{transform:translateY(-3px);box-shadow:0 20px 55px rgba(72,187,120,0.6);}
-        
-        /* HIDDEN - NEVER SHOWS */
-        .services-screen{display:none !important;}
+        .login-container{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(25px);padding:50px;border-radius:30px;box-shadow:0 30px 100px rgba(0,0,0,0.3);max-width:450px;width:100%;text-align:center;}
+        .logo{font-size:3em;margin-bottom:20px;background:linear-gradient(135deg,#4a6cf7,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        h2{font-size:2.2em;color:#2c3e50;margin-bottom:30px;}
+        .form-group{margin-bottom:25px;}
+        input{width:100%;padding:18px;border:2px solid rgba(0,0,0,0.1);border-radius:15px;font-size:16px;transition:all 0.3s;}
+        input:focus{outline:none;border-color:#4a6cf7;box-shadow:0 0 0 3px rgba(74,108,247,0.1);}
+        .submit-btn{width:100%;padding:20px;background:linear-gradient(135deg,#48bb78,#68d391);color:white;border:none;border-radius:15px;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 15px 45px rgba(72,187,120,0.4);transition:all 0.3s;}
+        .submit-btn:hover{transform:translateY(-3px);box-shadow:0 20px 55px rgba(72,187,120,0.6);}
+        .toggle-link{color:#4a6cf7;font-weight:600;cursor:pointer;text-decoration:none;font-size:15px;}
+        .error{color:#e74c3c;font-size:14px;margin-top:10px;display:none;}
+        .success{color:#27ae60;font-size:16px;margin:20px 0;display:none;}
+        .loading{display:none;text-align:center;padding:20px;}
     </style>
 </head>
 <body>
-    <!-- ONLY LOGIN SCREEN - FOREVER -->
     <div class="login-container">
         <div class="logo">🎯</div>
-        <h1>AI Tutor Master</h1>
-        <p class="tagline">JEE • NEET • EAPCET • GATE • Placements</p>
-        <p style="color:#999;margin-bottom:30px;">Login to start your learning journey</p>
-        <a href="login.html" class="login-btn">✨ Login / Register FREE</a>
-        <p style="color:#999;margin-top:30px;font-size:14px;">Join 10K+ students mastering exams</p>
+        <h2 id="formTitle">Login to AI Tutor</h2>
+        
+        <form id="authForm">
+            <div class="form-group">
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <div id="errorMsg" class="error">Invalid credentials!</div>
+            <button type="submit" class="submit-btn" id="submitBtn">🚀 Login</button>
+        </form>
+        
+        <div style="margin:30px 0;">
+            <span>Don't have account? </span>
+            <a href="#" class="toggle-link" onclick="toggleForm()">Register Now</a>
+        </div>
+        
+        <div id="successMsg" class="success"></div>
+        <div id="loading" class="loading">✅ Redirecting...</div>
     </div>
 
-    <!-- NEVER SHOWS - HIDDEN FOREVER -->
-    <div id="servicesScreen" class="services-screen" style="display:none;">
-        <!-- Empty - no services visible -->
-    </div>
+    <script>
+        let isLoginMode = true;
+
+        function toggleForm() {
+            isLoginMode = !isLoginMode;
+            const formTitle = document.getElementById('formTitle');
+            const submitBtn = document.getElementById('submitBtn');
+            const form = document.getElementById('authForm');
+            
+            if(isLoginMode) {
+                formTitle.textContent = 'Login to AI Tutor';
+                submitBtn.textContent = '🚀 Login';
+                form.innerHTML = `
+                    <div class="form-group">
+                        <input type="text" id="username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="Password" required>
+                    </div>
+                    <div id="errorMsg" class="error">Invalid credentials!</div>
+                    <button type="submit" class="submit-btn" id="submitBtn">🚀 Login</button>
+                `;
+            } else {
+                formTitle.textContent = 'Create New Account';
+                submitBtn.textContent = '✅ Register';
+                form.innerHTML = `
+                    <div class="form-group">
+                        <input type="text" id="username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="Email (optional)" >
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="Password (min 6 chars)" required>
+                    </div>
+                    <div id="errorMsg" class="error">Please fill all required fields!</div>
+                    <button type="submit" class="submit-btn" id="submitBtn">✅ Register</button>
+                `;
+            }
+            
+            // Re-attach event listener
+            document.getElementById('authForm').addEventListener('submit', handleSubmit);
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const successMsg = document.getElementById('successMsg');
+            const loading = document.getElementById('loading');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            
+            // Simple validation
+            if(!username || !password) {
+                errorMsg.textContent = 'Please fill username and password!';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            if(password.length < 6 && !isLoginMode) {
+                errorMsg.textContent = 'Password must be at least 6 characters!';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            // SUCCESS - Save login and redirect
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', username);
+            
+            // Show success + redirect
+            successMsg.textContent = `✅ Welcome ${username}! Redirecting to dashboard...`;
+            successMsg.style.display = 'block';
+            loading.style.display = 'block';
+            submitBtn.style.display = 'none';
+            
+            // Redirect after 1.5 seconds
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        }
+
+        // Attach initial event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('authForm').addEventListener('submit', handleSubmit);
+        });
+    </script>
 </body>
 </html>

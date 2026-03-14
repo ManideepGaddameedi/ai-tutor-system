@@ -13,53 +13,75 @@
         .cta-card{background:linear-gradient(145deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8));backdrop-filter:blur(20px);padding:50px;border-radius:30px;box-shadow:0 25px 90px rgba(0,0,0,0.2);transition:all 0.4s;text-align:center;}
         .cta-card:hover{transform:translateY(-15px);box-shadow:0 40px 120px rgba(0,0,0,0.3);}
         
-        /* FIXED BUTTON STYLES */
+        /* ========================================= */
+        /* ALL BUTTONS - PERFECT ROUND SHAPE */
+        /* ========================================= */
+        .btn, .btn-locked, .btn-login, .btn-premium {
+            display: inline-block !important;
+            padding: 22px 50px !important;
+            margin: 15px !important;
+            border-radius: 35px !important;
+            font-weight: 800 !important;
+            font-size: 18px !important;
+            text-align: center !important;
+            min-width: 240px !important;
+            line-height: 1.4 !important;
+            text-decoration: none !important;
+            border: none !important;
+            cursor: pointer !important;
+            box-shadow: 0 18px 60px rgba(0,0,0,0.2) !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+        }
+        
+        /* NORMAL BLUE BUTTON */
         .btn {
-            display: inline-block;
-            padding: 22px 50px;
-            background: linear-gradient(135deg,#4a6cf7,#5a67d8);
-            color: white;
-            text-decoration: none;
-            border-radius: 35px;
-            font-weight: 800;
-            font-size: 18px;
-            box-shadow: 0 18px 60px rgba(74,108,247,0.5);
-            transition: all 0.3s;
-            margin: 15px;
-            border: none;
-            cursor: pointer;
-            text-align: center;
-            min-width: 200px;
+            background: linear-gradient(135deg,#4a6cf7,#5a67d8) !important;
+            color: white !important;
         }
-        .btn:hover{transform:translateY(-8px);box-shadow:0 30px 80px rgba(74,108,247,0.7);}
-        .btn-login{background:linear-gradient(135deg,#48bb78,#68d391);box-shadow:0 18px 60px rgba(72,187,120,0.5);}
-        .btn-premium{background:linear-gradient(135deg,#ff6b6b,#feca57);box-shadow:0 18px 60px rgba(255,107,107,0.5);}
+        .btn:hover { 
+            transform: translateY(-8px) !important; 
+            box-shadow: 0 30px 80px rgba(74,108,247,0.7) !important;
+        }
         
-        /* FIXED LOCKED BUTTON - PROPER SHAPE */
+        /* GREEN LOGIN BUTTON */
+        .btn-login {
+            background: linear-gradient(135deg,#48bb78,#68d391) !important;
+            color: white !important;
+        }
+        .btn-login:hover { 
+            transform: translateY(-8px) !important; 
+            box-shadow: 0 30px 80px rgba(72,187,120,0.7) !important;
+        }
+        
+        /* ORANGE PREMIUM BUTTON */
+        .btn-premium {
+            background: linear-gradient(135deg,#ff6b6b,#feca57) !important;
+            color: #2c3e50 !important;
+        }
+        .btn-premium:hover { 
+            transform: translateY(-8px) !important; 
+            box-shadow: 0 30px 80px rgba(255,107,107,0.7) !important;
+        }
+        
+        /* GRAY LOCKED BUTTON - FIXED SHAPE */
         .btn-locked {
-            display: inline-block;
-            padding: 22px 50px;
-            background: linear-gradient(135deg,#95a5a6,#bdc3c7);
-            color: #7f8c8d !important;
-            text-decoration: none;
-            border-radius: 35px;
-            font-weight: 800;
-            font-size: 18px;
-            box-shadow: 0 18px 60px rgba(149,165,166,0.4);
-            transition: all 0.3s;
-            margin: 15px;
-            border: none;
-            cursor: not-allowed;
-            opacity: 0.8;
-            min-width: 200px;
-            text-align: center;
+            background: linear-gradient(135deg,#95a5a6,#bdc3c7) !important;
+            color: #2c3e50 !important;
+            cursor: not-allowed !important;
+            opacity: 0.85 !important;
         }
-        .btn-locked:hover {
-            transform: none;
-            box-shadow: 0 18px 60px rgba(149,165,166,0.4);
+        .btn-locked:hover { 
+            transform: none !important; 
+            box-shadow: 0 18px 60px rgba(149,165,166,0.4) !important;
         }
         
-        .lock-icon::before{content:"🔒 ";font-size:1.2em;}
+        /* LOCK ICON */
+        .lock-icon::before {
+            content: "🔒 " !important;
+            font-size: 1.2em !important;
+        }
+        
         h1{font-size:4em;text-shadow:0 8px 30px rgba(0,0,0,0.4);}
         h2{font-size:2.8em;margin-bottom:25px;color:#2c3e50;}
         .welcome-user{font-size:1.8em;color:#48bb78;margin:20px 0;font-weight:800;}
@@ -77,39 +99,53 @@
     </header>
     
     <div class="container">
-        <!-- GUEST VIEW (No Login) -->
+        <!-- GUEST VIEW (No Login) - LOCKED BUTTONS -->
         <div id="loginPrompt">
             <div class="hero-card">
                 <h2>🚀 Start Your Learning Journey</h2>
                 <p style="font-size:1.5em;color:#666;margin:30px 0 40px;">Join thousands of students mastering competitive exams</p>
-                <a href="login.html" class="btn btn-login" style="font-size:20px;padding:25px 60px;">✨ Login / Register FREE</a>
+                <a href="login.html" class="btn btn-login" style="font-size:20px;padding:25px 60px;min-width:280px;">
+                    ✨ Login / Register FREE
+                </a>
             </div>
             
+            <!-- FIXED CTA GRID - PERFECT BUTTON SHAPES -->
             <div class="cta-grid">
                 <div class="cta-card">
                     <h2><span class="lock-icon">🔒</span>AI Tutor Bot</h2>
                     <p style="font-size:1.3em;color:#666;margin:25px 0;">24/7 doubt solving (Login required)</p>
-                    <a href="#" class="btn-locked lock-icon" onclick="alert('🔐 Please login first!')">Login to Unlock</a>
+                    <a href="#" class="btn-locked" onclick="alert('🔐 Please login first!'); return false;">
+                        Login to Unlock
+                    </a>
                 </div>
                 <div class="cta-card">
                     <h2><span class="lock-icon">🔒</span>Practice Quiz</h2>
                     <p style="font-size:1.3em;color:#666;margin:25px 0;">Personalized quizzes (Login required)</p>
-                    <a href="#" class="btn-locked lock-icon" onclick="alert('🔐 Please login first!')">Login to Unlock</a>
+                    <a href="#" class="btn-locked" onclick="alert('🔐 Please login first!'); return false;">
+                        Login to Unlock
+                    </a>
                 </div>
             </div>
         </div>
 
-        <!-- LOGGED IN VIEW -->
+        <!-- LOGGED IN VIEW - UNLOCKED BUTTONS -->
         <div id="userWelcome">
             <div class="hero-card">
                 <h2 class="welcome-user" id="welcomeMsg">Welcome back, Student! ✨</h2>
-                <p style="font-size:1.5em;color:#666;margin:30px 0;">Continue your learning journey</p>
-                <a href="dashboard.html" class="btn btn-login" style="font-size:20px;padding:25px 60px;">📊 Go to Dashboard</a>
-                <a href="tutor.html" class="btn" style="font-size:20px;padding:25px 60px;">🤖 AI Tutor Bot</a>
-                <a href="quiz.html" class="btn-premium" style="font-size:20px;padding:25px 60px;">📝 Practice Quiz</a>
+                <p style="font-size:1.5em;color:#666;margin:30px 0;">Continue your learning journey with personalized content</p>
+                <a href="dashboard.html" class="btn btn-login" style="font-size:20px;padding:25px 60px;min-width:280px;">
+                    📊 Go to Dashboard
+                </a>
+                <a href="tutor.html" class="btn" style="font-size:20px;padding:25px 60px;min-width:280px;">
+                    🤖 AI Tutor Bot
+                </a>
+                <a href="quiz.html" class="btn-premium" style="font-size:20px;padding:25px 60px;min-width:280px;">
+                    📝 Practice Quiz
+                </a>
             </div>
         </div>
         
+        <!-- FEATURES -->
         <div class="features">
             <div class="feature-card">
                 <h3>🎯 Exam Focused</h3>
@@ -120,8 +156,8 @@
                 <p>Scores, levels, streaks - everything saved per user</p>
             </div>
             <div class="feature-card">
-                <h3>✨ Smart Design</h3>
-                <p>Glassmorphism UI with smooth animations everywhere</p>
+                <h3>✨ Smart AI</h3>
+                <p>Personalized recommendations based on your performance</p>
             </div>
         </div>
     </div>
@@ -132,14 +168,20 @@
             const username = localStorage.getItem('username') || 'Student';
             
             if(isLoggedIn) {
+                // SHOW LOGGED IN VIEW
                 document.getElementById('loginPrompt').style.display = 'none';
                 document.getElementById('userWelcome').style.display = 'block';
                 document.getElementById('welcomeMsg').textContent = `Welcome back, ${username}! ✨`;
                 document.getElementById('headerTitle').innerHTML = '🎯 Welcome Back!';
-                document.getElementById('headerSubtitle').textContent = 'Your personalized learning dashboard';
+                document.getElementById('headerSubtitle').textContent = 'Your personalized learning dashboard awaits';
+            } else {
+                // SHOW LOGIN PROMPT
+                document.getElementById('loginPrompt').style.display = 'block';
+                document.getElementById('userWelcome').style.display = 'none';
             }
         }
         
+        // CHECK ON PAGE LOAD
         window.onload = checkLoginStatus;
     </script>
 </body>

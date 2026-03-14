@@ -2,32 +2,26 @@
 <html>
 <head>
 <title>AI Tutor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
 <header>
 <h1>AI Tutor</h1>
+<p id="studentLevel">Your Learning Level: Loading...</p>
 </header>
 
 <div class="container">
-
 <div class="card big">
-
 <div id="chatbox">
-<p><b>AI Tutor:</b> Hello! Ask me anything.</p>
+<p><b>AI Tutor:</b> Hello! I'm your personal AI tutor. Ask me programming questions or request practice problems based on your skill level.</p>
 </div>
-
-<input id="question" type="text" placeholder="Ask a question">
-
-<button onclick="askQuestion()" class="btn">Send</button>
-
+<input id="question" type="text" placeholder="Ask a question about programming...">
+<button class="btn" onclick="askQuestion()">Send</button>
+<div id="quizScore" style="margin-top:15px; font-weight:bold;"></div>
 </div>
-
 </div>
-
 <script src="script.js"></script>
-
 </body>
 </html>

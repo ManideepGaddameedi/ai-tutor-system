@@ -1,58 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz - AI Tutor</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
+        .container{max-width:600px;margin:20px auto;padding:20px;}
+        .card{background:white;padding:40px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);}
+        .question{margin:20px 0;}
+        .question h3{margin-bottom:15px;color:#333;}
+        .question label{display:block;padding:15px;margin:5px 0;border:2px solid #eee;border-radius:10px;cursor:pointer;}
+        .question label:hover{background:#f5f5f5;}
+        .btn{padding:15px;background:#4a6cf7;color:white;border:none;border-radius:10px;cursor:pointer;width:100%;font-size:16px;margin:20px 0;font-weight:bold;}
+        .btn:hover{background:#3b55d0;}
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="nav-brand">AI Tutor</div>
-            <div class="nav-user">
-                <span id="welcomeText">Student</span>
-                <button class="btn-logout" onclick="logout()">Logout</button>
+    <div class="container">
+        <div class="card">
+            <h1>Skill Assessment</h1>
+            <div class="question">
+                <h3>1. What is an Array?</h3>
+                <label><input type="radio" name="q1" value="correct"> Collection of items in contiguous memory</label>
+                <label><input type="radio" name="q1" value="wrong"> Tree structure</label>
+                <label><input type="radio" name="q1" value="wrong"> Graph</label>
             </div>
-        </nav>
-    </header>
-
-    <section class="quiz-section">
-        <div class="container">
-            <div class="quiz-card">
-                <h1>Skill Assessment</h1>
-                <p>Complete this quiz to unlock your personalized learning path</p>
-                
-                <div class="quiz-content">
-                    <div class="question">
-                        <h3>1. What is an Array?</h3>
-                        <label><input type="radio" name="q1" value="correct"> Collection of similar data items in contiguous memory</label>
-                        <label><input type="radio" name="q1" value="wrong"> Tree data structure</label>
-                        <label><input type="radio" name="q1" value="wrong"> Graph structure</label>
-                    </div>
-                    
-                    <div class="question">
-                        <h3>2. Which follows LIFO principle?</h3>
-                        <label><input type="radio" name="q2" value="correct"> Stack</label>
-                        <label><input type="radio" name="q2" value="wrong"> Queue</label>
-                        <label><input type="radio" name="q2" value="wrong"> Array</label>
-                    </div>
-                    
-                    <div class="question">
-                        <h3>3. Time complexity of array access?</h3>
-                        <label><input type="radio" name="q3" value="correct"> O(1)</label>
-                        <label><input type="radio" name="q3" value="wrong"> O(n)</label>
-                        <label><input type="radio" name="q3" value="wrong"> O(log n)</label>
-                    </div>
-                </div>
-                
-                <button class="btn-primary full" onclick="submitQuiz()">Submit Quiz</button>
-                <div id="quizResult"></div>
+            <div class="question">
+                <h3>2. LIFO means?</h3>
+                <label><input type="radio" name="q2" value="correct"> Stack</label>
+                <label><input type="radio" name="q2" value="wrong"> Queue</label>
+                <label><input type="radio" name="q2" value="wrong"> Array</label>
             </div>
+            <div class="question">
+                <h3>3. Array access time?</h3>
+                <label><input type="radio" name="q3" value="correct"> O(1)</label>
+                <label><input type="radio" name="q3" value="wrong"> O(n)</label>
+                <label><input type="radio" name="q3" value="wrong"> O(log n)</label>
+            </div>
+            <button class="btn" onclick="submitQuiz()">Submit Quiz</button>
+            <div id="quizResult"></div>
+            <a href="dashboard.html" style="display:inline-block;margin-top:20px;color:#4a6cf7;">← Back to Dashboard</a>
         </div>
-    </section>
-
-    <script src="script.js"></script>
+    </div>
+    <script>
+    function submitQuiz(){
+        var score = 0;
+        if(document.querySelector('input[name="q1"]:checked') && document.querySelector('input[name="q1"]:checked').value == "correct") score++;
+        if(document.querySelector('input[name="q2"]:checked') && document.querySelector('input[name="q2"]:checked').value == "correct") score++;
+        if(document.querySelector('input[name="q3"]:checked') && document.querySelector('input[name="q3"]:checked').value == "correct") score++;
+        
+        var percent = Math.round(score/3*100);
+        var level = percent >= 80 ? "Advanced" : percent >= 60 ? "Intermediate" : "Beginner";
+        
+        localStorage.quizScore = percent;
+        localStorage.userLevel = level;
+        
+        document.getElementById("quizResult").innerHTML = 
+            '<div style="padding:30px;background:#d4edda;border-radius:20px;text-align:center;margin:20px 0;box-shadow:0 10px 30px rgba(0,0,0,0.1);">' +
+            '<h2 style="color:#155724;">🎉 ' + percent + '%</h2>' +
+            '<h3 style="color:#155724;">' + level + '</h3>' +
+            '<a href="tutor.html" class="btn" style="width:100%;margin-top:20px;">Continue to AI Tutor →</a>' +
+            '</div>';
+    }
+    </script>
 </body>
 </html>

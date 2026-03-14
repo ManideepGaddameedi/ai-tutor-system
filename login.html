@@ -18,56 +18,32 @@
         .status{margin-top:20px;padding:15px;border-radius:10px;display:none;}
         .error{background:#fee;color:#c53030;}
         .success{background:#c6f6d5;color:#22543d;}
-        .info{background:#e3f2fd;color:#1565c0;padding:15px;border-radius:10px;margin:20px 0;}
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="logo">🎯</div>
         <h2>AI Tutor Master</h2>
-        
-        <div class="info">
-            <strong>✅ NOW WORKING - Test:</strong><br>
-            Email: <code>manideep@test.com</code><br>
-            Password: <code>password123</code>
-        </div>
+        <p style="color:#666;margin-bottom:30px;">Login to access JEE/NEET dashboard</p>
         
         <form id="loginForm">
-            <input type="email" id="email" value="manideep@test.com" required>
-            <input type="password" id="password" value="password123" required>
+            <input type="email" id="email" placeholder="manideep@example.com" required>
+            <input type="password" id="password" placeholder="password123" required>
+            <div id="status" class="status"></div>
             <button type="submit" class="btn login-btn">🚀 Login</button>
         </form>
         
-        <button id="registerBtn" class="btn register-btn">📝 Register</button>
-        <div id="status" class="status"></div>
+        <button id="registerBtn" class="btn register-btn">📝 Create Account</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // Clean client creation
         const supabaseUrl = 'https://pdegwwddqpnjaranrvvh.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZWd3d2RkcXBuamFyYW5ydnZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODYxNDksImV4cCI6MjA4OTA2MjE0OX0.lg3cONONUcZu4dKpvF4B-z2-B9BNJOUWTl0H6wCtY6c';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZWd3d2RkcXBuamFyYW5ydnZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODYxNDksImV4cCI6MjA4OTA2MjE0OX0.lg3cONONUcZu4dKpvF4B-z2-B9BNJOUWTl0H6wCtY6c';
         
-        const client = supabase.createClient(supabaseUrl, supabaseKey);
-
-        // Create student profile
-        async function createStudentProfile(user) {
-            const { data: existing } = await client
-                .from('students')
-                .select('id')
-                .eq('user_id', user.id)
-                .single();
-            
-            if(!existing) {
-                await client.from('students').insert([{
-                    user_id: user.id,
-                    name: user.email.split('@')[0],
-                    email: user.email,
-                    exams: ['JEE','NEET','EAPCET'],
-                    total_quizzes: 0,
-                    accuracy: 0
-                }]);
-            }
-        }
+        const { createClient } = supabase;
+        const client = createClient(supabaseUrl, supabaseAnonKey);
 
         // LOGIN
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -77,23 +53,33 @@
             const status = document.getElementById('status');
             
             status.style.display = 'none';
+            status.className = 'status';
             
             try {
                 const { data, error } = await client.auth.signInWithPassword({
-                    email, password
+                    email: email.trim(),
+                    password: password
                 });
                 
-                if(error) throw error;
+                if (error) throw error;
                 
-                await createStudentProfile(data.user);
+                // Create student profile
+                const { error: profileError } = await client.from('students').insert({
+                    user_id: data.user.id,
+                    name: email.split('@')[0],
+                    email: email,
+                    exams: ['JEE', 'NEET']
+                }).catch(() => {}); // Ignore if exists
                 
-                status.innerHTML = '✅ Welcome! Redirecting to Dashboard...';
+                status.innerHTML = '✅ Success! Redirecting...';
                 status.className = 'status success';
                 status.style.display = 'block';
                 
-                setTimeout(() => window.location.href = 'dashboard.html', 1500);
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
                 
-            } catch(error) {
+            } catch (error) {
                 status.innerHTML = `❌ ${error.message}`;
                 status.className = 'status error';
                 status.style.display = 'block';
@@ -106,18 +92,26 @@
             const password = document.getElementById('password').value;
             const status = document.getElementById('status');
             
+            if (password.length < 6) {
+                status.innerHTML = '❌ Password must be 6+ characters';
+                status.className = 'status error';
+                status.style.display = 'block';
+                return;
+            }
+            
             try {
                 const { error } = await client.auth.signUp({
-                    email, password
+                    email: email.trim(),
+                    password: password
                 });
                 
-                if(error) throw error;
+                if (error) throw error;
                 
-                status.innerHTML = '✅ Account created! You can login now.';
+                status.innerHTML = '✅ Account created! Now login above.';
                 status.className = 'status success';
                 status.style.display = 'block';
                 
-            } catch(error) {
+            } catch (error) {
                 status.innerHTML = `❌ ${error.message}`;
                 status.className = 'status error';
                 status.style.display = 'block';

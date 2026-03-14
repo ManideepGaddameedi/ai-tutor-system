@@ -1,195 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <title>🎯 AI Tutor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎯 AI Tutor - Login Required</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(25px);
-            padding: 60px 40px;
-            border-radius: 30px;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            max-width: 450px;
-            width: 100%;
-            text-align: center;
-            animation: slideUp 0.8s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .logo {
-            font-size: 3.5em;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #4a6cf7, #ff6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        h1 {
-            color: #2c3e50;
-            font-size: 2.2em;
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-
-        .tagline {
-            color: #666;
-            font-size: 1.3em;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-
-        .services-locked {
-            background: linear-gradient(135deg, rgba(74, 108, 247, 0.1), rgba(255, 107, 107, 0.1));
-            border: 2px solid rgba(74, 108, 247, 0.2);
-            border-radius: 20px;
-            padding: 25px;
-            margin: 30px 0;
-            color: #4a6cf7;
-        }
-
-        .service-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .service-tag {
-            background: rgba(255, 255, 255, 0.7);
-            padding: 10px 18px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #2c3e50;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .login-btn {
-            display: inline-block;
-            width: 100%;
-            padding: 22px;
-            background: linear-gradient(135deg, #48bb78, #68d391);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-size: 18px;
-            font-weight: 800;
-            box-shadow: 0 15px 45px rgba(72, 187, 120, 0.4);
-            transition: all 0.3s ease;
-            margin: 25px 0;
-            border: none;
-            cursor: pointer;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 55px rgba(72, 187, 120, 0.6);
-        }
-
-        .features {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .feature {
-            color: #666;
-            font-size: 15px;
-            margin-bottom: 8px;
-        }
-
-        /* HIDDEN SERVICES SECTION */
-        .services-section {
-            display: none !important;
-        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);min-height:100vh;}
+        
+        /* BEFORE LOGIN - FULL SCREEN */
+        .login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+        .login-card{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(25px);padding:60px 40px;border-radius:30px;box-shadow:0 30px 100px rgba(0,0,0,0.3);max-width:450px;width:100%;text-align:center;}
+        .logo{font-size:3.5em;margin-bottom:20px;background:linear-gradient(135deg,#4a6cf7,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        h1{font-size:2.2em;color:#2c3e50;margin-bottom:15px;}
+        .tagline{font-size:1.3em;color:#666;margin-bottom:30px;}
+        .login-btn{display:inline-block;padding:22px 50px;background:linear-gradient(135deg,#48bb78,#68d391);color:white;text-decoration:none;border-radius:25px;font-size:18px;font-weight:800;box-shadow:0 15px 45px rgba(72,187,120,0.4);transition:all 0.3s;margin:25px 0;}
+        .login-btn:hover{transform:translateY(-3px);box-shadow:0 20px 55px rgba(72,187,120,0.6);}
+        
+        /* AFTER LOGIN - SERVICES */
+        .services-screen{display:none;}
+        header{background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;padding:25px;text-align:center;box-shadow:0 25px 70px rgba(74,108,247,0.4);}
+        .container{max-width:1200px;margin:30px auto;padding:20px;}
+        .hero{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(25px);padding:50px;border-radius:30px;box-shadow:0 30px 100px rgba(0,0,0,0.2);text-align:center;margin-bottom:40px;}
+        .welcome{font-size:2em;color:#48bb78;margin-bottom:20px;}
+        .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px;}
+        .service-card{background:linear-gradient(145deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8));backdrop-filter:blur(20px);padding:40px;border-radius:25px;box-shadow:0 20px 60px rgba(0,0,0,0.15);text-align:center;transition:all 0.3s;}
+        .service-card:hover{transform:translateY(-10px);}
+        .service-btn{display:inline-block;padding:18px 40px;background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;text-decoration:none;border-radius:25px;font-weight:800;font-size:16px;box-shadow:0 12px 40px rgba(74,108,247,0.4);transition:all 0.3s;margin-top:20px;}
+        .service-btn:hover{transform:translateY(-5px);box-shadow:0 18px 50px rgba(74,108,247,0.6);}
+        .service-btn-premium{background:linear-gradient(135deg,#ff6b6b,#feca57);}
     </style>
 </head>
 <body>
-    <!-- ONLY LOGIN SCREEN - NO SERVICES VISIBLE -->
-    <div class="login-container">
-        <div class="logo">🎯</div>
-        <h1>AI Tutor Master</h1>
-        <p class="tagline">
-            JEE • NEET • EAPCET • GATE • Placements
-        </p>
-
-        <div class="services-locked">
-            <div style="font-size: 1.2em; font-weight: 700; margin-bottom: 15px;">
-                🔒 All Services Locked
-            </div>
-            <div style="font-size: 1em; opacity: 0.9;">
-                Login to unlock personalized learning
-            </div>
-        </div>
-
-        <div class="service-tags">
-            <span class="service-tag">🤖 AI Tutor Bot</span>
-            <span class="service-tag">📝 Practice Quiz</span>
-            <span class="service-tag">📊 Dashboard</span>
-            <span class="service-tag">📈 Progress</span>
-        </div>
-
-        <a href="login.html" class="login-btn">
-            ✨ Login / Register FREE
-        </a>
-
-        <div class="features">
-            <div class="feature">✅ Personalized progress tracking</div>
-            <div class="feature">✅ 24/7 AI doubt solving</div>
-            <div class="feature">✅ Exam-focused content</div>
+    <!-- BEFORE LOGIN -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <div class="logo">🎯</div>
+            <h1>AI Tutor Master</h1>
+            <p class="tagline">JEE • NEET • EAPCET • GATE • Placements</p>
+            <a href="login.html" class="login-btn">✨ Login / Register FREE</a>
+            <p style="color:#999;margin-top:30px;">Join 10K+ students mastering exams</p>
         </div>
     </div>
 
-    <!-- HIDDEN SERVICES (ONLY AFTER LOGIN) -->
-    <div id="servicesSection" class="services-section">
-        <!-- This stays hidden forever for guests -->
+    <!-- AFTER LOGIN -->
+    <div id="servicesScreen" class="services-screen">
+        <header>
+            <h1 id="headerTitle">🎯 Welcome Back!</h1>
+        </header>
+        <div class="container">
+            <div class="hero">
+                <h2 id="welcomeMsg" class="welcome">Welcome back!</h2>
+                <p style="font-size:1.4em;color:#666;">All services unlocked 🚀</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3 style="font-size:2em;margin-bottom:20px;">🤖 AI Tutor</h3>
+                    <p>24/7 doubt solving</p>
+                    <a href="tutor.html" class="service-btn">Start Chat</a>
+                </div>
+                <div class="service-card">
+                    <h3 style="font-size:2em;margin-bottom:20px;">📝 Practice Quiz</h3>
+                    <p>Personalized quizzes</p>
+                    <a href="quiz.html" class="service-btn service-btn-premium">Take Quiz</a>
+                </div>
+                <div class="service-card">
+                    <h3 style="font-size:2em;margin-bottom:20px;">📊 Dashboard</h3>
+                    <p>Your progress & stats</p>
+                    <a href="dashboard.html" class="service-btn">View Stats</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Check login status
         function checkLogin() {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const username = localStorage.getItem('username') || 'Student';
             
-            if (isLoggedIn) {
-                // Show services (you can add redirect)
-                window.location.href = 'dashboard.html';
+            if(isLoggedIn) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('servicesScreen').style.display = 'block';
+                document.getElementById('welcomeMsg').textContent = `Welcome back, ${username}! ✨`;
+                document.getElementById('headerTitle').textContent = `🎯 Hi ${username}!`;
+            } else {
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('servicesScreen').style.display = 'none';
             }
-            // Else keep login screen only
         }
-
-        // Run on load
-        window.addEventListener('load', checkLogin);
+        
+        window.onload = checkLogin;
     </script>
 </body>
 </html>

@@ -1,34 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Quiz</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - AI Tutor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-<div class="container">
-<div class="card big">
-<h2>Skill Assessment Quiz</h2>
-<p>1. What is an Array?</p>
-<input type="radio" name="q1" value="correct"> Collection of similar data items stored in contiguous memory<br>
-<input type="radio" name="q1" value="wrong"> Tree data structure<br>
-<input type="radio" name="q1" value="wrong"> Graph structure<br><br>
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">AI Tutor</div>
+            <div class="nav-user">
+                <span id="welcomeText">Student</span>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+    </header>
 
-<p>2. Which follows LIFO principle?</p>
-<input type="radio" name="q2" value="correct"> Stack<br>
-<input type="radio" name="q2" value="wrong"> Queue<br>
-<input type="radio" name="q2" value="wrong"> Array<br><br>
+    <section class="quiz-section">
+        <div class="container">
+            <div class="quiz-card">
+                <h1>Skill Assessment</h1>
+                <p>Complete this quiz to unlock your personalized learning path</p>
+                
+                <div class="quiz-content">
+                    <div class="question">
+                        <h3>1. What is an Array?</h3>
+                        <label><input type="radio" name="q1" value="correct"> Collection of similar data items in contiguous memory</label>
+                        <label><input type="radio" name="q1" value="wrong"> Tree data structure</label>
+                        <label><input type="radio" name="q1" value="wrong"> Graph structure</label>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>2. Which follows LIFO principle?</h3>
+                        <label><input type="radio" name="q2" value="correct"> Stack</label>
+                        <label><input type="radio" name="q2" value="wrong"> Queue</label>
+                        <label><input type="radio" name="q2" value="wrong"> Array</label>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>3. Time complexity of array access?</h3>
+                        <label><input type="radio" name="q3" value="correct"> O(1)</label>
+                        <label><input type="radio" name="q3" value="wrong"> O(n)</label>
+                        <label><input type="radio" name="q3" value="wrong"> O(log n)</label>
+                    </div>
+                </div>
+                
+                <button class="btn-primary full" onclick="submitQuiz()">Submit Quiz</button>
+                <div id="quizResult"></div>
+            </div>
+        </div>
+    </section>
 
-<p>3. Time complexity of array access?</p>
-<input type="radio" name="q3" value="correct"> O(1)<br>
-<input type="radio" name="q3" value="wrong"> O(n)<br>
-<input type="radio" name="q3" value="wrong"> O(log n)<br>
-
-<button class="btn" onclick="submitQuiz()">Submit Quiz</button>
-<div id="quizResult" style="margin-top:20px;"></div>
-</div>
-</div>
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

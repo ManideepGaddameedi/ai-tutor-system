@@ -5,129 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);min-height:100vh;color:#333;}
+        body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);min-height:100vh;color:#333;display:flex;align-items:center;justify-content:center;}
         
-        /* FULL SCREEN LOGIN OVERLAY */
-        #loginOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .login-modal {
-            background: linear-gradient(145deg,rgba(255,255,255,0.98),rgba(255,255,255,0.9));
-            backdrop-filter: blur(30px);
-            padding: 80px 60px;
-            border-radius: 40px;
-            text-align: center;
-            box-shadow: 0 40px 140px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.3);
-            max-width: 500px;
-            animation: slideIn 0.8s ease-out;
-        }
-        @keyframes slideIn {
-            from { transform: scale(0.7) translateY(50px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-        .login-btn {
-            display: inline-block;
-            padding: 25px 60px;
-            background: linear-gradient(135deg,#48bb78,#68d391);
-            color: white;
-            text-decoration: none;
-            border-radius: 35px;
-            font-weight: 800;
-            font-size: 20px;
-            box-shadow: 0 20px 60px rgba(72,187,120,0.5);
-            transition: all 0.3s;
-            margin: 30px 0;
-            min-width: 280px;
-        }
-        .login-btn:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 80px rgba(72,187,120,0.7);
-        }
+        /* FULL PAGE LOGIN SCREEN */
+        .login-container{max-width:500px;width:90%;padding:40px;text-align:center;}
+        .login-card{background:linear-gradient(145deg,rgba(255,255,255,0.98),rgba(255,255,255,0.9));backdrop-filter:blur(30px);padding:80px 60px;border-radius:40px;box-shadow:0 40px 140px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.3);}
         
-        /* HIDDEN MAIN CONTENT */
-        header, .container { display: none; }
+        h1{font-size:3.8em;color:#2c3e50;margin-bottom:20px;text-shadow:0 4px 20px rgba(0,0,0,0.1);}
+        .tagline{font-size:1.6em;color:#666;margin-bottom:40px;line-height:1.5;}
+        .services-locked{font-size:1.3em;color:#999;margin:40px 0 30px;}
+        .services-list{display:flex;flex-wrap:wrap;justify-content:center;gap:15px;margin-bottom:40px;}
+        .service-tag{background:linear-gradient(135deg,rgba(74,108,247,0.1),rgba(90,103,216,0.1));color:#4a6cf7;padding:12px 20px;border-radius:25px;font-weight:600;border:2px solid rgba(74,108,247,0.2);}
         
-        /* LOGGED IN CONTENT */
-        header{background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;padding:30px;text-align:center;box-shadow:0 25px 70px rgba(74,108,247,0.4);}
-        .container{max-width:1200px;margin:30px auto;padding:20px;}
-        .hero-card{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(25px);padding:60px;border-radius:35px;box-shadow:0 35px 120px rgba(0,0,0,0.25);text-align:center;margin-bottom:40px;}
-        .cta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:30px;margin-bottom:50px;}
-        .cta-card{background:linear-gradient(145deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8));backdrop-filter:blur(20px);padding:50px;border-radius:30px;box-shadow:0 25px 90px rgba(0,0,0,0.2);transition:all 0.4s;text-align:center;}
-        .cta-card:hover{transform:translateY(-15px);box-shadow:0 40px 120px rgba(0,0,0,0.3);}
-        .btn{display:inline-block;padding:22px 50px;background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;text-decoration:none;border-radius:35px;font-weight:800;font-size:18px;box-shadow:0 18px 60px rgba(74,108,247,0.5);transition:all 0.3s;margin:15px;min-width:240px;}
-        .btn:hover{transform:translateY(-8px);box-shadow:0 30px 80px rgba(74,108,247,0.7);}
-        .btn-login{background:linear-gradient(135deg,#48bb78,#68d391);box-shadow:0 18px 60px rgba(72,187,120,0.5);}
-        .btn-premium{background:linear-gradient(135deg,#ff6b6b,#feca57);box-shadow:0 18px 60px rgba(255,107,107,0.5);}
-        h1{font-size:4em;text-shadow:0 8px 30px rgba(0,0,0,0.4);}
-        h2{font-size:2.8em;margin-bottom:25px;color:#2c3e50;}
-        .welcome-user{font-size:1.8em;color:#48bb78;margin:20px 0;font-weight:800;}
-        .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px;margin-top:50px;}
-        .feature-card{background:linear-gradient(145deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8));backdrop-filter:blur(20px);padding:40px;border-radius:30px;box-shadow:0 20px 80px rgba(0,0,0,0.15);transition:all 0.4s;}
-        .feature-card:hover{transform:translateY(-12px);}
+        .login-btn{display:inline-block;padding:25px 60px;background:linear-gradient(135deg,#48bb78,#68d391);color:white;text-decoration:none;border-radius:35px;font-weight:900;font-size:20px;box-shadow:0 20px 60px rgba(72,187,120,0.5);transition:all 0.3s;margin:20px 10px;min-width:280px;}
+        .login-btn:hover{transform:translateY(-8px);box-shadow:0 30px 80px rgba(72,187,120,0.7);}
+        
+        /* HIDDEN SERVICES (ONLY AFTER LOGIN) */
+        #servicesSection{display:none;}
+        header, .container{display:none;}
+        
+        /* LOGGED IN VIEW */
+        .logged-in-welcome{font-size:2em;color:#48bb78;margin:30px 0;font-weight:800;text-align:center;}
+        .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:30px;}
+        .service-card{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(25px);padding:50px;border-radius:30px;box-shadow:0 25px 90px rgba(0,0,0,0.2);text-align:center;transition:all 0.4s;}
+        .service-card:hover{transform:translateY(-15px);box-shadow:0 40px 120px rgba(0,0,0,0.3);}
+        .service-btn{padding:22px 50px;background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;text-decoration:none;border-radius:30px;font-weight:800;font-size:18px;box-shadow:0 18px 60px rgba(74,108,247,0.5);transition:all 0.3s;display:block;margin-top:25px;}
+        .service-btn:hover{transform:translateY(-6px);box-shadow:0 25px 70px rgba(74,108,247,0.7);}
+        .service-btn-premium{background:linear-gradient(135deg,#ff6b6b,#feca57);box-shadow:0 18px 60px rgba(255,107,107,0.5);}
     </style>
 </head>
 <body>
-    <!-- FULL SCREEN LOGIN LOCK -->
-    <div id="loginOverlay">
-        <div class="login-modal">
-            <h1 style="font-size:3.5em;color:#2c3e50;margin-bottom:20px;">🎯 Welcome to AI Tutor</h1>
-            <p style="font-size:1.6em;color:#666;margin-bottom:40px;line-height:1.5;">
-                Master JEE • NEET • EAPCET • GATE • Placements<br>
-                <strong>Login to unlock all services!</strong>
-            </p>
-            <a href="login.html" class="login-btn">✨ Get Started FREE</a>
-            <p style="color:#999;margin-top:40px;font-size:1.1em;">
-                Personalized learning • Progress tracking • AI Tutor
+    <!-- BEFORE LOGIN: ONLY LOGIN SCREEN -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <h1>🎯 AI Tutor</h1>
+            <p class="tagline">Master JEE • NEET • EAPCET • GATE • Placements</p>
+            
+            <div class="services-locked">
+                🔒 <strong>All services locked</strong><br>
+                Login to unlock personalized learning
+            </div>
+            
+            <div class="services-list">
+                <span class="service-tag">🤖 AI Tutor Bot</span>
+                <span class="service-tag">📝 Practice Quiz</span>
+                <span class="service-tag">📊 Dashboard</span>
+                <span class="service-tag">📈 Progress Tracking</span>
+            </div>
+            
+            <a href="login.html" class="login-btn">✨ Login / Register FREE</a>
+            
+            <p style="color:#999;margin-top:30px;font-size:1.1em;">
+                Join thousands of students mastering competitive exams
             </p>
         </div>
     </div>
 
-    <!-- MAIN CONTENT (HIDDEN UNTIL LOGIN) -->
-    <header id="mainHeader">
-        <h1 id="headerTitle">🎯 Ultimate AI Tutor</h1>
-        <p id="headerSubtitle" style="font-size:1.4em;opacity:0.95;">Master JEE | NEET | EAPCET | GATE | Placements</p>
-    </header>
-    
-    <div class="container" id="mainContent">
-        <div id="userWelcome" style="display:none;">
-            <div class="hero-card">
-                <h2 class="welcome-user" id="welcomeMsg">Welcome back!</h2>
-                <p style="font-size:1.5em;color:#666;margin:30px 0;">All services unlocked! 🚀</p>
-                <a href="dashboard.html" class="btn btn-login" style="font-size:20px;padding:25px 60px;">📊 Dashboard</a>
-                <a href="tutor.html" class="btn" style="font-size:20px;padding:25px 60px;">🤖 AI Tutor</a>
-                <a href="quiz.html" class="btn-premium" style="font-size:20px;padding:25px 60px;">📝 Practice Quiz</a>
-            </div>
-        </div>
+    <!-- AFTER LOGIN: ALL SERVICES VISIBLE -->
+    <div id="servicesSection">
+        <header>
+            <h1 id="headerTitle">🎯 Ultimate AI Tutor</h1>
+            <p id="headerSubtitle">All services unlocked!</p>
+        </header>
         
-        <div id="loginPrompt">
-            <div class="hero-card">
-                <h2>🔒 Services Locked</h2>
-                <p style="font-size:1.5em;color:#666;margin:30px 0;">Complete login to access all features</p>
-            </div>
-        </div>
-        
-        <div class="features">
-            <div class="feature-card">
-                <h3>🎯 Exam Focused</h3>
-                <p>JEE, EAPCET, GATE, Placements - All covered!</p>
-            </div>
-            <div class="feature-card">
-                <h3>📊 Personal Progress</h3>
-                <p>Your scores, levels, streaks saved forever</p>
-            </div>
-            <div class="feature-card">
-                <h3>🤖 24/7 AI Help</h3>
-                <p>Instant doubt solving with code examples</p>
+        <div class="container">
+            <div class="logged-in-welcome" id="welcomeMsg">Welcome back!</div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <h2>🤖 AI Tutor Bot</h2>
+                    <p style="font-size:1.3em;color:#666;margin:25px 0;">24/7 doubt solving with code examples</p>
+                    <a href="tutor.html" class="service-btn">Start AI Chat →</a>
+                </div>
+                
+                <div class="service-card">
+                    <h2>📝 Practice Quiz</h2>
+                    <p style="font-size:1.3em;color:#666;margin:25px 0;">Personalized quizzes with progress tracking</p>
+                    <a href="quiz.html" class="service-btn service-btn-premium">Take Quiz →</a>
+                </div>
+                
+                <div class="service-card">
+                    <h2>📊 Dashboard</h2>
+                    <p style="font-size:1.3em;color:#666;margin:25px 0;">Your stats, scores, and learning journey</p>
+                    <a href="dashboard.html" class="service-btn">View Dashboard →</a>
+                </div>
             </div>
         </div>
     </div>
@@ -138,31 +99,24 @@
             const username = localStorage.getItem('username') || 'Student';
             
             if(isLoggedIn) {
-                // HIDE LOGIN OVERLAY - SHOW ALL SERVICES
-                document.getElementById('loginOverlay').style.display = 'none';
-                document.getElementById('mainHeader').style.display = 'block';
-                document.getElementById('mainContent').style.display = 'block';
-                document.getElementById('loginPrompt').style.display = 'none';
-                document.getElementById('userWelcome').style.display = 'block';
+                // SHOW SERVICES - HIDE LOGIN
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('servicesSection').style.display = 'block';
                 
                 // PERSONALIZE
                 document.getElementById('welcomeMsg').textContent = `Welcome back, ${username}! ✨`;
                 document.getElementById('headerTitle').innerHTML = `🎯 Hi ${username}!`;
-                document.getElementById('headerSubtitle').textContent = 'All services unlocked';
+                document.getElementById('headerSubtitle').textContent = 'All services unlocked! 🚀';
                 
             } else {
-                // SHOW ONLY LOGIN OVERLAY - HIDE EVERYTHING ELSE
-                document.getElementById('loginOverlay').style.display = 'flex';
-                document.getElementById('mainHeader').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'none';
+                // SHOW ONLY LOGIN SCREEN
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('servicesSection').style.display = 'none';
             }
         }
         
-        // CHECK ON PAGE LOAD
+        // CHECK ON LOAD
         window.onload = checkLoginStatus;
-        
-        // ALSO CHECK AFTER URL CHANGE
-        window.onpageshow = checkLoginStatus;
     </script>
 </body>
 </html>

@@ -2,99 +2,85 @@
 <html>
 <head>
     <title>🎯 AI Tutor Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- YOUR EXISTING STYLES + -->
-    <style>/* ADD TO YOUR EXISTING dashboard styles */</style>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:Arial,sans-serif;background:#f0f2f5;min-height:100vh;}
+        header{background:#007bff;color:white;padding:20px;text-align:center;}
+        .container{max-width:1200px;margin:0 auto;padding:20px;}
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
+        .card{background:white;padding:30px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+        .btn{background:#28a745;color:white;padding:15px 30px;border:none;border-radius:10px;font-size:16px;cursor:pointer;margin:10px;}
+        .btn:hover{background:#218838;}
+        #logout{background:#dc3545;}
+    </style>
 </head>
 <body>
-    <header style="background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;padding:20px;text-align:center;">
+    <header>
         <h1>🎯 AI Tutor Dashboard</h1>
-        <button id="logoutBtn" style="background:#ff6b6b;color:white;border:none;padding:10px 20px;border-radius:20px;cursor:pointer;">Logout</button>
+        <p>Welcome back, <span id="studentName">Student</span>!</p>
+        <button id="logout" class="btn">Logout</button>
     </header>
     
-    <div class="container" style="max-width:1200px;margin:30px auto;padding:20px;">
-        <div class="stats-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;margin-bottom:40px;">
-            <div id="profileCard" style="background:white;padding:30px;border-radius:25px;box-shadow:0 20px 60px rgba(0,0,0,0.1);">
-                <h3>👤 Profile</h3>
-                <p><strong>Name:</strong> <span id="studentName">Loading...</span></p>
-                <p><strong>Email:</strong> <span id="studentEmail">Loading...</span></p>
-                <p><strong>Accuracy:</strong> <span id="accuracy">0%</span></p>
-                <p><strong>Total Quizzes:</strong> <span id="totalQuizzes">0</span></p>
+    <div class="container">
+        <div class="stats-grid">
+            <div class="card">
+                <h3>📊 Your Stats</h3>
+                <p>Accuracy: <strong id="accuracy">0%</strong></p>
+                <p>Total Quizzes: <strong id="totalQuizzes">0</strong></p>
+                <p>Avg Score: <strong id="avgScore">0</strong></p>
             </div>
-            
-            <div id="recentQuizzes" style="background:white;padding:30px;border-radius:25px;box-shadow:0 20px 60px rgba(0,0,0,0.1);">
-                <h3>📊 Recent Quizzes</h3>
-                <div id="quizzesList">No quizzes yet. Take your first quiz!</div>
+            <div class="card">
+                <h3>📝 Quick Actions</h3>
+                <button class="btn" onclick="startQuiz('math')">🚀 Math Quiz</button>
+                <button class="btn" onclick="startQuiz('physics')">⚛️ Physics Quiz</button>
+                <button class="btn" onclick="startQuiz('chemistry')">🧪 Chemistry Quiz</button>
             </div>
         </div>
         
-        <div style="text-align:center;">
-            <a href="quiz.html?subject=math" class="btn" style="background:linear-gradient(135deg,#48bb78,#68d391);color:white;padding:20px 40px;border-radius:25px;font-size:18px;font-weight:800;text-decoration:none;box-shadow:0 15px 45px rgba(72,187,120,0.4);">🚀 Start Math Quiz</a>
+        <div class="card" style="margin-top:20px;">
+            <h3>📈 Recent Quizzes</h3>
+            <div id="recentQuizzes">No quizzes yet!</div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        const supabase = supabase.createClient(
-            'https://pdegwwddqpnjaranrvvh.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZWd3d2RkcXBuamFyYW5ydnZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODYxNDksImV4cCI6MjA4OTA2MjE0OX0.lg3cONONUcZu4dKpvF4B-z2-B9BNJOUWTl0H6wCtY6c'
-        );
+        const supabaseUrl = 'https://pdegwwddqpnjaranrvvh.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZWd3d2RkcXBuamFyYW5ydnZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODYxNDksImV4cCI6MjA4OTA2MjE0OX0.lg3cONONUcZu4dKpvF4B-z2-B9BNJOUWTl0H6wCtY6c';
+        const { createClient } = supabase;
+        const client = createClient(supabaseUrl, supabaseKey);
 
-        // Check auth & load dashboard
         async function loadDashboard() {
-            const { data: { session } } = await supabase.auth.getSession();
+            const { data: { session } } = await client.auth.getSession();
             if(!session) {
                 window.location.href = 'login.html';
                 return;
             }
 
-            // Get student profile
-            const { data: student } = await supabase
+            // Get student data
+            const { data: student } = await client
                 .from('students')
                 .select('*')
                 .eq('user_id', session.user.id)
                 .single();
                 
-            if(student) {
-                document.getElementById('studentName').textContent = student.name;
-                document.getElementById('studentEmail').textContent = student.email;
-                document.getElementById('accuracy').textContent = student.accuracy + '%';
-                document.getElementById('totalQuizzes').textContent = student.total_quizzes;
-            }
-
-            // Get recent quizzes
-            const { data: quizzes } = await supabase
-                .from('quiz_results')
-                .select('subject, score, total_questions, created_at')
-                .eq('student_id', student.id)
-                .order('created_at', { ascending: false })
-                .limit(5);
-                
-            const quizzesList = document.getElementById('quizzesList');
-            if(quizzes?.length) {
-                quizzesList.innerHTML = quizzes.map(q => 
-                    `<div style="padding:10px;border-bottom:1px solid #eee;">
-                        <strong>${q.subject}:</strong> ${q.score}/${q.total_questions} 
-                        (${Math.round(q.score/q.total_questions*100)}%)
-                    </div>`
-                ).join('');
-            }
+            document.getElementById('studentName').textContent = student?.name || 'Student';
+            document.getElementById('accuracy').textContent = student?.accuracy || 0 + '%';
+            document.getElementById('totalQuizzes').textContent = student?.total_quizzes || 0;
+            document.getElementById('avgScore').textContent = student?.avg_score || 0;
         }
 
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            await supabase.auth.signOut();
-            window.location.href = 'index.html';
-        });
+        document.getElementById('logout').onclick = async () => {
+            await client.auth.signOut();
+            window.location.href = 'login.html';
+        }
 
-        // Load on start
+        function startQuiz(subject) {
+            alert(`Starting ${subject} quiz! (Coming soon)`);
+        }
+
+        // Load dashboard
         loadDashboard();
-
-        // Real-time updates
-        supabase.channel('dashboard').on('postgres_changes', 
-            { event: '*', schema: 'public', table: 'students' }, 
-            () => loadDashboard()
-        ).subscribe();
     </script>
 </body>
 </html>

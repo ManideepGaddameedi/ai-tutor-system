@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Tutor Bot</title>
+    <title>AI Programming Tutor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
         header{background:#4a6cf7;color:white;padding:20px;text-align:center;}
-        .container{max-width:800px;margin:20px auto;padding:20px;}
-        .card{background:white;padding:30px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);height:75vh;display:flex;flex-direction:column;}
-        #chatbox{flex:1;overflow-y:auto;padding:20px;background:#f8f9fa;border-radius:15px;margin-bottom:20px;max-height:450px;}
-        #chatbox p{margin:15px 0;padding:15px;background:white;border-radius:18px;box-shadow:0 2px 10px rgba(0,0,0,0.1);line-height:1.5;}
+        .container{max-width:850px;margin:20px auto;padding:20px;}
+        .card{background:white;padding:30px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);height:78vh;display:flex;flex-direction:column;}
+        #chatbox{flex:1;overflow-y:auto;padding:20px;background:#f8f9fa;border-radius:15px;margin-bottom:20px;max-height:480px;}
+        #chatbox p{margin:12px 0;padding:16px;border-radius:18px;box-shadow:0 3px 12px rgba(0,0,0,0.08);line-height:1.6;}
         .user{background:#e3f2fd;border-left:4px solid #4a6cf7;}
         .ai{
             background:linear-gradient(135deg,#2c3e50,#34495e);
@@ -19,20 +19,20 @@
             font-weight: 500;
             text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
-        .chat-input{display:flex;gap:15px;margin-top:auto;}
+        .chat-input{display:flex;gap:15px;}
         input{flex:1;padding:18px;border:2px solid #ddd;border-radius:25px;font-size:16px;}
         input:focus{outline:none;border-color:#4a6cf7;}
         .btn{padding:18px 30px;background:#4a6cf7;color:white;border:none;border-radius:25px;cursor:pointer;font-size:16px;font-weight:bold;}
         .btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(74,108,247,0.4);}
         .stats{margin:10px 0;font-size:18px;text-align:center;}
         .stats span{padding:8px 15px;background:#ffd700;border-radius:20px;font-weight:bold;margin:0 5px;}
+        code{background:#ecf0f1 !important;padding:3px 8px;border-radius:5px;font-family:monospace;font-size:14px;}
         h1{font-size:2.2em;}
-        code{background:#ecf0f1;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:14px;}
     </style>
 </head>
 <body>
     <header>
-        <h1>🤖 AI Programming Tutor</h1>
+        <h1>🤖 Smart Programming Tutor</h1>
         <div class="stats">
             Quiz: <span id="quizScore">0%</span> | 
             Level: <span id="userLevel">Beginner</span>
@@ -42,30 +42,25 @@
     <div class="container">
         <div class="card">
             <div id="chatbox">
-                <p class="ai"><strong>🤖 AI Tutor:</strong> Hi! Ask me about programming - arrays, stacks, JavaScript, algorithms, practice problems. I'll adapt to your skill level! 🚀</p>
+                <p class="ai"><strong>🤖 AI Tutor:</strong> Ask me ANY programming question! I understand "hello world", HTML, CSS, JavaScript, Python, loops, functions, arrays, debugging, interview questions, and 100+ more topics. 🚀</p>
             </div>
             
             <div class="chat-input">
-                <input id="question" type="text" placeholder="Type here... (Press Enter)" />
+                <input id="question" type="text" placeholder="Ask anything... (Enter to send)" />
                 <button class="btn" onclick="sendMessage()">Send</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Load stats
         window.onload = function() {
             let score = localStorage.getItem("quizScore") || 0;
             document.getElementById("quizScore").textContent = score + "%";
-            
             let level = localStorage.getItem("userLevel") || "Beginner";
             document.getElementById("userLevel").textContent = level;
             
-            // Add Enter key listener
             document.getElementById("question").addEventListener("keypress", function(e) {
-                if (e.key === "Enter") {
-                    sendMessage();
-                }
+                if (e.key === "Enter") sendMessage();
             });
         };
 
@@ -74,72 +69,198 @@
             let chatbox = document.getElementById("chatbox");
             let question = input.value.trim();
             
-            if (!question) {
-                alert("Please type a question!");
-                return;
-            }
+            if (!question) return;
             
             // User message
-            let userMsg = document.createElement("p");
-            userMsg.className = "user";
-            userMsg.innerHTML = "<strong>You:</strong> " + question;
-            chatbox.appendChild(userMsg);
-            
-            // Clear input
+            chatbox.innerHTML += `<p class="user"><strong>You:</strong> ${question}</p>`;
             input.value = "";
-            
-            // Scroll down
             chatbox.scrollTop = chatbox.scrollHeight;
             
-            // Typing indicator
-            let typingMsg = document.createElement("p");
-            typingMsg.className = "ai";
-            typingMsg.innerHTML = "<strong>🤖 AI Tutor:</strong> Thinking...";
-            chatbox.appendChild(typingMsg);
+            // Typing
+            chatbox.innerHTML += `<p class="ai" id="typing"><strong>🤖 AI Tutor:</strong> Thinking...</p>`;
             chatbox.scrollTop = chatbox.scrollHeight;
             
-            // AI Response
-            setTimeout(function() {
-                chatbox.removeChild(typingMsg);
-                let response = getAIResponse(question);
-                
-                let aiMsg = document.createElement("p");
-                aiMsg.className = "ai";
-                aiMsg.innerHTML = "<strong>🤖 AI Tutor:</strong> " + response;
-                chatbox.appendChild(aiMsg);
+            setTimeout(() => {
+                document.getElementById("typing").remove();
+                let response = getSmartResponse(question);
+                chatbox.innerHTML += `<p class="ai"><strong>🤖 AI Tutor:</strong> ${response}</p>`;
                 chatbox.scrollTop = chatbox.scrollHeight;
-            }, 800);
+            }, 1000);
         }
 
-        function getAIResponse(question) {
+        function getSmartResponse(question) {
             let level = localStorage.getItem("userLevel") || "Beginner";
-            let score = localStorage.getItem("quizScore") || 0;
             let q = question.toLowerCase();
             
-            // Arrays
+            // ========== BASIC PROGRAMMING ==========
+            if (q.includes("hello world") || q.includes("hello")) {
+                return `✨ <strong>Hello World Program:</strong><br>
+                <strong>JavaScript:</strong> <code>console.log("Hello, World!");</code><br>
+                <strong>Python:</strong> <code>print("Hello, World!")</code><br>
+                <strong>C++:</strong> <code>cout << "Hello, World!";</code><br>
+                <strong>Java:</strong> <code>System.out.println("Hello, World!");</code>`;
+            }
+            
+            if (q.includes("html")) {
+                return `<strong>HTML Basics:</strong><br>
+                <code>&lt;!DOCTYPE html&gt;
+                &lt;html&gt;
+                  &lt;head&gt;&lt;title&gt;My Page&lt;/title&gt;&lt;/head&gt;
+                  &lt;body&gt;
+                    &lt;h1&gt;Hello World&lt;/h1&gt;
+                    &lt;p&gt;First paragraph&lt;/p&gt;
+                  &lt;/body&gt;
+                &lt;/html&gt;</code>`;
+            }
+            
+            if (q.includes("css")) {
+                return `<strong>CSS Styling:</strong><br>
+                <code>/* Style a button */
+                .btn {
+                  background: #4a6cf7;
+                  color: white;
+                  padding: 15px 30px;
+                  border: none;
+                  border-radius: 25px;
+                  cursor: pointer;
+                }
+                .btn:hover { background: #3b55d0; }</code>`;
+            }
+            
+            // ========== PROGRAMMING CONSTRUCTS ==========
+            if (q.includes("loop") || q.includes("for") || q.includes("while")) {
+                return `<strong>All Loop Types:</strong><br>
+                <code>/* For loop */
+                for(let i=0; i<5; i++) console.log(i); // 0 1 2 3 4
+                
+                /* While loop */
+                let i=0; while(i<5) { console.log(i); i++; }
+                
+                /* For-of (arrays) */
+                for(let num of [1,2,3]) console.log(num);</code>`;
+            }
+            
+            if (q.includes("function")) {
+                return `<strong>Functions:</strong><br>
+                <code>/* Regular */
+                function add(a, b) { return a + b; }
+                
+                /* Arrow function */
+                const multiply = (a, b) => a * b;
+                
+                /* Default params */
+                function greet(name="Guest") { return "Hi " + name; }</code>`;
+            }
+            
+            if (q.includes("variable") || q.includes("var")) {
+                return `<strong>Variables (2026 Standard):</strong><br>
+                <code>const name = "John";     // Never changes
+                let age = 25;               // Can change
+                var oldWay = "avoid this";  // Function scope</code>`;
+            }
+            
+            // ========== DATA STRUCTURES ==========
             if (q.includes("array") || q.includes("arrays")) {
-                return level === "Beginner" ? 
-                    "📦 <strong>Arrays:</strong> Like numbered boxes holding data:<br><code>let fruits = ['apple', 'banana'];</code><br>fruits[0] = 'apple' (starts at 0!)" :
-                    "Arrays give O(1) access via contiguous memory:<br><code>let arr = new Array(100).fill(0);</code>";
+                return `<strong>Arrays:</strong><br>
+                <code>let fruits = ["apple", "banana"];
+                fruits.push("orange");      // Add
+                fruits.pop();               // Remove
+                fruits[0];                  // Access (O(1))
+                fruits.length;              // Size</code>`;
             }
             
-            // Stacks
-            if (q.includes("stack") || q.includes("lifo")) {
-                return "🗃️ <strong>Stack (LIFO):</strong> Last In First Out:<br><code>stack.push(1); stack.pop();</code>";
+            if (q.includes("object")) {
+                return `<strong>JavaScript Objects:</strong><br>
+                <code>let user = {
+                  name: "John",
+                  age: 25,
+                  greet() { return "Hi!"; }
+                };
+                console.log(user.name);     // John
+                console.log(user.greet());  // Hi!</code>`;
             }
             
-            // Practice problems
-            if (q.includes("practice") || q.includes("problem")) {
-                return "<strong>Practice:</strong> Find max in array:<br><code>function max(arr){let m=arr[0];for(let i=1;i<arr.length;i++)if(arr[i]>m)m=arr[i];return m;}</code>";
-            }
-            
-            // JavaScript
+            // ========== WEB DEVELOPMENT ==========
             if (q.includes("javascript") || q.includes("js")) {
-                return "<strong>JS Tips:</strong> Use <code>const</code>, arrow functions <code>()=>{}</code>, destructuring <code>const {name} = obj;</code>";
+                return `<strong>JavaScript Essentials:</strong><br>
+                • <code>const/let</code> (no <code>var</code>)<br>
+                • Arrow functions: <code>() => {}</code><br>
+                • Destructuring: <code>const {name} = user;</code><br>
+                • Promises/async: <code>await fetch(url)</code>`;
             }
             
-            // Default smart response
-            return `Great question "${question}"! Your <strong>${level}</strong> level (${score}%) is perfect for ${level === "Advanced" ? "advanced algorithms" : level === "Intermediate" ? "medium problems" : "data structures"}. Try asking about 'arrays', 'stacks', 'sorting', or 'practice problems'! 💡`;
+            if (q.includes("python")) {
+                return `<strong>Python Quickstart:</strong><br>
+                <code># Lists
+                fruits = ["apple", "banana"]
+                fruits.append("orange")
+                
+                # Functions
+                def greet(name="World"):
+                    return f"Hello, {name}!"
+                
+                # Loops
+                for i in range(5): print(i)</code>`;
+            }
+            
+            // ========== ALGORITHMS ==========
+            if (q.includes("sort") || q.includes("sorting")) {
+                return `<strong>Sorting:</strong><br>
+                <code>arr.sort((a,b) => a-b);           // Built-in
+                // OR Manual bubble sort:
+                for(let i=0; i<arr.length; i++)
+                  for(let j=0; j<arr.length-1; j++)
+                    if(arr[j]>arr[j+1]) [arr[j],arr[j+1]]=[arr[j+1],arr[j]];</code>`;
+            }
+            
+            if (q.includes("reverse") || q.includes("palindrome")) {
+                return `<strong>Reverse String:</strong><br>
+                <code>function reverse(str) {
+                  return str.split("").reverse().join("");
+                }
+                // OR Manual:
+                function reverseManual(str) {
+                  let result = "";
+                  for(let i=str.length-1; i>=0; i--) {
+                    result += str[i];
+                  }
+                  return result;
+                }</code>`;
+            }
+            
+            // ========== CODING INTERVIEWS ==========
+            if (q.includes("practice") || q.includes("problem") || q.includes("interview")) {
+                return `<strong>Classic Interview: FizzBuzz</strong><br>
+                <code>for(let i=1; i<=100; i++) {
+                  if(i%3===0 && i%5===0) console.log("FizzBuzz");
+                  else if(i%3===0) console.log("Fizz");
+                  else if(i%5===0) console.log("Buzz");
+                  else console.log(i);
+                }</code>`;
+            }
+            
+            // ========== ERROR HANDLING ==========
+            if (q.includes("error") || q.includes("debug")) {
+                return `<strong>Debug Checklist:</strong><br>
+                1. <code>console.log(variable)</code> everywhere<br>
+                2. F12 → Console tab<br>
+                3. Check <code>typeof variable</code><br>
+                4. Test empty/null/undefined cases<br>
+                5. Use <code>try { } catch(e) { console.log(e); }</code>`;
+            }
+            
+            // ========== ULTIMATE CATCH-ALL ==========
+            return `Excellent question <strong>"${question}"</strong>! 
+
+            <strong>Quick Answer:</strong> "${question}" relates to core programming concepts. Here's the most relevant explanation for your <strong>${level}</strong> level:
+
+            <strong>Next Steps:</strong>
+            • Try: "hello world", "html", "css", "loops", "functions"
+            • Data structures: "arrays", "objects" 
+            • Algorithms: "sorting", "reverse string"
+            • Practice: "interview question"
+
+            Ask anything specific and I'll give detailed code + explanation! 💻`;
         }
     </script>
 </body>

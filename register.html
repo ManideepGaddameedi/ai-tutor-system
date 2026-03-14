@@ -1,46 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - AI Tutor</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
+        .container{max-width:400px;margin:50px auto;padding:20px;}
+        .card{background:white;padding:40px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);text-align:center;}
+        input{width:100%;padding:15px;margin:10px 0;border:2px solid #ddd;border-radius:10px;font-size:16px;}
+        input:focus{outline:none;border-color:#4a6cf7;}
+        .btn{padding:15px;background:#4a6cf7;color:white;border:none;border-radius:10px;cursor:pointer;width:100%;font-size:16px;margin:10px 0;font-weight:bold;}
+        .btn:hover{background:#3b55d0;}
+        .btn.secondary{background:#6c757d;}
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="nav-brand">AI Tutor</div>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="login.html">Login</a>
-            </div>
-        </nav>
-    </header>
-
-    <section class="auth-section">
-        <div class="container">
-            <div class="auth-card">
-                <div class="auth-content">
-                    <h1>Create Account</h1>
-                    <p>Join thousands learning smarter with AI</p>
-                    
-                    <form onsubmit="registerUser(event)">
-                        <input id="name" type="text" placeholder="Full Name" required>
-                        <input id="email" type="email" placeholder="Email Address" required>
-                        <input id="password" type="password" placeholder="Password" required>
-                        <button type="submit" class="btn-primary full">Create Account</button>
-                    </form>
-                    
-                    <div class="auth-footer">
-                        <p>Already have an account?</p>
-                        <a href="login.html" class="btn-secondary full">Login</a>
-                    </div>
-                </div>
-            </div>
+    <div class="container">
+        <div class="card">
+            <h2>Create Account</h2>
+            <input id="name" type="text" placeholder="Full Name">
+            <input id="email" type="email" placeholder="Email">
+            <input id="password" type="password" placeholder="Password">
+            <button class="btn" onclick="registerUser()">Register</button>
+            <p>Already have account?</p>
+            <a href="login.html"><button class="btn secondary">Login</button></a>
         </div>
-    </section>
-
-    <script src="script.js"></script>
+    </div>
+    <script>
+    function registerUser(){
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        if(name && email && password){
+            localStorage.setItem("userName", name);
+            localStorage.setItem("userEmail", email);
+            localStorage.setItem("userPassword", password);
+            localStorage.setItem("quizScore", "0");
+            localStorage.setItem("userLevel", "Beginner");
+            alert("Registered! Please login.");
+            window.location.href = "login.html";
+        } else {
+            alert("Fill all fields!");
+        }
+    }
+    </script>
 </body>
 </html>

@@ -8,43 +8,72 @@
         body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);min-height:100vh;color:#333;}
         header{background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;padding:30px;text-align:center;box-shadow:0 25px 70px rgba(74,108,247,0.4);}
         .container{max-width:1200px;margin:30px auto;padding:20px;}
-        .hero-card{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(25px);padding:50px;border-radius:35px;box-shadow:0 35px 120px rgba(0,0,0,0.25);text-align:center;margin-bottom:40px;}
-        .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;}
-        .feature-card{background:linear-gradient(145deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8));backdrop-filter:blur(20px);padding:40px;border-radius:30px;box-shadow:0 20px 80px rgba(0,0,0,0.15);transition:all 0.4s;}
-        .feature-card:hover{transform:translateY(-15px);box-shadow:0 30px 100px rgba(0,0,0,0.25);}
-        .btn{display:inline-block;padding:20px 45px;background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;text-decoration:none;border-radius:35px;font-weight:800;font-size:18px;box-shadow:0 15px 50px rgba(74,108,247,0.4);transition:all 0.3s;margin:15px;}
-        .btn:hover{transform:translateY(-8px);box-shadow:0 25px 70px rgba(74,108,247,0.6);}
-        .btn-secondary{background:linear-gradient(135deg,#ff6b6b,#feca57);box-shadow:0 15px 50px rgba(255,107,107,0.4);}
+        .hero-card{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(25px);padding:60px;border-radius:35px;box-shadow:0 35px 120px rgba(0,0,0,0.25);text-align:center;margin-bottom:40px;}
+        .cta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:30px;margin-bottom:50px;}
+        .cta-card{background:linear-gradient(145deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8));backdrop-filter:blur(20px);padding:50px;border-radius:30px;box-shadow:0 25px 90px rgba(0,0,0,0.2);transition:all 0.4s;text-align:center;}
+        .cta-card:hover{transform:translateY(-15px);box-shadow:0 40px 120px rgba(0,0,0,0.3);}
+        .btn{display:inline-block;padding:22px 50px;background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;text-decoration:none;border-radius:35px;font-weight:800;font-size:18px;box-shadow:0 18px 60px rgba(74,108,247,0.5);transition:all 0.3s;margin:15px;}
+        .btn:hover{transform:translateY(-8px);box-shadow:0 30px 80px rgba(74,108,247,0.7);}
+        .btn-secondary{background:linear-gradient(135deg,#ff6b6b,#feca57);box-shadow:0 18px 60px rgba(255,107,107,0.5);}
+        .btn-login{background:linear-gradient(135deg,#48bb78,#68d391);box-shadow:0 18px 60px rgba(72,187,120,0.5);}
         h1{font-size:4em;text-shadow:0 8px 30px rgba(0,0,0,0.4);}
-        h2{font-size:2.5em;margin-bottom:20px;}
+        h2{font-size:2.8em;margin-bottom:25px;color:#2c3e50;}
+        .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px;margin-top:50px;}
+        .feature-card{background:linear-gradient(145deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8));backdrop-filter:blur(20px);padding:40px;border-radius:30px;box-shadow:0 20px 80px rgba(0,0,0,0.15);transition:all 0.4s;}
+        .feature-card:hover{transform:translateY(-12px);}
+        .nav-bar{position:fixed;top:30px;right:30px;z-index:1000;display:flex;gap:15px;}
+        .nav-btn{padding:15px 25px;background:rgba(255,255,255,0.2);backdrop-filter:blur(15px);color:white;border-radius:25px;text-decoration:none;font-weight:700;transition:all 0.3s;}
+        .nav-btn:hover{background:rgba(255,255,255,0.3);transform:translateY(-3px);}
     </style>
 </head>
 <body>
+    <!-- FIXED NAVIGATION BAR -->
+    <div class="nav-bar">
+        <a href="login.html" class="nav-btn btn-login">🔐 Login/Register</a>
+        <a href="tutor.html" class="nav-btn">🤖 AI Tutor</a>
+        <a href="quiz.html" class="nav-btn btn-secondary">📝 Quiz</a>
+    </div>
+
     <header>
         <h1>🎯 Ultimate AI Tutor</h1>
-        <p style="font-size:1.3em;opacity:0.95;">JEE | NEET | EAPCET | GATE | Placements</p>
+        <p style="font-size:1.4em;opacity:0.95;">Master JEE | NEET | EAPCET | GATE | Placements</p>
     </header>
     
     <div class="container">
+        <!-- MAIN CALL-TO-ACTION: LOGIN FIRST -->
         <div class="hero-card">
-            <h2>🚀 Master Competitive Exams with AI</h2>
-            <p style="font-size:1.4em;color:#666;margin:30px 0;">Personalized learning for Programming, DSA, Math, Physics & more</p>
-            <a href="tutor.html" class="btn">🤖 Start AI Chat</a>
-            <a href="quiz.html" class="btn btn-secondary">📝 Take Quiz</a>
+            <h2>🚀 Start Your Learning Journey</h2>
+            <p style="font-size:1.5em;color:#666;margin:30px 0 40px;">Create account to track progress, save scores & get personalized recommendations</p>
+            <a href="login.html" class="btn btn-login" style="font-size:20px;padding:25px 60px;">✨ Get Started - Login/Register</a>
         </div>
         
-        <div class="feature-grid">
-            <div class="feature-card">
-                <h3>🤖 AI Tutor Bot</h3>
-                <p>24/7 doubt solving for JEE, GATE, Placements with code examples</p>
+        <!-- SECONDARY CTAs (After Login Prompts) -->
+        <div class="cta-grid">
+            <div class="cta-card">
+                <h2>🤖 AI Tutor Bot</h2>
+                <p style="font-size:1.3em;color:#666;margin:25px 0;">24/7 doubt solving with code examples for JEE, GATE, Placements</p>
+                <a href="tutor.html" class="btn">Start Chatting →</a>
             </div>
-            <div class="feature-card">
-                <h3>📝 Adaptive Quizzes</h3>
-                <p>Grade + Subject + Exam specific questions with progress tracking</p>
+            <div class="cta-card">
+                <h2>📝 Adaptive Quizzes</h2>
+                <p style="font-size:1.3em;color:#666;margin:25px 0;">Grade + Subject + Exam specific questions with real-time progress tracking</p>
+                <a href="quiz.html" class="btn btn-secondary">Take Quiz →</a>
             </div>
+        </div>
+        
+        <!-- FEATURES SECTION -->
+        <div class="features">
             <div class="feature-card">
                 <h3>🎯 Exam Focused</h3>
-                <p>Covers JEE Main/Advanced, EAPCET, ECET, GATE CSE, Campus Placements</p>
+                <p>JEE Main/Advanced, AP/TS EAPCET, ECET, GATE CSE, Campus Placements - All covered!</p>
+            </div>
+            <div class="feature-card">
+                <h3>📊 Progress Tracking</h3>
+                <p>Your scores, levels, and streaks saved automatically after login</p>
+            </div>
+            <div class="feature-card">
+                <h3>✨ Beautiful Design</h3>
+                <p>Glassmorphism UI with smooth animations across all pages</p>
             </div>
         </div>
     </div>

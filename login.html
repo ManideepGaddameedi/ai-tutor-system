@@ -1,45 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - AI Tutor</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
+        .container{max-width:400px;margin:50px auto;padding:20px;}
+        .card{background:white;padding:40px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);text-align:center;}
+        input{width:100%;padding:15px;margin:10px 0;border:2px solid #ddd;border-radius:10px;font-size:16px;}
+        input:focus{outline:none;border-color:#4a6cf7;}
+        .btn{padding:15px;background:#4a6cf7;color:white;border:none;border-radius:10px;cursor:pointer;width:100%;font-size:16px;margin:10px 0;font-weight:bold;}
+        .btn:hover{background:#3b55d0;}
+        .btn.secondary{background:#6c757d;}
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="nav-brand">AI Tutor</div>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="register.html">Register</a>
-            </div>
-        </nav>
-    </header>
-
-    <section class="auth-section">
-        <div class="container">
-            <div class="auth-card">
-                <div class="auth-content">
-                    <h1>Welcome Back</h1>
-                    <p>Continue your personalized learning journey</p>
-                    
-                    <form onsubmit="loginUser(event)">
-                        <input id="loginEmail" type="email" placeholder="Email Address" required>
-                        <input id="loginPassword" type="password" placeholder="Password" required>
-                        <button type="submit" class="btn-primary full">Sign In</button>
-                    </form>
-                    
-                    <div class="auth-footer">
-                        <p>Don't have an account?</p>
-                        <a href="register.html" class="btn-secondary full">Create Account</a>
-                    </div>
-                </div>
-            </div>
+    <div class="container">
+        <div class="card">
+            <h2>Login</h2>
+            <input id="loginEmail" type="email" placeholder="Email">
+            <input id="loginPassword" type="password" placeholder="Password">
+            <button class="btn" onclick="loginUser()">Login</button>
+            <p>No account?</p>
+            <a href="register.html"><button class="btn secondary">Register</button></a>
         </div>
-    </section>
-
-    <script src="script.js"></script>
+    </div>
+    <script>
+    function loginUser(){
+        var email = document.getElementById("loginEmail").value;
+        var password = document.getElementById("loginPassword").value;
+        var savedEmail = localStorage.getItem("userEmail");
+        var savedPassword = localStorage.getItem("userPassword");
+        
+        if(email === savedEmail && password === savedPassword){
+            window.location.href = "dashboard.html";
+        } else {
+            alert("Wrong email/password!");
+        }
+    }
+    </script>
 </body>
 </html>

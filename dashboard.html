@@ -10,57 +10,168 @@
         .container{max-width:1200px;margin:20px auto;padding:20px;}
         .dashboard{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(25px);padding:40px;border-radius:35px;box-shadow:0 35px 120px rgba(0,0,0,0.25);height:85vh;}
         .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;margin-bottom:30px;}
-        .stat-card{background:linear-gradient(135deg,#ff6b6b,#feca57);color:white;padding:40px;border-radius:30px;text-align:center;box-shadow:0 20px 80px rgba(255,107,107,0.4);}
-        .stat-value{font-size:45px;font-weight:900;margin-bottom:15px;}
+        .stat-card{background:linear-gradient(135deg,#ff6b6b,#feca57);color:white;padding:40px;border-radius:30px;text-align:center;box-shadow:0 20px 80px rgba(255,107,107,0.4);transition:all 0.3s;position:relative;overflow:hidden;}
+        .stat-card::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);transition:0.5s;}
+        .stat-card:hover::before{left:100%;}
+        .stat-card:hover{transform:translateY(-10px);}
+        .stat-value{font-size:45px;font-weight:900;margin-bottom:15px;text-shadow:0 4px 15px rgba(0,0,0,0.3);}
+        .stat-label{font-size:16px;opacity:0.95;font-weight:600;}
         .main-grid{display:grid;grid-template-columns:2fr 1fr;gap:30px;height:calc(100% - 140px);}
         .quick-actions{display:grid;gap:20px;}
-        .action-btn{padding:25px;background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;border:none;border-radius:25px;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 15px 50px rgba(74,108,247,0.4);transition:all 0.3s;}
+        .action-btn{width:100%;padding:25px;background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;border:none;border-radius:25px;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 15px 50px rgba(74,108,247,0.4);transition:all 0.3s;}
         .action-btn:hover{transform:translateY(-8px);box-shadow:0 25px 70px rgba(74,108,247,0.6);}
-        .recent-activity{background:linear-gradient(145deg,rgba(248,249,250,0.9),rgba(255,255,255,0.8));backdrop-filter:blur(20px);padding:30px;border-radius:25px;height:100%;}
+        .action-btn-premium{background:linear-gradient(135deg,#ff6b6b,#feca57);color:#2c3e50;box-shadow:0 15px 50px rgba(255,107,107,0.4);}
+        .recent-activity{background:linear-gradient(145deg,rgba(248,249,250,0.9),rgba(255,255,255,0.8));backdrop-filter:blur(20px);padding:30px;border-radius:25px;height:100%;overflow-y:auto;}
+        .progress-bar-container{margin:20px 0;padding:20px;background:linear-gradient(135deg,rgba(255,255,255,0.9),rgba(248,249,250,0.8));border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,0.1);}
+        .progress-bar-bg{width:100%;height:25px;background:linear-gradient(135deg,#ecf0f1,#bdc3c7);border-radius:15px;overflow:hidden;box-shadow:inset 0 5px 15px rgba(0,0,0,0.1);}
+        .progress-bar-fill{height:100%;background:linear-gradient(135deg,#48bb78,#68d391);border-radius:15px;transition:all 1s ease;box-shadow:0 5px 20px rgba(72,187,120,0.4);position:relative;}
+        .progress-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-weight:800;font-size:14px;text-shadow:0 2px 5px rgba(0,0,0,0.5);}
         h1{font-size:3.5em;text-shadow:0 6px 25px rgba(0,0,0,0.3);}
-        h3{font-size:2em;margin-bottom:20px;}
+        h3{font-size:2em;margin-bottom:20px;color:#2c3e50;}
+        .user-welcome{font-size:1.5em;color:#48bb78;margin-bottom:20px;font-weight:800;}
+        #loginRequired{text-align:center;padding:80px;color:#666;}
+        #dashboardContent{display:none;}
     </style>
 </head>
 <body>
     <header>
-        <h1>📊 Your Dashboard</h1>
-        <p style="font-size:1.2em;opacity:0.95;">Welcome back! Continue your learning journey</p>
+        <h1 id="pageTitle">📊 Student Dashboard</h1>
     </header>
     
     <div class="container">
-        <div class="dashboard">
+        <!-- LOGIN REQUIRED -->
+        <div id="loginRequired">
+            <h2>🔐 Login Required</h2>
+            <p style="font-size:1.4em;margin:30px 0;">Login to see your personalized dashboard with real progress tracking</p>
+            <a href="login.html" style="display:inline-block;padding:20px 40px;background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;border-radius:25px;font-weight:800;font-size:18px;text-decoration:none;box-shadow:0 15px 50px rgba(74,108,247,0.4);">Login Now</a>
+        </div>
+        
+        <!-- DASHBOARD CONTENT -->
+        <div id="dashboardContent" class="dashboard">
+            <div style="text-align:center;margin-bottom:30px;">
+                <h2 class="user-welcome" id="welcomeMsg">Welcome back!</h2>
+            </div>
+            
+            <!-- USER-SPECIFIC STATS -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value" id="score">87%</div>
-                    <div>Overall Score</div>
+                    <div class="stat-value" id="userScore">0%</div>
+                    <div class="stat-label">Overall Score</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="level">Expert</div>
-                    <div>Current Level</div>
+                    <div class="stat-value" id="userLevel">Beginner</div>
+                    <div class="stat-label">Your Level</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="streak">7</div>
-                    <div>Day Streak</div>
+                    <div class="stat-value" id="userStreak">0</div>
+                    <div class="stat-label">Day Streak</div>
                 </div>
             </div>
             
+            <!-- PROGRESS BAR -->
+            <div class="progress-bar-container">
+                <h3 style="margin-bottom:15px;color:#2c3e50;">📈 Your Progress</h3>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressFill" style="width:0%">
+                        <div class="progress-text" id="progressText">0%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MAIN GRID -->
             <div class="main-grid">
                 <div class="quick-actions">
                     <h3>🚀 Quick Actions</h3>
                     <button class="action-btn" onclick="window.location.href='tutor.html'">🤖 Ask AI Tutor</button>
-                    <button class="action-btn" onclick="window.location.href='quiz.html'" style="background:linear-gradient(135deg,#ff6b6b,#feca57);">📝 Practice Quiz</button>
-                    <button class="action-btn" onclick="alert('Coming soon!')">📚 Mock Tests</button>
-                    <button class="action-btn" onclick="alert('Coming soon!')">🎯 Exam Analytics</button>
+                    <button class="action-btn action-btn-premium" onclick="window.location.href='quiz.html'">📝 Practice Quiz</button>
+                    <button class="action-btn" onclick="window.location.href='index.html'">🏠 Home</button>
+                    <button class="action-btn" onclick="logout()">🚪 Logout</button>
                 </div>
                 
                 <div class="recent-activity">
-                    <h3>📈 Recent Activity</h3>
-                    <div>DSA Quiz - 95% ✅</div>
-                    <div>Binary Search doubts - Solved</div>
-                    <div>JEE Programming test - 88%</div>
+                    <h3>📋 Recent Activity</h3>
+                    <div id="recentActivity" style="font-size:16px;line-height:1.6;color:#555;">
+                        <div>🔄 Loading your activity...</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // GET CURRENT USER
+        let currentUser = localStorage.getItem('username') || 'Guest';
+        let userQuizData = JSON.parse(localStorage.getItem(`quizData_${currentUser}`)) || {score: 0, total: 0, questions: 0, streak: 0};
+        let userDashboardData = JSON.parse(localStorage.getItem(`dashboardData_${currentUser}`)) || {totalScore: 0, lastActive: null};
+        
+        // CHECK LOGIN
+        window.onload = function() {
+            checkLogin();
+        };
+        
+        function checkLogin() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            if(!isLoggedIn) {
+                document.getElementById('loginRequired').style.display = 'block';
+                document.getElementById('dashboardContent').style.display = 'none';
+            } else {
+                document.getElementById('loginRequired').style.display = 'none';
+                document.getElementById('dashboardContent').style.display = 'block';
+                loadUserDashboard();
+            }
+        }
+        
+        function loadUserDashboard() {
+            // UPDATE QUIZ DATA
+            userQuizData = JSON.parse(localStorage.getItem(`quizData_${currentUser}`)) || {score: 0, total: 0, questions: 0, streak: 0};
+            
+            // CALCULATE STATS
+            let percent = userQuizData.total > 0 ? Math.round((userQuizData.score / userQuizData.total) * 100) : 0;
+            let streak = userQuizData.streak || 0;
+            
+            // UPDATE STATS
+            document.getElementById('userScore').textContent = percent + '%';
+            document.getElementById('welcomeMsg').textContent = `Welcome back, ${currentUser}! ✨`;
+            document.getElementById('pageTitle').innerHTML = `📊 ${currentUser}'s Dashboard`;
+            
+            // UPDATE LEVEL
+            let level = '🌱 Beginner';
+            if(percent >= 80) level = '🎓 Expert';
+            else if(percent >= 60) level = '🔥 Advanced';
+            else if(percent >= 40) level = '✅ Intermediate';
+            document.getElementById('userLevel').textContent = level;
+            
+            // UPDATE STREAK
+            document.getElementById('userStreak').textContent = streak;
+            
+            // UPDATE PROGRESS BAR
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = percent + '%';
+            
+            // UPDATE RECENT ACTIVITY
+            updateRecentActivity();
+        }
+        
+        function updateRecentActivity() {
+            let activities = [
+                `📝 Quiz taken: ${userQuizData.score}/${userQuizData.total}`,
+                `🎯 Current level: ${document.getElementById('userLevel').textContent}`,
+                `📊 Overall progress: ${document.getElementById('userScore').textContent}`,
+                `🔥 Streak: ${userQuizData.streak || 0} days`
+            ];
+            
+            document.getElementById('recentActivity').innerHTML = activities.map(activity => 
+                `<div style="margin-bottom:15px;padding:10px;background:rgba(255,255,255,0.5);border-radius:10px;">${activity}</div>`
+            ).join('');
+        }
+        
+        function logout() {
+            if(confirm('Logout and clear session?')) {
+                localStorage.setItem('isLoggedIn', 'false');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
 </body>
 </html>

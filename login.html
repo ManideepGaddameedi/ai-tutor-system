@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>✨ Login / Register - AI Tutor</title>
+    <title>✨ Login - AI Tutor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
@@ -9,178 +9,89 @@
         .login-container{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(25px);padding:50px;border-radius:30px;box-shadow:0 30px 100px rgba(0,0,0,0.3);max-width:450px;width:100%;text-align:center;}
         .logo{font-size:3em;margin-bottom:20px;background:linear-gradient(135deg,#4a6cf7,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
         h2{font-size:2.2em;color:#2c3e50;margin-bottom:30px;}
-        .form-group{margin-bottom:25px;}
-        input{width:100%;padding:18px;border:2px solid rgba(0,0,0,0.1);border-radius:15px;font-size:16px;transition:all 0.3s;}
+        input{width:100%;padding:18px;border:2px solid rgba(0,0,0,0.1);border-radius:15px;font-size:16px;margin-bottom:20px;transition:all 0.3s;}
         input:focus{outline:none;border-color:#4a6cf7;box-shadow:0 0 0 3px rgba(74,108,247,0.1);}
-        .submit-btn{width:100%;padding:20px;background:linear-gradient(135deg,#48bb78,#68d391);color:white;border:none;border-radius:15px;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 15px 45px rgba(72,187,120,0.4);transition:all 0.3s;}
-        .submit-btn:hover{transform:translateY(-3px);box-shadow:0 20px 55px rgba(72,187,120,0.6);}
-        .submit-btn:disabled{background:#bdc3c7 !important;color:#95a5a6 !important;cursor:not-allowed;transform:none;box-shadow:none;}
-        .toggle-link{color:#4a6cf7;font-weight:600;cursor:pointer;text-decoration:none;font-size:15px;}
-        .error{color:#e74c3c;font-size:14px;margin-top:10px;display:none;}
+        .login-btn{width:100%;padding:20px;background:linear-gradient(135deg,#48bb78,#68d391);color:white;border:none;border-radius:15px;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 15px 45px rgba(72,187,120,0.4);transition:all 0.3s;}
+        .login-btn:hover{transform:translateY(-3px);box-shadow:0 20px 55px rgba(72,187,120,0.6);}
+        .login-btn:disabled{background:#bdc3c7 !important;color:#95a5a6 !important;cursor:not-allowed !important;transform:none !important;}
+        .error{color:#e74c3c;font-size:14px;margin-bottom:15px;display:none;}
         .success{color:#27ae60;font-size:16px;margin:20px 0;display:none;}
-        .loading{display:none;text-align:center;padding:20px;}
-        .credentials-hint{color:#666;font-size:13px;margin-top:15px;padding:10px;background:rgba(74,108,247,0.1);border-radius:10px;}
+        .demo-info{background:rgba(74,108,247,0.1);padding:15px;border-radius:10px;margin:20px 0;color:#666;font-size:14px;}
+        .loading{display:none;text-align:center;padding:20px;color:#27ae60;}
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="logo">🎯</div>
-        <h2 id="formTitle">Login to AI Tutor</h2>
+        <h2>AI Tutor Login</h2>
         
-        <form id="authForm">
-            <div class="form-group">
-                <input type="text" id="username" placeholder="Username" required>
-            </div>
-            <div class="form-group">
-                <input type="password" id="password" placeholder="Password" required>
-            </div>
-            
-            <!-- SHOW DEFAULT CREDENTIALS -->
-            <div class="credentials-hint">
-                👉 <strong>Demo Login:</strong> manideep / 123456<br>
-                👉 Or Register your own account
-            </div>
-            
-            <div id="errorMsg" class="error"></div>
-            <button type="submit" class="submit-btn" id="submitBtn">🚀 Login</button>
-        </form>
-        
-        <div style="margin:30px 0;">
-            <span>Don't have account? </span>
-            <a href="#" class="toggle-link" onclick="toggleForm()">Register Now</a>
+        <!-- DEMO CREDENTIALS -->
+        <div class="demo-info">
+            <strong>🆓 Demo Login:</strong><br>
+            Username: <code>manideep</code><br>
+            Password: <code>123456</code>
         </div>
         
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Enter username (manideep)" required>
+            <input type="password" id="password" placeholder="Enter password (123456)" required>
+            <div id="errorMsg" class="error"></div>
+            <button type="submit" class="login-btn" id="loginBtn">🚀 Login</button>
+        </form>
+        
         <div id="successMsg" class="success"></div>
-        <div id="loading" class="loading">✅ Redirecting...</div>
+        <div id="loading" class="loading">✅ Redirecting to Dashboard...</div>
     </div>
 
     <script>
-        // ✅ DEFAULT USERS DATABASE (localStorage based)
-        const VALID_USERS = {
-            'manideep': '123456',
-            'student': 'password',
-            'admin': 'admin123'
-        };
-
-        let isLoginMode = true;
-        let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || VALID_USERS;
-
-        function toggleForm() {
-            isLoginMode = !isLoginMode;
-            const formTitle = document.getElementById('formTitle');
-            const submitBtn = document.getElementById('submitBtn');
-            
-            if(isLoginMode) {
-                formTitle.textContent = 'Login to AI Tutor';
-                submitBtn.textContent = '🚀 Login';
-                document.querySelector('.credentials-hint').innerHTML = 
-                    '👉 <strong>Demo Login:</strong> manideep / 123456<br>👉 Or Register your own account';
-            } else {
-                formTitle.textContent = 'Create New Account';
-                submitBtn.textContent = '✅ Register';
-                document.querySelector('.credentials-hint').innerHTML = 
-                    '👉 Minimum 6 characters password required';
-            }
-            
-            // Rebuild form
-            rebuildForm();
+        // ✅ EXACT CREDENTIALS CHECK
+        function checkLogin(username, password) {
+            return username === 'manideep' && password === '123456';
         }
 
-        function rebuildForm() {
-            const form = document.getElementById('authForm');
-            const isRegister = !isLoginMode;
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // STOP FORM SUBMIT
             
-            form.innerHTML = `
-                <div class="form-group">
-                    <input type="text" id="username" placeholder="${isRegister ? 'Choose Username' : 'Username'}" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="password" placeholder="Password" required>
-                </div>
-                ${isLoginMode ? '<div class="credentials-hint">👉 <strong>Demo Login:</strong> manideep / 123456<br>👉 Or Register your own account</div>' : '<div class="credentials-hint">👉 Minimum 6 characters password required</div>'}
-                <div id="errorMsg" class="error"></div>
-                <button type="submit" class="submit-btn" id="submitBtn">${isLoginMode ? '🚀 Login' : '✅ Register'}</button>
-            `;
-            
-            // Re-attach event listener
-            form.addEventListener('submit', handleSubmit);
-        }
-
-        function handleSubmit(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value.trim().toLowerCase();
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
             const errorMsg = document.getElementById('errorMsg');
             const successMsg = document.getElementById('successMsg');
             const loading = document.getElementById('loading');
-            const submitBtn = document.getElementById('submitBtn');
+            const loginBtn = document.getElementById('loginBtn');
             
-            // Clear previous messages
+            // HIDE ALL MESSAGES FIRST
             errorMsg.style.display = 'none';
             successMsg.style.display = 'none';
             loading.style.display = 'none';
             
-            // VALIDATION
+            // VALIDATE
             if(!username || !password) {
-                errorMsg.textContent = 'Please fill both fields!';
+                errorMsg.textContent = 'Please enter both username and password!';
                 errorMsg.style.display = 'block';
                 return;
             }
             
-            if(password.length < 6) {
-                errorMsg.textContent = 'Password must be at least 6 characters!';
-                errorMsg.style.display = 'block';
-                return;
-            }
-            
-            if(isLoginMode) {
-                // 🔐 LOGIN CHECK
-                if(registeredUsers[username] && registeredUsers[username] === password) {
-                    // ✅ SUCCESSFUL LOGIN
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('username', username);
-                    
-                    successMsg.textContent = `✅ Welcome ${username.charAt(0).toUpperCase() + username.slice(1)}! Redirecting...`;
-                    successMsg.style.display = 'block';
-                    loading.style.display = 'block';
-                    submitBtn.style.display = 'none';
-                    
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1500);
-                } else {
-                    // ❌ WRONG CREDENTIALS
-                    errorMsg.textContent = '❌ Invalid username or password!';
-                    errorMsg.style.display = 'block';
-                }
+            // EXACT MATCH CHECK
+            if(checkLogin(username, password)) {
+                // ✅ SUCCESS - SAVE & REDIRECT
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', username);
+                
+                successMsg.textContent = '✅ Login successful! Welcome Manideep!';
+                successMsg.style.display = 'block';
+                loading.style.display = 'block';
+                loginBtn.style.display = 'none';
+                
+                // REDIRECT AFTER 1.5s
+                setTimeout(function() {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+                
             } else {
-                // ✅ REGISTER NEW USER
-                if(registeredUsers[username]) {
-                    errorMsg.textContent = '❌ Username already exists! Login instead.';
-                    errorMsg.style.display = 'block';
-                } else {
-                    // Save new user
-                    registeredUsers[username] = password;
-                    localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
-                    
-                    successMsg.textContent = `✅ Account created for ${username}! Logging in...`;
-                    successMsg.style.display = 'block';
-                    loading.style.display = 'block';
-                    submitBtn.style.display = 'none';
-                    
-                    setTimeout(() => {
-                        localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('username', username);
-                        window.location.href = 'dashboard.html';
-                    }, 1500);
-                }
+                // ❌ WRONG CREDENTIALS
+                errorMsg.textContent = '❌ Wrong username or password! Use: manideep / 123456';
+                errorMsg.style.display = 'block';
             }
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            rebuildForm();
         });
     </script>
 </body>

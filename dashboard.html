@@ -2,34 +2,26 @@
 <html>
 <head>
 <title>Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
 <header>
-<h1>Dashboard</h1>
+<h1>Student Dashboard</h1>
 </header>
 
 <div class="container">
-
 <div class="card">
-
 <h3 id="welcomeText"></h3>
-
-<a href="tutor.html">
-<button class="btn">Start AI Tutor</button>
-</a>
-
-<button onclick="logout()" class="btn danger">
-Logout
-</button>
-
+<p>Your personalized AI learning dashboard.</p>
+<div class="buttons">
+<a href="quiz.html"><button class="btn">Take Skill Quiz</button></a>
+<a href="tutor.html"><button class="btn">AI Tutor Chat</button></a>
 </div>
-
+<button class="btn danger" onclick="logout()">Logout</button>
 </div>
-
+</div>
 <script src="script.js"></script>
-
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>✨ AI Tutor Login - FIXED</title>
+    <title>✨ AI Tutor Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
@@ -18,68 +18,67 @@
         .status{margin-top:20px;padding:15px;border-radius:10px;display:none;}
         .error{background:#fee;color:#c53030;}
         .success{background:#c6f6d5;color:#22543d;}
-        .debug{background:#ffeaa7;color:#2d3436;border:2px solid #fdcb6e;padding:15px;margin:10px 0;border-radius:10px;}
+        .info{background:#e3f2fd;color:#1565c0;padding:15px;border-radius:10px;margin:20px 0;}
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="logo">🎯</div>
-        <h2>AI Tutor Login</h2>
+        <h2>AI Tutor Master</h2>
+        <p style="color:#666;margin-bottom:30px;">JEE • NEET • EAPCET • GATE</p>
         
-        <div class="debug">
-            <strong>✅ READY TO TEST</strong><br>
-            Use: <code>test@example.com</code> / <code>password123</code>
+        <div class="info">
+            <strong>🎯 Test Credentials:</strong><br>
+            Email: <code>test@example.com</code><br>
+            Password: <code>password123</code>
         </div>
         
         <form id="loginForm">
-            <input type="email" id="email" placeholder="test@example.com" value="test@example.com">
-            <input type="password" id="password" placeholder="password123" value="password123">
+            <input type="email" id="email" placeholder="your@email.com" required>
+            <input type="password" id="password" placeholder="Password" required>
             <button type="submit" class="btn login-btn">🚀 Login</button>
         </form>
         
-        <button id="registerBtn" class="btn register-btn">📝 Register New</button>
-        
+        <button id="registerBtn" class="btn register-btn">📝 Create Account</button>
         <div id="status" class="status"></div>
     </div>
 
-    <!-- SUPABASE CDN -->
+    <!-- Load Supabase FIRST -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-        // ✅ FIXED: Single supabase declaration
-        const { createClient } = supabase;
+        // ✅ NO VARIABLE CONFLICT - Use global supabase object directly
+        console.log('Supabase loaded:', typeof supabase);
+        
         const supabaseUrl = 'https://pdegwwddqpnjaranrvvh.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZWd3d2RkcXBuamFyYW5ydnZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODYxNDksImV4cCI6MjA4OTA2MjE0OX0.lg3cONONUcZu4dKpvF4B-z2-B9BNJOUWTl0H6wCtY6c';
         
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        // Create client WITHOUT redeclaring supabase
+        const client = supabase.createClient(supabaseUrl, supabaseKey);
         
-        console.log('✅ Supabase initialized:', supabase);
-
-        // Auto-create student profile
         async function createStudentProfile(user) {
             try {
-                const { data: existing } = await supabase
+                const { data: existing } = await client
                     .from('students')
                     .select('id')
                     .eq('user_id', user.id)
                     .single();
-                    
+                
                 if(!existing) {
-                    await supabase.from('students').insert({
+                    await client.from('students').insert([{
                         user_id: user.id,
-                        name: user.email.split('@')[0],
+                        name: user.user_metadata?.name || user.email.split('@')[0],
                         email: user.email,
                         exams: ['JEE', 'NEET', 'EAPCET']
-                    });
-                    console.log('✅ New student profile created');
+                    }]);
                 }
             } catch(e) {
-                console.log('⚠️ Profile exists or minor error:', e.message);
+                console.log('Profile exists:', e.message);
             }
         }
 
         // LOGIN
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -88,58 +87,64 @@
             status.style.display = 'none';
             
             try {
-                console.log('🔐 Attempting login:', email);
-                const { data, error } = await supabase.auth.signInWithPassword({
-                    email, password
+                const { data, error } = await client.auth.signInWithPassword({
+                    email: email,
+                    password: password
                 });
                 
                 if(error) throw error;
                 
-                console.log('✅ Login success:', data.user.id);
                 await createStudentProfile(data.user);
                 
-                status.textContent = '✅ Redirecting to dashboard...';
+                status.innerHTML = '✅ Redirecting to dashboard...';
                 status.className = 'status success';
                 status.style.display = 'block';
                 
-                setTimeout(() => window.location.href = 'dashboard.html', 1500);
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
                 
             } catch(error) {
-                console.error('❌ Login failed:', error);
-                status.textContent = `❌ ${error.message}`;
+                status.innerHTML = `❌ ${error.message}`;
                 status.className = 'status error';
                 status.style.display = 'block';
             }
         });
 
         // REGISTER
-        document.getElementById('registerBtn').addEventListener('click', async () => {
+        document.getElementById('registerBtn').addEventListener('click', async function() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const status = document.getElementById('status');
             
-            status.style.display = 'none';
+            if(password.length < 6) {
+                status.innerHTML = '❌ Password must be 6+ characters';
+                status.className = 'status error';
+                status.style.display = 'block';
+                return;
+            }
             
             try {
-                const { error } = await supabase.auth.signUp({
-                    email, password
+                const { error } = await client.auth.signUp({
+                    email: email,
+                    password: password
                 });
                 
                 if(error) throw error;
                 
-                status.textContent = '✅ Check your email to verify account!';
+                status.innerHTML = '✅ Check your email to verify account!';
                 status.className = 'status success';
                 status.style.display = 'block';
                 
             } catch(error) {
-                status.textContent = `❌ ${error.message}`;
+                status.innerHTML = `❌ ${error.message}`;
                 status.className = 'status error';
                 status.style.display = 'block';
             }
         });
 
-        // Auto-redirect if logged in
-        supabase.auth.getSession().then(({ data: { session } }) => {
+        // Check if already logged in
+        client.auth.getSession().then(({ data: { session } }) => {
             if(session) {
                 window.location.href = 'dashboard.html';
             }

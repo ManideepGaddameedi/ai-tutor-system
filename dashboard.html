@@ -1,27 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI Tutor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-<header>
-<h1>Student Dashboard</h1>
-</header>
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">AI Tutor</div>
+            <div class="nav-user">
+                <span id="welcomeText">Welcome!</span>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+    </header>
 
-<div class="container">
-<div class="card">
-<h3 id="welcomeText"></h3>
-<p>Your personalized AI learning dashboard.</p>
-<div class="buttons">
-<a href="quiz.html"><button class="btn">Take Skill Quiz</button></a>
-<a href="tutor.html"><button class="btn">AI Tutor Chat</button></a>
-</div>
-<button class="btn danger" onclick="logout()">Logout</button>
-</div>
-</div>
-<script src="script.js"></script>
+    <section class="dashboard">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="quizScore">0%</h3>
+                    <p>Quiz Score</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="studentLevel">Beginner</h3>
+                    <p>Learning Level</p>
+                </div>
+                <div class="stat-card">
+                    <h3>3/5</h3>
+                    <p>Lessons Completed</p>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card primary">
+                    <h3>🎯 Take Skill Assessment</h3>
+                    <p>Complete the quiz to unlock personalized learning path</p>
+                    <a href="quiz.html" class="btn-primary full">Start Quiz</a>
+                </div>
+                <div class="card secondary">
+                    <h3>💬 AI Tutor Chat</h3>
+                    <p>Ask questions and get instant help</p>
+                    <a href="tutor.html" class="btn-secondary full">Open Chat</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,48 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Tutor - AI Tutor</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
+        header{background:#4a6cf7;color:white;padding:20px;text-align:center;}
+        .container{max-width:700px;margin:20px auto;padding:20px;}
+        .card{background:white;padding:30px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);height:70vh;display:flex;flex-direction:column;}
+        #chatbox{flex:1;overflow-y:auto;padding:20px;background:#f8f9fa;border-radius:15px;margin-bottom:20px;max-height:400px;}
+        #chatbox p{margin:10px 0;padding:15px;background:white;border-radius:15px;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+        .chat-input{display:flex;gap:10px;}
+        input{flex:1;padding:15px;border:2px solid #ddd;border-radius:10px;font-size:16px;}
+        input:focus{outline:none;border-color:#4a6cf7;}
+        .btn{padding:15px;background:#4a6cf7;color:white;border:none;border-radius:10px;cursor:pointer;font-size:16px;font-weight:bold;flex:0 0 auto;}
+        .btn:hover{background:#3b55d0;}
+        .stats{margin-bottom:20px;text-align:center;}
+        #userLevel{background:#ffd700;padding:10px;border-radius:20px;font-weight:bold;display:inline-block;}
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar">
-            <div class="nav-brand">AI Tutor</div>
-            <div class="nav-user">
-                <span id="studentLevel">Beginner</span>
-                <button class="btn-logout" onclick="logout()">Logout</button>
-            </div>
-        </nav>
+        <h1>🤖 AI Tutor</h1>
+        <div class="stats">
+            <span>Score: <span id="quizScore">0%</span> | </span>
+            <span>Level: <span id="userLevel">Beginner</span></span>
+        </div>
     </header>
-
-    <section class="tutor-section">
-        <div class="container">
-            <div class="tutor-card">
-                <div class="tutor-header">
-                    <h1>AI Tutor Chat</h1>
-                    <div class="stats">
-                        <span id="quizScore">0%</span>
-                        <span id="levelBadge">Beginner</span>
-                    </div>
-                </div>
-                
-                <div id="chatbox">
-                    <div class="chat-message ai">
-                        <p>Hello! I'm your personal AI tutor. Ask me programming questions or request practice problems based on your skill level.</p>
-                    </div>
-                </div>
-                
-                <div class="chat-input">
-                    <input id="question" type="text" placeholder="Ask a question about programming..." onkeypress="handleKeyPress(event)">
-                    <button class="btn-primary" onclick="askQuestion()">Send</button>
-                </div>
+    <div class="container">
+        <div class="card">
+            <div id="chatbox">
+                <p><strong>AI Tutor:</strong> Hi! Ask me about programming, arrays, stacks, or request practice problems! 🎯</p>
+            </div>
+            <div class="chat-input">
+                <input id="question" type="text" placeholder="Ask a programming question..." onkeypress="if(event.key=='Enter') askQuestion()">
+                <button class="btn" onclick="askQuestion()">Send</button>
             </div>
         </div>
-    </section>
-
-    <script src="script.js"></script>
+    </div>
+    <script>
+    window.onload = function(){
+        var score = localStorage.getItem("quizScore") || 0;
+        document.getElementById("quizScore").innerHTML = score + "%";
+        
+        var level = localStorage.getItem("userLevel") || "Beginner";
+        document.getElementById("userLevel").innerHTML = level;
+    }
+    
+    function askQuestion(){
+        var q = document.getElementById("question");
+        var chat = document.getElementById("chatbox");
+        var question = q.value;
+        
+        if(!question) return;
+        
+        chat.innerHTML += '<p><strong>You:</strong> ' + question + '</p>';
+        q.value = '';
+        chat.scrollTop = chat.scrollHeight;
+        
+        setTimeout(function(){
+            var level = localStorage.getItem("userLevel") || "Beginner";
+            var score = localStorage.getItem("quizScore") || 0;
+            var response = "";
+            
+            if(question.toLowerCase().includes("array")){
+                response = level == "Beginner" ? 
+                    "📦 <strong>Array</strong> = list of items: <code>let fruits = ['apple', 'banana'];</code> fruits[0] = 'apple'" :
+                    "Arrays have O(1) access time because items are stored in contiguous memory locations.";
+            } else if(question.toLowerCase().includes("stack")){
+                response = "🗃️ <strong>Stack</strong> = LIFO (Last In, First Out). <code>stack.push(1); stack.pop();</code>";
+            } else if(question.toLowerCase().includes("practice")){
+                response = "✍️ <strong>Practice:</strong> Find largest number in array:<br><code>function findMax(arr){let max=arr[0];for(let i=1;i<arr.length;i++)if(arr[i]>max)max=arr[i];return max;}</code>";
+            } else {
+                response = "Great question! Your level: " + level + " (" + score + "%). Try asking about 'arrays', 'stacks', or 'practice problems'!";
+            }
+            
+            chat.innerHTML += '<p><strong>AI Tutor:</strong> ' + response + '</p>';
+            chat.scrollTop = chat.scrollHeight;
+        }, 800);
+    }
+    </script>
 </body>
 </html>

@@ -2,7 +2,6 @@
 <html>
 <head>
 <title>AI Tutor</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -12,23 +11,17 @@
 <h1>AI Tutor</h1>
 </header>
 
-<div class="chat-container">
+<div class="container">
 
-<div id="chatbox" class="chatbox">
+<div class="card big">
 
-<div class="ai">Hello! Ask me anything.</div>
-
+<div id="chatbox">
+<p><b>AI Tutor:</b> Hello! Ask me anything.</p>
 </div>
 
-<div class="chat-input">
+<input id="question" type="text" placeholder="Ask a question">
 
-<input 
-id="question" 
-type="text" 
-placeholder="Ask your question..."
-/>
-
-<button onclick="askQuestion()">Send</button>
+<button onclick="askQuestion()" class="btn">Send</button>
 
 </div>
 

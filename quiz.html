@@ -2,34 +2,33 @@
 <html>
 <head>
 <title>Quiz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
-<header>
-<h1>AI Quiz</h1>
-</header>
-
 <div class="container">
+<div class="card big">
+<h2>Skill Assessment Quiz</h2>
+<p>1. What is an Array?</p>
+<input type="radio" name="q1" value="correct"> Collection of similar data items stored in contiguous memory<br>
+<input type="radio" name="q1" value="wrong"> Tree data structure<br>
+<input type="radio" name="q1" value="wrong"> Graph structure<br><br>
 
-<div class="card">
+<p>2. Which follows LIFO principle?</p>
+<input type="radio" name="q2" value="correct"> Stack<br>
+<input type="radio" name="q2" value="wrong"> Queue<br>
+<input type="radio" name="q2" value="wrong"> Array<br><br>
 
-<h3>Arrays Quiz</h3>
+<p>3. Time complexity of array access?</p>
+<input type="radio" name="q3" value="correct"> O(1)<br>
+<input type="radio" name="q3" value="wrong"> O(n)<br>
+<input type="radio" name="q3" value="wrong"> O(log n)<br>
 
-<p>1. Arrays store elements in?</p>
-
-<button class="btn" onclick="checkAnswer('a')">Random Memory</button>
-
-<button class="btn secondary" onclick="checkAnswer('b')">Contiguous Memory</button>
-
-<p id="result"></p>
-
+<button class="btn" onclick="submitQuiz()">Submit Quiz</button>
+<div id="quizResult" style="margin-top:20px;"></div>
 </div>
-
 </div>
-
 <script src="script.js"></script>
-
 </body>
 </html>

@@ -12,12 +12,53 @@
         .cta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:30px;margin-bottom:50px;}
         .cta-card{background:linear-gradient(145deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8));backdrop-filter:blur(20px);padding:50px;border-radius:30px;box-shadow:0 25px 90px rgba(0,0,0,0.2);transition:all 0.4s;text-align:center;}
         .cta-card:hover{transform:translateY(-15px);box-shadow:0 40px 120px rgba(0,0,0,0.3);}
-        .btn{display:inline-block;padding:22px 50px;background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;text-decoration:none;border-radius:35px;font-weight:800;font-size:18px;box-shadow:0 18px 60px rgba(74,108,247,0.5);transition:all 0.3s;margin:15px;}
+        
+        /* FIXED BUTTON STYLES */
+        .btn {
+            display: inline-block;
+            padding: 22px 50px;
+            background: linear-gradient(135deg,#4a6cf7,#5a67d8);
+            color: white;
+            text-decoration: none;
+            border-radius: 35px;
+            font-weight: 800;
+            font-size: 18px;
+            box-shadow: 0 18px 60px rgba(74,108,247,0.5);
+            transition: all 0.3s;
+            margin: 15px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            min-width: 200px;
+        }
         .btn:hover{transform:translateY(-8px);box-shadow:0 30px 80px rgba(74,108,247,0.7);}
         .btn-login{background:linear-gradient(135deg,#48bb78,#68d391);box-shadow:0 18px 60px rgba(72,187,120,0.5);}
         .btn-premium{background:linear-gradient(135deg,#ff6b6b,#feca57);box-shadow:0 18px 60px rgba(255,107,107,0.5);}
-        .btn-locked{background:linear-gradient(135deg,#95a5a6,#bdc3c7);color:#7f8c8d;box-shadow:0 18px 60px rgba(149,165,166,0.4);cursor:not-allowed;opacity:0.7;}
-        .btn-locked:hover{transform:none;box-shadow:0 18px 60px rgba(149,165,166,0.4);}
+        
+        /* FIXED LOCKED BUTTON - PROPER SHAPE */
+        .btn-locked {
+            display: inline-block;
+            padding: 22px 50px;
+            background: linear-gradient(135deg,#95a5a6,#bdc3c7);
+            color: #7f8c8d !important;
+            text-decoration: none;
+            border-radius: 35px;
+            font-weight: 800;
+            font-size: 18px;
+            box-shadow: 0 18px 60px rgba(149,165,166,0.4);
+            transition: all 0.3s;
+            margin: 15px;
+            border: none;
+            cursor: not-allowed;
+            opacity: 0.8;
+            min-width: 200px;
+            text-align: center;
+        }
+        .btn-locked:hover {
+            transform: none;
+            box-shadow: 0 18px 60px rgba(149,165,166,0.4);
+        }
+        
         .lock-icon::before{content:"🔒 ";font-size:1.2em;}
         h1{font-size:4em;text-shadow:0 8px 30px rgba(0,0,0,0.4);}
         h2{font-size:2.8em;margin-bottom:25px;color:#2c3e50;}
@@ -48,28 +89,27 @@
                 <div class="cta-card">
                     <h2><span class="lock-icon">🔒</span>AI Tutor Bot</h2>
                     <p style="font-size:1.3em;color:#666;margin:25px 0;">24/7 doubt solving (Login required)</p>
-                    <div class="btn btn-locked lock-icon">Login to Unlock</div>
+                    <a href="#" class="btn-locked lock-icon" onclick="alert('🔐 Please login first!')">Login to Unlock</a>
                 </div>
                 <div class="cta-card">
-                    <h2><span class="lock-icon">🔒</span>Adaptive Quizzes</h2>
-                    <p style="font-size:1.3em;color:#666;margin:25px 0;">Personalized practice (Login required)</p>
-                    <div class="btn btn-locked lock-icon">Login to Unlock</div>
+                    <h2><span class="lock-icon">🔒</span>Practice Quiz</h2>
+                    <p style="font-size:1.3em;color:#666;margin:25px 0;">Personalized quizzes (Login required)</p>
+                    <a href="#" class="btn-locked lock-icon" onclick="alert('🔐 Please login first!')">Login to Unlock</a>
                 </div>
             </div>
         </div>
 
-        <!-- LOGGED IN VIEW (Hidden until login) -->
+        <!-- LOGGED IN VIEW -->
         <div id="userWelcome">
             <div class="hero-card">
                 <h2 class="welcome-user" id="welcomeMsg">Welcome back, Student! ✨</h2>
-                <p style="font-size:1.5em;color:#666;margin:30px 0;">Continue your learning journey with personalized content</p>
+                <p style="font-size:1.5em;color:#666;margin:30px 0;">Continue your learning journey</p>
                 <a href="dashboard.html" class="btn btn-login" style="font-size:20px;padding:25px 60px;">📊 Go to Dashboard</a>
                 <a href="tutor.html" class="btn" style="font-size:20px;padding:25px 60px;">🤖 AI Tutor Bot</a>
                 <a href="quiz.html" class="btn-premium" style="font-size:20px;padding:25px 60px;">📝 Practice Quiz</a>
             </div>
         </div>
         
-        <!-- COMMON FEATURES -->
         <div class="features">
             <div class="feature-card">
                 <h3>🎯 Exam Focused</h3>
@@ -77,49 +117,30 @@
             </div>
             <div class="feature-card">
                 <h3>📊 Progress Tracking</h3>
-                <p>Scores, levels, streaks - everything saved automatically</p>
+                <p>Scores, levels, streaks - everything saved per user</p>
             </div>
             <div class="feature-card">
-                <h3>✨ Smart AI</h3>
-                <p>Personalized recommendations based on your performance</p>
+                <h3>✨ Smart Design</h3>
+                <p>Glassmorphism UI with smooth animations everywhere</p>
             </div>
         </div>
     </div>
 
     <script>
-        // CHECK LOGIN STATUS (SIMPLE localStorage)
         function checkLoginStatus() {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             const username = localStorage.getItem('username') || 'Student';
             
             if(isLoggedIn) {
-                // SHOW LOGGED IN VIEW
                 document.getElementById('loginPrompt').style.display = 'none';
                 document.getElementById('userWelcome').style.display = 'block';
                 document.getElementById('welcomeMsg').textContent = `Welcome back, ${username}! ✨`;
                 document.getElementById('headerTitle').innerHTML = '🎯 Welcome Back!';
-                document.getElementById('headerSubtitle').textContent = 'Your personalized learning dashboard awaits';
-            } else {
-                // SHOW LOGIN PROMPT
-                document.getElementById('loginPrompt').style.display = 'block';
-                document.getElementById('userWelcome').style.display = 'none';
+                document.getElementById('headerSubtitle').textContent = 'Your personalized learning dashboard';
             }
         }
         
-        // SIMULATE LOGIN (for demo - replace with real login)
-        function simulateLogin() {
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('username', 'Manideep');
-            checkLoginStatus();
-        }
-        
-        // CHECK ON PAGE LOAD
         window.onload = checkLoginStatus;
-        
-        // DEMO BUTTON (remove in production)
-        // document.addEventListener('keydown', function(e) {
-        //     if(e.key === 'l') simulateLogin(); // Press 'L' to simulate login
-        // });
     </script>
 </body>
 </html>

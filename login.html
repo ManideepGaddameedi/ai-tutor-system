@@ -16,8 +16,8 @@
         .btn:hover{transform:translateY(-8px);box-shadow:0 25px 70px rgba(74,108,247,0.6);}
         .toggle{text-align:center;margin:30px 0;}
         .toggle span{color:#4a6cf7;cursor:pointer;font-weight:700;font-size:16px;text-decoration:underline;}
-        .nav-links{display:flex;gap:20px;justify-content:center;margin-top:40px;}
-        .nav-btn{padding:15px 30px;background:linear-gradient(135deg,#ff6b6b,#feca57);color:#2c3e50;border-radius:25px;text-decoration:none;font-weight:800;box-shadow:0 10px 40px rgba(255,107,107,0.4);}
+        .success-msg{text-align:center;color:#48bb78;font-size:1.3em;font-weight:800;margin:25px 0;padding:20px;background:linear-gradient(135deg,rgba(72,187,120,0.1),rgba(104,211,145,0.1));border-radius:20px;border:2px solid rgba(72,187,120,0.3);display:none;}
+        .error-msg{text-align:center;color:#e74c3c;font-size:1.1em;font-weight:600;margin:15px 0;padding:15px;background:linear-gradient(135deg,rgba(231,76,60,0.1),rgba(231,76,60,0.1));border-radius:15px;border:2px solid rgba(231,76,60,0.3);display:none;}
     </style>
 </head>
 <body>
@@ -26,36 +26,117 @@
             <h1>🔐 Welcome Back</h1>
             <p class="subtitle">Continue your learning journey</p>
             
+            <!-- LOGIN FORM -->
             <form id="loginForm">
-                <input type="email" placeholder="✉️ Email" required>
-                <input type="password" placeholder="🔒 Password" required>
-                <button type="submit" class="btn">Enter Dashboard</button>
+                <input type="email" id="loginEmail" placeholder="✉️ Email" required>
+                <input type="password" id="loginPassword" placeholder="🔒 Password" required>
+                <button type="submit" class="btn">Enter Learning Dashboard</button>
             </form>
             
+            <!-- REGISTER FORM (HIDDEN) -->
+            <form id="registerForm" style="display:none;">
+                <input type="text" id="regName" placeholder="👤 Full Name" required>
+                <input type="email" id="regEmail" placeholder="✉️ Email" required>
+                <input type="password" id="regPassword" placeholder="🔒 Password (8+ chars)" required>
+                <button type="submit" class="btn">Create My Account</button>
+            </form>
+            
+            <!-- TOGGLE -->
             <div class="toggle">
-                <span onclick="toggleForm()">Don't have account? Create one</span>
+                <span id="toggleText" onclick="toggleForm()">Don't have account? Create one</span>
             </div>
             
-            <form id="registerForm" style="display:none;">
-                <input type="text" placeholder="👤 Full Name" required>
-                <input type="email" placeholder="✉️ Email" required>
-                <input type="password" placeholder="🔒 Password" required>
-                <button type="submit" class="btn">Create Account</button>
-            </form>
+            <!-- MESSAGES -->
+            <div id="successMsg" class="success-msg"></div>
+            <div id="errorMsg" class="error-msg"></div>
             
-            <div class="nav-links">
-                <a href="tutor.html" class="nav-btn">🤖 AI Tutor</a>
-                <a href="quiz.html" class="nav-btn">📝 Quiz</a>
+            <!-- ONLY HOME LINK (NO Bot/Quiz) -->
+            <div style="text-align:center;margin-top:40px;">
+                <a href="index.html" style="color:#666;font-size:16px;text-decoration:none;">← Back to Home</a>
             </div>
         </div>
     </div>
 
     <script>
+        let isLogin = true;
+        
+        // LOGIN
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simulate login check
+            if(email && password.length >= 6) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', email.split('@')[0]);
+                showSuccess('✅ Login successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1200);
+            } else {
+                showError('❌ Please enter valid email & password');
+            }
+        });
+        
+        // REGISTER
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            
+            if(password.length < 6) {
+                showError('❌ Password must be 6+ characters');
+                return;
+            }
+            
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', name || email.split('@')[0]);
+            showSuccess('✅ Account created! Welcome to AI Tutor!');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1500);
+        });
+        
         function toggleForm() {
-            let loginForm = document.getElementById('loginForm');
-            let registerForm = document.getElementById('registerForm');
-            loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
-            registerForm.style.display = registerForm.style.display === 'none' ? 'block' : 'none';
+            isLogin = !isLogin;
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const toggleText = document.getElementById('toggleText');
+            
+            if(isLogin) {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                toggleText.textContent = "Don't have account? Create one";
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                toggleText.textContent = "Already have account? Login";
+            }
+            
+            hideMessages();
+        }
+        
+        function showSuccess(msg) {
+            const successEl = document.getElementById('successMsg');
+            const errorEl = document.getElementById('errorMsg');
+            successEl.textContent = msg;
+            successEl.style.display = 'block';
+            errorEl.style.display = 'none';
+        }
+        
+        function showError(msg) {
+            const successEl = document.getElementById('successMsg');
+            const errorEl = document.getElementById('errorMsg');
+            errorEl.textContent = msg;
+            errorEl.style.display = 'block';
+            successEl.style.display = 'none';
+        }
+        
+        function hideMessages() {
+            document.getElementById('successMsg').style.display = 'none';
+            document.getElementById('errorMsg').style.display = 'none';
         }
     </script>
 </body>

@@ -12,7 +12,13 @@
         #chatbox{flex:1;overflow-y:auto;padding:20px;background:#f8f9fa;border-radius:15px;margin-bottom:20px;max-height:450px;}
         #chatbox p{margin:15px 0;padding:15px;background:white;border-radius:18px;box-shadow:0 2px 10px rgba(0,0,0,0.1);line-height:1.5;}
         .user{background:#e3f2fd;border-left:4px solid #4a6cf7;}
-        .ai{background:linear-gradient(135deg,#4a6cf7,#667eea);color:white;border-left:4px solid #ffd700;}
+        .ai{
+            background:linear-gradient(135deg,#2c3e50,#34495e) !important;
+            color: #FFFFFF !important; /* BRIGHT WHITE TEXT */
+            border-left:4px solid #ffd700;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
         .chat-input{display:flex;gap:15px;margin-top:auto;}
         input{flex:1;padding:18px;border:2px solid #ddd;border-radius:25px;font-size:16px;}
         input:focus{outline:none;border-color:#4a6cf7;}
@@ -21,6 +27,7 @@
         .stats{margin:10px 0;font-size:18px;text-align:center;}
         .stats span{padding:8px 15px;background:#ffd700;border-radius:20px;font-weight:bold;margin:0 5px;}
         h1{font-size:2.2em;}
+        code{background:#ecf0f1;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:14px;}
     </style>
 </head>
 <body>
@@ -63,7 +70,7 @@
             
             if (!question) return;
             
-            // User message
+            // User message (blue)
             let userMsg = document.createElement("p");
             userMsg.className = "user";
             userMsg.innerHTML = "<strong>You:</strong> " + question;
@@ -71,18 +78,16 @@
             
             // Clear input
             input.value = "";
-            
-            // Scroll to bottom
             chatbox.scrollTop = chatbox.scrollHeight;
             
             // Typing effect
             let typingMsg = document.createElement("p");
             typingMsg.className = "ai";
-            typingMsg.innerHTML = "<strong>🤖 AI Tutor:</strong> Thinking...";
+            typingMsg.innerHTML = "<strong>🤖 AI Tutor:</strong> <em>Thinking...</em>";
             chatbox.appendChild(typingMsg);
             chatbox.scrollTop = chatbox.scrollHeight;
             
-            // AI Response
+            // AI Response (WHITE TEXT)
             setTimeout(function() {
                 chatbox.removeChild(typingMsg);
                 let response = generateResponse(question);
@@ -100,89 +105,45 @@
             let score = localStorage.getItem("quizScore") || 0;
             let q = question.toLowerCase();
             
-            // =================== ARRAYS ===================
             if (q.includes("array") || q.includes("arrays")) {
                 if (level === "Beginner") {
-                    return "📦 <strong>Arrays for Beginners:</strong><br>" +
-                           "Arrays are like <strong>numbered boxes</strong>. Each box holds one item:<br>" +
-                           "<code>let fruits = ['apple', 'banana', 'orange'];</code><br>" +
-                           "• fruits[0] = 'apple' (starts at 0!)<br>" +
-                           "• fruits.length = 3<br>" +
-                           "• fruits.push('grape') adds item";
+                    return "📦 <strong>Arrays 101:</strong> Think of arrays as numbered boxes:<br>" +
+                           "<code>let numbers = [10, 20, 30];</code><br>" +
+                           "numbers[0] = 10 • numbers.length = 3<br>" +
+                           "numbers.push(40) adds to end";
                 } else {
-                    return "⚡ <strong>Arrays Advanced:</strong><br>" +
-                           "• O(1) random access (contiguous memory)<br>" +
-                           "• Dynamic resizing in JS<br>" +
-                           "<code>let arr = new Array(100).fill(0); // Pre-allocate</code>";
+                    return "⚡ <strong>Array Performance:</strong> O(1) random access because contiguous memory:<br>" +
+                           "<code>let arr = new Array(100).fill(0);</code>";
                 }
             }
             
-            // =================== STACKS ===================
             if (q.includes("stack") || q.includes("lifo")) {
-                return "🗃️ <strong>Stack (LIFO):</strong> Last In, First Out<br>" +
-                       "Like stacking plates - add/remove from TOP only:<br>" +
-                       "<code>let stack = [];<br>" +
-                       "stack.push(10);    // [10]<br>" +
-                       "stack.push(20);    // [10, 20]<br>" +
-                       "stack.pop();       // 20 (top removed)</code>";
+                return "🗃️ <strong>Stack:</strong> Last In, First Out (like plates):<br>" +
+                       "<code>stack.push(10);  // Add top<br>stack.pop();   // Remove top</code>";
             }
             
-            // =================== QUEUES ===================
             if (q.includes("queue") || q.includes("fifo")) {
-                return "📋 <strong>Queue (FIFO):</strong> First In, First Out<br>" +
-                       "Like a line at checkout:<br>" +
-                       "<code>let queue = [];<br>" +
-                       "queue.push(1);     // [1]<br>" +
-                       "queue.push(2);     // [1, 2]<br>" +
-                       "queue.shift();     // 1 (front removed)</code>";
+                return "📋 <strong>Queue:</strong> First In, First Out (like checkout line):<br>" +
+                       "<code>queue.push(1);   // Back<br>queue.shift(); // Front</code>";
             }
             
-            // =================== SORTING ===================
             if (q.includes("sort") || q.includes("sorting")) {
-                return "🔄 <strong>Sorting Algorithms:</strong><br>" +
-                       "• <strong>QuickSort:</strong> O(n log n) average<br>" +
-                       "• <strong>MergeSort:</strong> O(n log n) stable<br>" +
-                       "• <strong>BubbleSort:</strong> O(n²) simple<br>" +
-                       "<code>arr.sort((a,b) => a-b); // JavaScript magic ✨</code>";
+                return "🔄 <strong>Sorting:</strong><br>QuickSort: <code>O(n log n)</code><br>MergeSort: <code>O(n log n)</code><br>" +
+                       "<code>arr.sort((a,b) => a-b); // JavaScript</code>";
             }
             
-            // =================== PRACTICE ===================
-            if (q.includes("practice") || q.includes("exercise") || q.includes("problem")) {
-                return "✍️ <strong>Practice Problem (" + level + "):</strong><br>" +
-                       "<code>function findMax(arr) {<br>" +
-                       "  let max = arr[0];<br>" +
-                       "  for(let i = 1; i < arr.length; i++) {<br>" +
-                       "    if(arr[i] > max) max = arr[i];<br>" +
-                       "  }<br>" +
-                       "  return max;<br>}</code><br>" +
-                       "Test: findMax([3, 1, 4, 1, 5]) → 5";
+            if (q.includes("practice") || q.includes("problem")) {
+                return "✍️ <strong>Practice (" + level + "):</strong><br>" +
+                       "<code>function max(arr) {<br>  let m = arr[0];<br>  for(let i=1; i<arr.length; i++)<br>    if(arr[i] > m) m = arr[i];<br>  return m;<br>}</code>";
             }
             
-            // =================== JAVASCRIPT ===================
-            if (q.includes("javascript") || q.includes("js")) {
-                return "⚡ <strong>JavaScript Pro Tips:</strong><br>" +
-                       "• <code>const</code> > let > var<br>" +
-                       "• Arrow functions: <code>() => {}</code><br>" +
-                       "• Destructuring: <code>const {name} = user;</code><br>" +
-                       "• Spread: <code>[...arr1, ...arr2]</code>";
+            if (q.includes("recursion")) {
+                return "♾️ <strong>Recursion:</strong> Function calls itself!<br>" +
+                       "<code>function fact(n) {<br>  if(n<=1) return 1;     // STOP<br>  return n * fact(n-1);  // CONTINUE<br>}</code>";
             }
             
-            // =================== RECURSION ===================
-            if (q.includes("recursion") || q.includes("recursive")) {
-                return "♾️ <strong>Recursion:</strong> Function calls ITSELF!<br>" +
-                       "<strong>2 Parts Needed:</strong><br>" +
-                       "1. <strong>Base case</strong> (stops recursion)<br>" +
-                       "2. <strong>Recursive case</strong><br>" +
-                       "<code>function factorial(n) {<br>" +
-                       "  if(n <= 1) return 1;           // Base case<br>" +
-                       "  return n * factorial(n-1);      // Recursive<br>}</code>";
-            }
-            
-            // =================== FALLBACK ===================
-            return "💡 Great question! With your <strong>" + level + " level</strong> (" + score + "% quiz score), " +
-                   "you're perfect for " + (level === "Advanced" ? "advanced algorithms & system design" : 
-                   level === "Intermediate" ? "medium LeetCode problems" : "data structures basics") + 
-                   ". Try asking:<br>• 'what is array?'<br>• 'explain stack'<br>• 'sorting algorithms'<br>• 'practice problem'";
+            return "💡 With your <strong>" + level + "</strong> level (" + score + "%), try:<br>" +
+                   "• 'what is array?' • 'explain stack' • 'sorting'<br>• 'practice problem' • 'recursion'";
         }
     </script>
 </body>

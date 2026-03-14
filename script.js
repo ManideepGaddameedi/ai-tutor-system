@@ -1,11 +1,16 @@
 async function askQuestion(){
 
-let question=document.getElementById("question").value
-let chatbox=document.getElementById("chatbox")
+let question = document.getElementById("question").value.trim()
 
-chatbox.innerHTML += "<div class='user'>"+question+"</div>"
+if(question === "") return
 
-const API_KEY="AIzaSyCAmOssbPvoxnr_VodqVJpSdMsMv3mLWmA"
+let chatbox = document.getElementById("chatbox")
+
+chatbox.innerHTML += "<div class='user'>You: " + question + "</div>"
+
+document.getElementById("question").value=""
+
+const API_KEY = "AIzaSyCAmOssbPvoxnr_VodqVJpSdMsMv3mLWmA"
 
 try{
 
@@ -19,7 +24,9 @@ headers:{
 body:JSON.stringify({
 contents:[
 {
-parts:[{text:question}]
+parts:[
+{ text: question }
+]
 }
 ]
 })
@@ -28,17 +35,20 @@ parts:[{text:question}]
 
 const data = await response.json()
 
-let answer=data.candidates[0].content.parts[0].text
+let answer = "No response"
 
-chatbox.innerHTML += "<div class='ai'>"+answer+"</div>"
+if(data.candidates){
+answer = data.candidates[0].content.parts[0].text
+}
 
-}catch(e){
+chatbox.innerHTML += "<div class='ai'>AI: " + answer + "</div>"
 
-chatbox.innerHTML += "<div class='ai'>Error connecting to AI</div>"
+}catch(error){
+
+chatbox.innerHTML += "<div class='ai'>AI: Error connecting to Gemini API</div>"
 
 }
 
-document.getElementById("question").value=""
-chatbox.scrollTop=chatbox.scrollHeight
+chatbox.scrollTop = chatbox.scrollHeight
 
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Tutor - AI Tutor</title>
+    <title>AI Tutor Bot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
@@ -10,147 +10,180 @@
         .container{max-width:800px;margin:20px auto;padding:20px;}
         .card{background:white;padding:30px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);height:75vh;display:flex;flex-direction:column;}
         #chatbox{flex:1;overflow-y:auto;padding:20px;background:#f8f9fa;border-radius:15px;margin-bottom:20px;max-height:450px;}
-        .chat-message{margin:10px 0;padding:15px;border-radius:18px;box-shadow:0 2px 10px rgba(0,0,0,0.1);max-width:85%;}
-        .chat-message.user{background:#e3f2fd;margin-left:auto;text-align:right;}
-        .chat-message.ai{background:linear-gradient(135deg,#4a6cf7,#667eea);color:white;margin-right:auto;}
-        .chat-input{display:flex;gap:10px;}
+        #chatbox p{margin:15px 0;padding:15px;background:white;border-radius:18px;box-shadow:0 2px 10px rgba(0,0,0,0.1);line-height:1.5;}
+        .user{background:#e3f2fd;border-left:4px solid #4a6cf7;}
+        .ai{background:linear-gradient(135deg,#4a6cf7,#667eea);color:white;border-left:4px solid #ffd700;}
+        .chat-input{display:flex;gap:15px;margin-top:auto;}
         input{flex:1;padding:18px;border:2px solid #ddd;border-radius:25px;font-size:16px;}
         input:focus{outline:none;border-color:#4a6cf7;}
-        .btn{padding:18px 25px;background:#4a6cf7;color:white;border:none;border-radius:25px;cursor:pointer;font-size:16px;font-weight:bold;flex-shrink:0;}
-        .btn:hover{background:#3b55d0;}
-        .stats{margin-bottom:20px;text-align:center;font-size:18px;}
-        .stats span{background:#ffd700;padding:8px 15px;border-radius:20px;font-weight:bold;margin:0 10px;}
-        @media(max-width:768px){.chat-input{flex-direction:column;}}
+        .btn{padding:18px 30px;background:#4a6cf7;color:white;border:none;border-radius:25px;cursor:pointer;font-size:16px;font-weight:bold;}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(74,108,247,0.4);}
+        .stats{margin:10px 0;font-size:18px;text-align:center;}
+        .stats span{padding:8px 15px;background:#ffd700;border-radius:20px;font-weight:bold;margin:0 5px;}
+        h1{font-size:2.2em;}
     </style>
 </head>
 <body>
     <header>
-        <h1>🤖 Smart AI Tutor</h1>
+        <h1>🤖 AI Programming Tutor</h1>
         <div class="stats">
-            Score: <span id="quizScore">0%</span> | 
+            Quiz: <span id="quizScore">0%</span> | 
             Level: <span id="userLevel">Beginner</span>
         </div>
     </header>
+    
     <div class="container">
         <div class="card">
             <div id="chatbox">
-                <div class="chat-message ai">
-                    <p><strong>AI Tutor:</strong> Hello! I'm your smart programming tutor. Ask me <strong>ANYTHING</strong> about coding - arrays, stacks, algorithms, practice problems, or general questions! 🚀</p>
-                </div>
+                <p class="ai"><strong>🤖 AI Tutor:</strong> Hi! I'm your personal programming assistant. Ask me about <strong>arrays, stacks, algorithms, JavaScript, sorting, recursion, practice problems</strong> - anything coding related! I'll adapt to your skill level. 🚀</p>
             </div>
+            
             <div class="chat-input">
-                <input id="question" type="text" placeholder="Ask any programming question... (Press Enter)" onkeypress="if(event.key=='Enter') askQuestion()">
-                <button class="btn" onclick="askQuestion()">Send</button>
+                <input id="question" type="text" placeholder="Type your question here... (Enter to send)" 
+                       onkeydown="if(event.key==='Enter') sendMessage()">
+                <button class="btn" onclick="sendMessage()">Send</button>
             </div>
         </div>
     </div>
+
     <script>
-    // Initialize stats
-    window.onload = function(){
-        var score = localStorage.getItem("quizScore") || 0;
-        document.getElementById("quizScore").innerHTML = score + "%";
-        
-        var level = localStorage.getItem("userLevel") || "Beginner";
-        document.getElementById("userLevel").innerHTML = level;
-    }
-
-    function askQuestion(){
-        var input = document.getElementById("question");
-        var chatbox = document.getElementById("chatbox");
-        var question = input.value.trim();
-        
-        if(!question) return;
-        
-        // Add user message
-        var userMsg = document.createElement("div");
-        userMsg.className = "chat-message user";
-        userMsg.innerHTML = "<p><strong>You:</strong> " + question + "</p>";
-        chatbox.appendChild(userMsg);
-        
-        // Clear input & scroll
-        input.value = "";
-        chatbox.scrollTop = chatbox.scrollHeight;
-        
-        // Show typing indicator
-        var typingMsg = document.createElement("div");
-        typingMsg.className = "chat-message ai";
-        typingMsg.innerHTML = "<p><strong>AI Tutor:</strong> 🤔 Thinking...</p>";
-        chatbox.appendChild(typingMsg);
-        chatbox.scrollTop = chatbox.scrollHeight;
-        
-        // Generate smart response
-        setTimeout(function(){
-            chatbox.removeChild(typingMsg);
-            var response = getSmartResponse(question);
+        // Load user stats
+        window.onload = function() {
+            let score = localStorage.getItem("quizScore") || 0;
+            document.getElementById("quizScore").textContent = score + "%";
             
-            var aiMsg = document.createElement("div");
-            aiMsg.className = "chat-message ai";
-            aiMsg.innerHTML = "<p><strong>AI Tutor:</strong> " + response + "</p>";
-            chatbox.appendChild(aiMsg);
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }, 1200);
-    }
+            let level = localStorage.getItem("userLevel") || "Beginner";
+            document.getElementById("userLevel").textContent = level;
+        };
 
-    function getSmartResponse(question) {
-        var level = localStorage.getItem("userLevel") || "Beginner";
-        var score = localStorage.getItem("quizScore") || 0;
-        var q = question.toLowerCase();
-        
-        // Programming Fundamentals
-        if(q.includes("array") || q.includes("arrays")) {
-            return level === "Beginner" ? 
-                "📦 <strong>Arrays 101:</strong> Think of arrays as numbered boxes. Each box holds one item:<br><code>let numbers = [10, 20, 30];</code><br>numbers[0] = 10 (indexing starts at 0!). Use <code>length</code> property to get size.";
-            : "Arrays store elements in <strong>contiguous memory</strong> giving O(1) random access. JavaScript arrays are dynamic:<br><code>let arr = []; arr.push(5); arr.pop();</code>";
+        function sendMessage() {
+            let input = document.getElementById("question");
+            let chatbox = document.getElementById("chatbox");
+            let question = input.value.trim();
+            
+            if (!question) return;
+            
+            // User message
+            let userMsg = document.createElement("p");
+            userMsg.className = "user";
+            userMsg.innerHTML = "<strong>You:</strong> " + question;
+            chatbox.appendChild(userMsg);
+            
+            // Clear input
+            input.value = "";
+            
+            // Scroll to bottom
+            chatbox.scrollTop = chatbox.scrollHeight;
+            
+            // Typing effect
+            let typingMsg = document.createElement("p");
+            typingMsg.className = "ai";
+            typingMsg.innerHTML = "<strong>🤖 AI Tutor:</strong> Thinking...";
+            chatbox.appendChild(typingMsg);
+            chatbox.scrollTop = chatbox.scrollHeight;
+            
+            // AI Response
+            setTimeout(function() {
+                chatbox.removeChild(typingMsg);
+                let response = generateResponse(question);
+                
+                let aiMsg = document.createElement("p");
+                aiMsg.className = "ai";
+                aiMsg.innerHTML = "<strong>🤖 AI Tutor:</strong> " + response;
+                chatbox.appendChild(aiMsg);
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }, 1000);
         }
-        
-        if(q.includes("stack") || q.includes("lifo")) {
-            return "🗃️ <strong>Stack (LIFO):</strong> Last In, First Out - like a stack of plates!<br><code>let stack = [];<br>stack.push(1); // Add to top<br>stack.pop();  // Remove from top</code>";
+
+        function generateResponse(question) {
+            let level = localStorage.getItem("userLevel") || "Beginner";
+            let score = localStorage.getItem("quizScore") || 0;
+            let q = question.toLowerCase();
+            
+            // =================== ARRAYS ===================
+            if (q.includes("array") || q.includes("arrays")) {
+                if (level === "Beginner") {
+                    return "📦 <strong>Arrays for Beginners:</strong><br>" +
+                           "Arrays are like <strong>numbered boxes</strong>. Each box holds one item:<br>" +
+                           "<code>let fruits = ['apple', 'banana', 'orange'];</code><br>" +
+                           "• fruits[0] = 'apple' (starts at 0!)<br>" +
+                           "• fruits.length = 3<br>" +
+                           "• fruits.push('grape') adds item";
+                } else {
+                    return "⚡ <strong>Arrays Advanced:</strong><br>" +
+                           "• O(1) random access (contiguous memory)<br>" +
+                           "• Dynamic resizing in JS<br>" +
+                           "<code>let arr = new Array(100).fill(0); // Pre-allocate</code>";
+                }
+            }
+            
+            // =================== STACKS ===================
+            if (q.includes("stack") || q.includes("lifo")) {
+                return "🗃️ <strong>Stack (LIFO):</strong> Last In, First Out<br>" +
+                       "Like stacking plates - add/remove from TOP only:<br>" +
+                       "<code>let stack = [];<br>" +
+                       "stack.push(10);    // [10]<br>" +
+                       "stack.push(20);    // [10, 20]<br>" +
+                       "stack.pop();       // 20 (top removed)</code>";
+            }
+            
+            // =================== QUEUES ===================
+            if (q.includes("queue") || q.includes("fifo")) {
+                return "📋 <strong>Queue (FIFO):</strong> First In, First Out<br>" +
+                       "Like a line at checkout:<br>" +
+                       "<code>let queue = [];<br>" +
+                       "queue.push(1);     // [1]<br>" +
+                       "queue.push(2);     // [1, 2]<br>" +
+                       "queue.shift();     // 1 (front removed)</code>";
+            }
+            
+            // =================== SORTING ===================
+            if (q.includes("sort") || q.includes("sorting")) {
+                return "🔄 <strong>Sorting Algorithms:</strong><br>" +
+                       "• <strong>QuickSort:</strong> O(n log n) average<br>" +
+                       "• <strong>MergeSort:</strong> O(n log n) stable<br>" +
+                       "• <strong>BubbleSort:</strong> O(n²) simple<br>" +
+                       "<code>arr.sort((a,b) => a-b); // JavaScript magic ✨</code>";
+            }
+            
+            // =================== PRACTICE ===================
+            if (q.includes("practice") || q.includes("exercise") || q.includes("problem")) {
+                return "✍️ <strong>Practice Problem (" + level + "):</strong><br>" +
+                       "<code>function findMax(arr) {<br>" +
+                       "  let max = arr[0];<br>" +
+                       "  for(let i = 1; i < arr.length; i++) {<br>" +
+                       "    if(arr[i] > max) max = arr[i];<br>" +
+                       "  }<br>" +
+                       "  return max;<br>}</code><br>" +
+                       "Test: findMax([3, 1, 4, 1, 5]) → 5";
+            }
+            
+            // =================== JAVASCRIPT ===================
+            if (q.includes("javascript") || q.includes("js")) {
+                return "⚡ <strong>JavaScript Pro Tips:</strong><br>" +
+                       "• <code>const</code> > let > var<br>" +
+                       "• Arrow functions: <code>() => {}</code><br>" +
+                       "• Destructuring: <code>const {name} = user;</code><br>" +
+                       "• Spread: <code>[...arr1, ...arr2]</code>";
+            }
+            
+            // =================== RECURSION ===================
+            if (q.includes("recursion") || q.includes("recursive")) {
+                return "♾️ <strong>Recursion:</strong> Function calls ITSELF!<br>" +
+                       "<strong>2 Parts Needed:</strong><br>" +
+                       "1. <strong>Base case</strong> (stops recursion)<br>" +
+                       "2. <strong>Recursive case</strong><br>" +
+                       "<code>function factorial(n) {<br>" +
+                       "  if(n <= 1) return 1;           // Base case<br>" +
+                       "  return n * factorial(n-1);      // Recursive<br>}</code>";
+            }
+            
+            // =================== FALLBACK ===================
+            return "💡 Great question! With your <strong>" + level + " level</strong> (" + score + "% quiz score), " +
+                   "you're perfect for " + (level === "Advanced" ? "advanced algorithms & system design" : 
+                   level === "Intermediate" ? "medium LeetCode problems" : "data structures basics") + 
+                   ". Try asking:<br>• 'what is array?'<br>• 'explain stack'<br>• 'sorting algorithms'<br>• 'practice problem'";
         }
-        
-        if(q.includes("queue") || q.includes("fifo")) {
-            return "📋 <strong>Queue (FIFO):</strong> First In, First Out - like a line at a store!<br><code>let queue = [];<br>queue.push(1);    // Add to back<br>queue.shift();    // Remove from front</code>";
-        }
-        
-        if(q.includes("linked list") || q.includes("linkedlist")) {
-            return "🔗 <strong>Linked List:</strong> Each node points to next. Unlike arrays, insertion/deletion is O(1) if you have pointer:<br><code>class Node {<br>  constructor(data) { this.data = data; this.next = null; }<br>}</code>";
-        }
-        
-        if(q.includes("tree") || q.includes("binary tree")) {
-            return "🌳 <strong>Binary Tree:</strong> Each node has ≤2 children. Perfect for hierarchical data:<br><code>Root<br>├── Left Child<br>└── Right Child</code>";
-        }
-        
-        if(q.includes("time complexity") || q.includes("big o")) {
-            return "<strong>Common Time Complexities:</strong><br>O(1) - Constant | O(log n) - Binary Search | O(n) - Linear | O(n log n) - Merge Sort | O(n²) - Bubble Sort";
-        }
-        
-        if(q.includes("sort") || q.includes("sorting")) {
-            return "<strong>Popular Sorting:</strong><br>🔥 QuickSort: O(n log n) average<br>📦 MergeSort: O(n log n) stable<br>🍹 BubbleSort: O(n²) simple<br><code>arr.sort((a,b) => a-b); // JS built-in</code>";
-        }
-        
-        if(q.includes("recursion")) {
-            return "♾️ <strong>Recursion:</strong> Function calls itself! Needs base case:<br><code>function factorial(n) {<br>  if(n <= 1) return 1;<br>  return n * factorial(n-1);<br>}</code>";
-        }
-        
-        if(q.includes("practice") || q.includes("exercise") || q.includes("problem")) {
-            return level === "Beginner" ? 
-                "🆕 <strong>Easy Practice:</strong> Reverse an array:<br><code>function reverseArray(arr) {<br>  let reversed = [];<br>  for(let i=arr.length-1; i>=0; i--) {<br>    reversed.push(arr[i]);<br>  }<br>  return reversed;<br>}</code>"
-            : "⚡ <strong>Challenge:</strong> Find two numbers in array that sum to target (Two Sum):<br><code>function twoSum(nums, target) {<br>  let map = {};<br>  for(let i=0; i<nums.length; i++) {<br>    let complement = target - nums[i];<br>    if(map[complement] !== undefined) {<br>      return [map[complement], i];<br>    }<br>    map[nums[i]] = i;<br>  }<br>}</code>";
-        }
-        
-        if(q.includes("javascript") || q.includes("js")) {
-            return "⚡ <strong>JavaScript Tips:</strong><br>- Use <code>const</code> by default<br>- Arrow functions: <code>() => {}</code><br>- Destructuring: <code>const {name, age} = user;</code><br>- Spread: <code>...array</code>";
-        }
-        
-        if(q.includes("loop") || q.includes("for") || q.includes("while")) {
-            return "<strong>Loops:</strong><br><code>for(let i=0; i<10; i++) {} // Traditional<br>for(let item of array) {} // For-of<br>array.forEach(item => {}) // Functional</code>";
-        }
-        
-        // Fallback responses
-        return "Excellent question! Based on your <strong>" + level + " level</strong> (" + score + "% quiz), you're ready for " + 
-               (level === "Advanced" ? "advanced data structures & algorithms" : 
-                level === "Intermediate" ? "algorithm practice & optimization" : "arrays, stacks, and basic algorithms") + 
-               ". What specific topic would you like me to explain in detail? 💡";
-    }
     </script>
 </body>
 </html>

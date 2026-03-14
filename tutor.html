@@ -1,27 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>AI Tutor</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tutor - AI Tutor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-<header>
-<h1>AI Tutor</h1>
-<p id="studentLevel">Your Learning Level: Loading...</p>
-</header>
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">AI Tutor</div>
+            <div class="nav-user">
+                <span id="studentLevel">Beginner</span>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+    </header>
 
-<div class="container">
-<div class="card big">
-<div id="chatbox">
-<p><b>AI Tutor:</b> Hello! I'm your personal AI tutor. Ask me programming questions or request practice problems based on your skill level.</p>
-</div>
-<input id="question" type="text" placeholder="Ask a question about programming...">
-<button class="btn" onclick="askQuestion()">Send</button>
-<div id="quizScore" style="margin-top:15px; font-weight:bold;"></div>
-</div>
-</div>
-<script src="script.js"></script>
+    <section class="tutor-section">
+        <div class="container">
+            <div class="tutor-card">
+                <div class="tutor-header">
+                    <h1>AI Tutor Chat</h1>
+                    <div class="stats">
+                        <span id="quizScore">0%</span>
+                        <span id="levelBadge">Beginner</span>
+                    </div>
+                </div>
+                
+                <div id="chatbox">
+                    <div class="chat-message ai">
+                        <p>Hello! I'm your personal AI tutor. Ask me programming questions or request practice problems based on your skill level.</p>
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <input id="question" type="text" placeholder="Ask a question about programming..." onkeypress="handleKeyPress(event)">
+                    <button class="btn-primary" onclick="askQuestion()">Send</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
 </body>
 </html>

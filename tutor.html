@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>AI Tutor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,12 +15,18 @@
 <div class="chat-container">
 
 <div id="chatbox" class="chatbox">
+
 <div class="ai">Hello! Ask me anything.</div>
+
 </div>
 
 <div class="chat-input">
 
-<input id="question" placeholder="Ask something...">
+<input 
+id="question" 
+type="text" 
+placeholder="Ask your question..."
+/>
 
 <button onclick="askQuestion()">Send</button>
 

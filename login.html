@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>✨ Login - AI Tutor</title>
+    <title>✨ AI Tutor Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
@@ -9,89 +9,126 @@
         .login-container{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(25px);padding:50px;border-radius:30px;box-shadow:0 30px 100px rgba(0,0,0,0.3);max-width:450px;width:100%;text-align:center;}
         .logo{font-size:3em;margin-bottom:20px;background:linear-gradient(135deg,#4a6cf7,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
         h2{font-size:2.2em;color:#2c3e50;margin-bottom:30px;}
-        input{width:100%;padding:18px;border:2px solid rgba(0,0,0,0.1);border-radius:15px;font-size:16px;margin-bottom:20px;transition:all 0.3s;}
+        .form-group{margin-bottom:25px;}
+        input{width:100%;padding:18px;border:2px solid rgba(0,0,0,0.1);border-radius:15px;font-size:16px;transition:all 0.3s;}
         input:focus{outline:none;border-color:#4a6cf7;box-shadow:0 0 0 3px rgba(74,108,247,0.1);}
-        .login-btn{width:100%;padding:20px;background:linear-gradient(135deg,#48bb78,#68d391);color:white;border:none;border-radius:15px;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 15px 45px rgba(72,187,120,0.4);transition:all 0.3s;}
-        .login-btn:hover{transform:translateY(-3px);box-shadow:0 20px 55px rgba(72,187,120,0.6);}
-        .login-btn:disabled{background:#bdc3c7 !important;color:#95a5a6 !important;cursor:not-allowed !important;transform:none !important;}
-        .error{color:#e74c3c;font-size:14px;margin-bottom:15px;display:none;}
-        .success{color:#27ae60;font-size:16px;margin:20px 0;display:none;}
-        .demo-info{background:rgba(74,108,247,0.1);padding:15px;border-radius:10px;margin:20px 0;color:#666;font-size:14px;}
-        .loading{display:none;text-align:center;padding:20px;color:#27ae60;}
+        .btn{width:100%;padding:20px;border:none;border-radius:15px;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 15px 45px rgba(0,0,0,0.2);transition:all 0.3s;margin:10px 0;}
+        .login-btn{background:linear-gradient(135deg,#48bb78,#68d391);color:white;}
+        .register-btn{background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;}
+        .btn:hover{transform:translateY(-3px);box-shadow:0 20px 55px rgba(0,0,0,0.3);}
+        .btn:disabled{background:#bdc3c7 !important;color:#95a5a6 !important;cursor:not-allowed !important;transform:none !important;}
+        .status{margin-top:20px;padding:15px;border-radius:10px;display:none;}
+        .error{background:#fee;color:#c53030;}
+        .success{background:#c6f6d5;color:#22543d;}
+        .loading{display:none;text-align:center;padding:20px;color:#48bb78;}
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="logo">🎯</div>
-        <h2>AI Tutor Login</h2>
-        
-        <!-- DEMO CREDENTIALS -->
-        <div class="demo-info">
-            <strong>🆓 Demo Login:</strong><br>
-            Username: <code>manideep</code><br>
-            Password: <code>123456</code>
-        </div>
+        <h2>AI Tutor Master</h2>
+        <p style="color:#666;margin-bottom:30px;">JEE • NEET • EAPCET • GATE</p>
         
         <form id="loginForm">
-            <input type="text" id="username" placeholder="Enter username (manideep)" required>
-            <input type="password" id="password" placeholder="Enter password (123456)" required>
-            <div id="errorMsg" class="error"></div>
-            <button type="submit" class="login-btn" id="loginBtn">🚀 Login</button>
+            <div class="form-group">
+                <input type="email" id="email" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" placeholder="Password (8+ chars)" required>
+            </div>
+            <button type="submit" class="btn login-btn">🚀 Login</button>
         </form>
         
-        <div id="successMsg" class="success"></div>
-        <div id="loading" class="loading">✅ Redirecting to Dashboard...</div>
+        <button id="registerBtn" class="btn register-btn">📝 Create Account</button>
+        
+        <div id="status" class="status"></div>
+        <div id="loading" class="loading">✅ Creating your profile & redirecting...</div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ✅ EXACT CREDENTIALS CHECK
-        function checkLogin(username, password) {
-            return username === 'manideep' && password === '123456';
+        const supabase = supabase.createClient(
+            'https://pdegwwddqpnjaranrvvh.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZWd3d2RkcXBuamFyYW5ydnZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODYxNDksImV4cCI6MjA4OTA2MjE0OX0.lg3cONONUcZu4dKpvF4B-z2-B9BNJOUWTl0H6wCtY6c'
+        );
+
+        // Auto-create student profile after login
+        async function createStudentProfile(user) {
+            const { data: existing } = await supabase
+                .from('students')
+                .select('id')
+                .eq('user_id', user.id)
+                .single();
+                
+            if(!existing) {
+                const { error } = await supabase.from('students').insert({
+                    user_id: user.id,
+                    name: user.email.split('@')[0],
+                    email: user.email,
+                    exams: ['JEE', 'NEET', 'EAPCET']
+                });
+            }
         }
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // STOP FORM SUBMIT
-            
-            const username = document.getElementById('username').value.trim();
+        // LOGIN
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const errorMsg = document.getElementById('errorMsg');
-            const successMsg = document.getElementById('successMsg');
+            const status = document.getElementById('status');
             const loading = document.getElementById('loading');
-            const loginBtn = document.getElementById('loginBtn');
             
-            // HIDE ALL MESSAGES FIRST
-            errorMsg.style.display = 'none';
-            successMsg.style.display = 'none';
+            status.className = 'status'; // Reset
+            status.style.display = 'none';
             loading.style.display = 'none';
             
-            // VALIDATE
-            if(!username || !password) {
-                errorMsg.textContent = 'Please enter both username and password!';
-                errorMsg.style.display = 'block';
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email, password
+            });
+            
+            if(error) {
+                status.textContent = `❌ ${error.message}`;
+                status.className += ' error';
+                status.style.display = 'block';
+            } else {
+                await createStudentProfile(data.user);
+                loading.style.display = 'block';
+                setTimeout(() => window.location.href = 'dashboard.html', 1500);
+            }
+        });
+
+        // REGISTER
+        document.getElementById('registerBtn').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const status = document.getElementById('status');
+            
+            if(password.length < 8) {
+                status.textContent = '❌ Password must be 8+ characters';
+                status.className = 'status error';
+                status.style.display = 'block';
                 return;
             }
             
-            // EXACT MATCH CHECK
-            if(checkLogin(username, password)) {
-                // ✅ SUCCESS - SAVE & REDIRECT
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('username', username);
-                
-                successMsg.textContent = '✅ Login successful! Welcome Manideep!';
-                successMsg.style.display = 'block';
-                loading.style.display = 'block';
-                loginBtn.style.display = 'none';
-                
-                // REDIRECT AFTER 1.5s
-                setTimeout(function() {
-                    window.location.href = 'dashboard.html';
-                }, 1500);
-                
+            const { error } = await supabase.auth.signUp({
+                email, password,
+                options: { data: { name: email.split('@')[0] } }
+            });
+            
+            if(error) {
+                status.textContent = `❌ ${error.message}`;
+                status.className = 'status error';
+                status.style.display = 'block';
             } else {
-                // ❌ WRONG CREDENTIALS
-                errorMsg.textContent = '❌ Wrong username or password! Use: manideep / 123456';
-                errorMsg.style.display = 'block';
+                status.textContent = '✅ Check your email to verify account!';
+                status.className = 'status success';
+                status.style.display = 'block';
             }
+        });
+
+        // Auto-redirect if already logged in
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if(session) window.location.href = 'dashboard.html';
         });
     </script>
 </body>

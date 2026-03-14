@@ -1,44 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login - AI Tutor</title>
+    <title>🔐 AI Tutor Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
-        .container{max-width:400px;margin:50px auto;padding:20px;}
-        .card{background:white;padding:40px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);text-align:center;}
-        input{width:100%;padding:15px;margin:10px 0;border:2px solid #ddd;border-radius:10px;font-size:16px;}
-        input:focus{outline:none;border-color:#4a6cf7;}
-        .btn{padding:15px;background:#4a6cf7;color:white;border:none;border-radius:10px;cursor:pointer;width:100%;font-size:16px;margin:10px 0;font-weight:bold;}
-        .btn:hover{background:#3b55d0;}
-        .btn.secondary{background:#6c757d;}
+        body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+        .login-container{max-width:450px;width:90%;padding:20px;}
+        .login-card{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(30px);padding:60px 50px;border-radius:40px;box-shadow:0 40px 140px rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.3);}
+        h1{text-align:center;font-size:3.5em;color:#2c3e50;margin-bottom:10px;text-shadow:0 4px 20px rgba(0,0,0,0.1);}
+        .subtitle{text-align:center;color:#666;font-size:1.2em;margin-bottom:40px;}
+        input{display:block;width:100%;padding:22px;margin-bottom:25px;border:2px solid rgba(255,255,255,0.3);border-radius:30px;font-size:17px;background:rgba(255,255,255,0.9);backdrop-filter:blur(15px);box-shadow:0 10px 40px rgba(0,0,0,0.1);transition:all 0.3s;}
+        input:focus{outline:none;border-color:#4a6cf7;transform:translateY(-3px);box-shadow:0 15px 50px rgba(74,108,247,0.25);}
+        .btn{width:100%;padding:22px;background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;border:none;border-radius:30px;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 15px 50px rgba(74,108,247,0.4);transition:all 0.3s;margin:10px 0;}
+        .btn:hover{transform:translateY(-8px);box-shadow:0 25px 70px rgba(74,108,247,0.6);}
+        .toggle{text-align:center;margin:30px 0;}
+        .toggle span{color:#4a6cf7;cursor:pointer;font-weight:700;font-size:16px;text-decoration:underline;}
+        .nav-links{display:flex;gap:20px;justify-content:center;margin-top:40px;}
+        .nav-btn{padding:15px 30px;background:linear-gradient(135deg,#ff6b6b,#feca57);color:#2c3e50;border-radius:25px;text-decoration:none;font-weight:800;box-shadow:0 10px 40px rgba(255,107,107,0.4);}
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <h2>Login</h2>
-            <input id="loginEmail" type="email" placeholder="Email">
-            <input id="loginPassword" type="password" placeholder="Password">
-            <button class="btn" onclick="loginUser()">Login</button>
-            <p>No account?</p>
-            <a href="register.html"><button class="btn secondary">Register</button></a>
+    <div class="login-container">
+        <div class="login-card">
+            <h1>🔐 Welcome Back</h1>
+            <p class="subtitle">Continue your learning journey</p>
+            
+            <form id="loginForm">
+                <input type="email" placeholder="✉️ Email" required>
+                <input type="password" placeholder="🔒 Password" required>
+                <button type="submit" class="btn">Enter Dashboard</button>
+            </form>
+            
+            <div class="toggle">
+                <span onclick="toggleForm()">Don't have account? Create one</span>
+            </div>
+            
+            <form id="registerForm" style="display:none;">
+                <input type="text" placeholder="👤 Full Name" required>
+                <input type="email" placeholder="✉️ Email" required>
+                <input type="password" placeholder="🔒 Password" required>
+                <button type="submit" class="btn">Create Account</button>
+            </form>
+            
+            <div class="nav-links">
+                <a href="tutor.html" class="nav-btn">🤖 AI Tutor</a>
+                <a href="quiz.html" class="nav-btn">📝 Quiz</a>
+            </div>
         </div>
     </div>
+
     <script>
-    function loginUser(){
-        var email = document.getElementById("loginEmail").value;
-        var password = document.getElementById("loginPassword").value;
-        var savedEmail = localStorage.getItem("userEmail");
-        var savedPassword = localStorage.getItem("userPassword");
-        
-        if(email === savedEmail && password === savedPassword){
-            window.location.href = "dashboard.html";
-        } else {
-            alert("Wrong email/password!");
+        function toggleForm() {
+            let loginForm = document.getElementById('loginForm');
+            let registerForm = document.getElementById('registerForm');
+            loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
+            registerForm.style.display = registerForm.style.display === 'none' ? 'block' : 'none';
         }
-    }
     </script>
 </body>
 </html>

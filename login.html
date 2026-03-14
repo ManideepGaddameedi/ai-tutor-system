@@ -25,60 +25,52 @@
     <div class="login-container">
         <div class="logo">🎯</div>
         <h2>AI Tutor Master</h2>
-        <p style="color:#666;margin-bottom:30px;">JEE • NEET • EAPCET • GATE</p>
         
         <div class="info">
-            <strong>🎯 Test Credentials:</strong><br>
-            Email: <code>test@example.com</code><br>
+            <strong>✅ NOW WORKING - Test:</strong><br>
+            Email: <code>manideep@test.com</code><br>
             Password: <code>password123</code>
         </div>
         
         <form id="loginForm">
-            <input type="email" id="email" placeholder="your@email.com" required>
-            <input type="password" id="password" placeholder="Password" required>
+            <input type="email" id="email" value="manideep@test.com" required>
+            <input type="password" id="password" value="password123" required>
             <button type="submit" class="btn login-btn">🚀 Login</button>
         </form>
         
-        <button id="registerBtn" class="btn register-btn">📝 Create Account</button>
+        <button id="registerBtn" class="btn register-btn">📝 Register</button>
         <div id="status" class="status"></div>
     </div>
 
-    <!-- Load Supabase FIRST -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <script>
-        // ✅ NO VARIABLE CONFLICT - Use global supabase object directly
-        console.log('Supabase loaded:', typeof supabase);
-        
         const supabaseUrl = 'https://pdegwwddqpnjaranrvvh.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZWd3d2RkcXBuamFyYW5ydnZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODYxNDksImV4cCI6MjA4OTA2MjE0OX0.lg3cONONUcZu4dKpvF4B-z2-B9BNJOUWTl0H6wCtY6c';
         
-        // Create client WITHOUT redeclaring supabase
         const client = supabase.createClient(supabaseUrl, supabaseKey);
-        
+
+        // Create student profile
         async function createStudentProfile(user) {
-            try {
-                const { data: existing } = await client
-                    .from('students')
-                    .select('id')
-                    .eq('user_id', user.id)
-                    .single();
-                
-                if(!existing) {
-                    await client.from('students').insert([{
-                        user_id: user.id,
-                        name: user.user_metadata?.name || user.email.split('@')[0],
-                        email: user.email,
-                        exams: ['JEE', 'NEET', 'EAPCET']
-                    }]);
-                }
-            } catch(e) {
-                console.log('Profile exists:', e.message);
+            const { data: existing } = await client
+                .from('students')
+                .select('id')
+                .eq('user_id', user.id)
+                .single();
+            
+            if(!existing) {
+                await client.from('students').insert([{
+                    user_id: user.id,
+                    name: user.email.split('@')[0],
+                    email: user.email,
+                    exams: ['JEE','NEET','EAPCET'],
+                    total_quizzes: 0,
+                    accuracy: 0
+                }]);
             }
         }
 
         // LOGIN
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -88,21 +80,18 @@
             
             try {
                 const { data, error } = await client.auth.signInWithPassword({
-                    email: email,
-                    password: password
+                    email, password
                 });
                 
                 if(error) throw error;
                 
                 await createStudentProfile(data.user);
                 
-                status.innerHTML = '✅ Redirecting to dashboard...';
+                status.innerHTML = '✅ Welcome! Redirecting to Dashboard...';
                 status.className = 'status success';
                 status.style.display = 'block';
                 
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1500);
+                setTimeout(() => window.location.href = 'dashboard.html', 1500);
                 
             } catch(error) {
                 status.innerHTML = `❌ ${error.message}`;
@@ -112,27 +101,19 @@
         });
 
         // REGISTER
-        document.getElementById('registerBtn').addEventListener('click', async function() {
+        document.getElementById('registerBtn').addEventListener('click', async () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const status = document.getElementById('status');
             
-            if(password.length < 6) {
-                status.innerHTML = '❌ Password must be 6+ characters';
-                status.className = 'status error';
-                status.style.display = 'block';
-                return;
-            }
-            
             try {
                 const { error } = await client.auth.signUp({
-                    email: email,
-                    password: password
+                    email, password
                 });
                 
                 if(error) throw error;
                 
-                status.innerHTML = '✅ Check your email to verify account!';
+                status.innerHTML = '✅ Account created! You can login now.';
                 status.className = 'status success';
                 status.style.display = 'block';
                 
@@ -140,13 +121,6 @@
                 status.innerHTML = `❌ ${error.message}`;
                 status.className = 'status error';
                 status.style.display = 'block';
-            }
-        });
-
-        // Check if already logged in
-        client.auth.getSession().then(({ data: { session } }) => {
-            if(session) {
-                window.location.href = 'dashboard.html';
             }
         });
     </script>

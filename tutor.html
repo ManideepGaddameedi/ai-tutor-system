@@ -7,33 +7,32 @@
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
         header{background:#4a6cf7;color:white;padding:20px;text-align:center;}
-        .container{max-width:900px;margin:20px auto;padding:20px;}
-        .card{background:white;padding:30px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);height:80vh;display:flex;flex-direction:column;}
-        #chatbox{flex:1;overflow-y:auto;padding:20px;background:#f8f9fa;border-radius:15px;margin-bottom:20px;max-height:500px;}
-        #chatbox p{margin:15px 0;padding:18px;border-radius:20px;box-shadow:0 3px 15px rgba(0,0,0,0.1);line-height:1.6;}
-        .user{background:#e3f2fd;border-left:5px solid #4a6cf7;}
+        .container{max-width:800px;margin:20px auto;padding:20px;}
+        .card{background:white;padding:30px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);height:75vh;display:flex;flex-direction:column;}
+        #chatbox{flex:1;overflow-y:auto;padding:20px;background:#f8f9fa;border-radius:15px;margin-bottom:20px;max-height:450px;}
+        #chatbox p{margin:15px 0;padding:15px;background:white;border-radius:18px;box-shadow:0 2px 10px rgba(0,0,0,0.1);line-height:1.5;}
+        .user{background:#e3f2fd;border-left:4px solid #4a6cf7;}
         .ai{
             background:linear-gradient(135deg,#2c3e50,#34495e);
             color: #FFFFFF !important;
-            border-left:5px solid #ffd700;
+            border-left:4px solid #ffd700;
             font-weight: 500;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
         .chat-input{display:flex;gap:15px;margin-top:auto;}
-        input{flex:1;padding:20px;border:2px solid #ddd;border-radius:30px;font-size:16px;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
-        input:focus{outline:none;border-color:#4a6cf7;box-shadow:0 0 0 3px rgba(74,108,247,0.2);}
-        .btn{padding:20px 35px;background:#4a6cf7;color:white;border:none;border-radius:30px;cursor:pointer;font-size:16px;font-weight:bold;box-shadow:0 4px 15px rgba(74,108,247,0.3);}
-        .btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(74,108,247,0.4);}
+        input{flex:1;padding:18px;border:2px solid #ddd;border-radius:25px;font-size:16px;}
+        input:focus{outline:none;border-color:#4a6cf7;}
+        .btn{padding:18px 30px;background:#4a6cf7;color:white;border:none;border-radius:25px;cursor:pointer;font-size:16px;font-weight:bold;}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(74,108,247,0.4);}
         .stats{margin:10px 0;font-size:18px;text-align:center;}
-        .stats span{padding:10px 20px;background:#ffd700;border-radius:25px;font-weight:bold;margin:0 8px;box-shadow:0 3px 10px rgba(255,215,0,0.3);}
-        h1{font-size:2.5em;}
-        code{background:#ecf0f1 !important;padding:4px 10px;border-radius:6px;font-family:monospace;font-size:15px;font-weight:bold;}
-        strong{color:#ffd700 !important;}
+        .stats span{padding:8px 15px;background:#ffd700;border-radius:20px;font-weight:bold;margin:0 5px;}
+        h1{font-size:2.2em;}
+        code{background:#ecf0f1;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:14px;}
     </style>
 </head>
 <body>
     <header>
-        <h1>🤖 Perplexity-Style AI Tutor</h1>
+        <h1>🤖 AI Programming Tutor</h1>
         <div class="stats">
             Quiz: <span id="quizScore">0%</span> | 
             Level: <span id="userLevel">Beginner</span>
@@ -43,178 +42,104 @@
     <div class="container">
         <div class="card">
             <div id="chatbox">
-                <p class="ai"><strong>🤖 AI Tutor:</strong> I'm your personal programming assistant powered by advanced reasoning! Ask me <strong>ANYTHING</strong> - from basic syntax to complex algorithms, system design, interview questions, or debugging. I'll analyze your skill level and provide detailed, expert responses. What's your question? 🚀</p>
+                <p class="ai"><strong>🤖 AI Tutor:</strong> Hi! Ask me about programming - arrays, stacks, JavaScript, algorithms, practice problems. I'll adapt to your skill level! 🚀</p>
             </div>
             
             <div class="chat-input">
-                <input id="question" type="text" placeholder="Ask ANY programming question... (Enter/Send)" 
-                       onkeydown="if(event.key==='Enter') sendMessage()">
+                <input id="question" type="text" placeholder="Type here... (Press Enter)" />
                 <button class="btn" onclick="sendMessage()">Send</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Load stats
         window.onload = function() {
             let score = localStorage.getItem("quizScore") || 0;
             document.getElementById("quizScore").textContent = score + "%";
+            
             let level = localStorage.getItem("userLevel") || "Beginner";
             document.getElementById("userLevel").textContent = level;
+            
+            // Add Enter key listener
+            document.getElementById("question").addEventListener("keypress", function(e) {
+                if (e.key === "Enter") {
+                    sendMessage();
+                }
+            });
         };
 
         function sendMessage() {
             let input = document.getElementById("question");
             let chatbox = document.getElementById("chatbox");
-            let q = input.value.trim();
+            let question = input.value.trim();
             
-            if(!q) return;
+            if (!question) {
+                alert("Please type a question!");
+                return;
+            }
             
             // User message
-            chatbox.innerHTML += `<p class="user"><strong>You:</strong> ${q}</p>`;
+            let userMsg = document.createElement("p");
+            userMsg.className = "user";
+            userMsg.innerHTML = "<strong>You:</strong> " + question;
+            chatbox.appendChild(userMsg);
+            
+            // Clear input
             input.value = "";
+            
+            // Scroll down
             chatbox.scrollTop = chatbox.scrollHeight;
             
-            // Typing
-            chatbox.innerHTML += `<p class="ai"><strong>🤖 AI Tutor:</strong> <em>Analyzing your question...</em></p>`;
+            // Typing indicator
+            let typingMsg = document.createElement("p");
+            typingMsg.className = "ai";
+            typingMsg.innerHTML = "<strong>🤖 AI Tutor:</strong> Thinking...";
+            chatbox.appendChild(typingMsg);
             chatbox.scrollTop = chatbox.scrollHeight;
             
-            setTimeout(() => {
-                // Remove typing message
-                let messages = chatbox.querySelectorAll("p");
-                messages[messages.length-1].remove();
+            // AI Response
+            setTimeout(function() {
+                chatbox.removeChild(typingMsg);
+                let response = getAIResponse(question);
                 
-                let response = generatePerplexityResponse(q);
-                chatbox.innerHTML += `<p class="ai"><strong>🤖 AI Tutor:</strong> ${response}</p>`;
+                let aiMsg = document.createElement("p");
+                aiMsg.className = "ai";
+                aiMsg.innerHTML = "<strong>🤖 AI Tutor:</strong> " + response;
+                chatbox.appendChild(aiMsg);
                 chatbox.scrollTop = chatbox.scrollHeight;
-            }, 1200);
+            }, 800);
         }
 
-        function generatePerplexityResponse(question) {
+        function getAIResponse(question) {
             let level = localStorage.getItem("userLevel") || "Beginner";
             let score = localStorage.getItem("quizScore") || 0;
             let q = question.toLowerCase();
             
-            // ========== PROGRAMMING CONCEPTS ==========
-            if(q.includes("array") || q.includes("arrays")) {
+            // Arrays
+            if (q.includes("array") || q.includes("arrays")) {
                 return level === "Beginner" ? 
-                    `<strong>Arrays Explained:</strong> Arrays store multiple values in a single variable. Think of them as <strong>numbered shelves</strong>:<br>
-                    <code>let scores = [85, 92, 78, 95];</code><br>
-                    Access: <code>scores[0] = 85</code> (index starts at 0)<br>
-                    Length: <code>scores.length = 4</code><br>
-                    Add: <code>scores.push(88)</code>`
-                : `<strong>Advanced Arrays:</strong> JavaScript arrays are dynamic objects with O(1) random access due to contiguous memory allocation:<br>
-                    <code>let buffer = new ArrayBuffer(1024); // Low-level
-                    let arr = new Int32Array(buffer);</code>`;
+                    "📦 <strong>Arrays:</strong> Like numbered boxes holding data:<br><code>let fruits = ['apple', 'banana'];</code><br>fruits[0] = 'apple' (starts at 0!)" :
+                    "Arrays give O(1) access via contiguous memory:<br><code>let arr = new Array(100).fill(0);</code>";
             }
             
-            if(q.includes("stack")) {
-                return `<strong>Stack Data Structure:</strong> Follows <strong>LIFO</strong> (Last In, First Out)<br>
-                <code>let stack = [];
-                stack.push(1); // [1]
-                stack.push(2); // [1, 2] 
-                stack.pop();   // Returns 2</code><br>
-                Common uses: function call stack, undo/redo, expression evaluation.`;
+            // Stacks
+            if (q.includes("stack") || q.includes("lifo")) {
+                return "🗃️ <strong>Stack (LIFO):</strong> Last In First Out:<br><code>stack.push(1); stack.pop();</code>";
             }
             
-            if(q.includes("queue")) {
-                return `<strong>Queue (FIFO):</strong> First In, First Out principle<br>
-                <code>let queue = [];
-                queue.enqueue = function(item) { this.push(item); }
-                queue.dequeue = function() { return this.shift(); }</code>`;
+            // Practice problems
+            if (q.includes("practice") || q.includes("problem")) {
+                return "<strong>Practice:</strong> Find max in array:<br><code>function max(arr){let m=arr[0];for(let i=1;i<arr.length;i++)if(arr[i]>m)m=arr[i];return m;}</code>";
             }
             
-            if(q.includes("tree") || q.includes("binary")) {
-                return `<strong>Binary Trees:</strong> Hierarchical structure where each node has ≤2 children<br>
-                <pre>      10
-               /  \\
-              5   15
-             / \\   \\
-            3   7   20</pre>`;
+            // JavaScript
+            if (q.includes("javascript") || q.includes("js")) {
+                return "<strong>JS Tips:</strong> Use <code>const</code>, arrow functions <code>()=>{}</code>, destructuring <code>const {name} = obj;</code>";
             }
             
-            // ========== ALGORITHMS ==========
-            if(q.includes("sort") || q.includes("sorting")) {
-                return `<strong>Sorting Algorithm Comparison:</strong>
-                <table style="width:100%;border-collapse:collapse;">
-                <tr><th>Algorithm</th><th>Average</th><th>Worst</th><th>Space</th></tr>
-                <tr><td>QuickSort</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n)</td></tr>
-                <tr><td>MergeSort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td></tr>
-                <tr><td>BubbleSort</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td></tr>
-                </table>`;
-            }
-            
-            if(q.includes("search") || q.includes("binary search")) {
-                return `<strong>Binary Search:</strong> O(log n) on sorted arrays<br>
-                <code>function binarySearch(arr, target) {
-                  let left = 0, right = arr.length - 1;
-                  while(left <= right) {
-                    let mid = Math.floor((left + right) / 2);
-                    if(arr[mid] === target) return mid;
-                    if(arr[mid] < target) left = mid + 1;
-                    else right = mid - 1;
-                  }
-                  return -1;
-                }</code>`;
-            }
-            
-            // ========== CODING PROBLEMS ==========
-            if(q.includes("practice") || q.includes("problem") || q.includes("exercise")) {
-                return `<strong>Two Sum Problem (Classic Interview):</strong><br>
-                <code>function twoSum(nums, target) {
-                  let map = {};
-                  for(let i = 0; i < nums.length; i++) {
-                    let complement = target - nums[i];
-                    if(complement in map) return [map[complement], i];
-                    map[nums[i]] = i;
-                  }
-                }</code><br>Example: twoSum([2,7,11,15], 9) → [0,1]`;
-            }
-            
-            // ========== JAVASCRIPT ==========
-            if(q.includes("javascript") || q.includes("js")) {
-                return `<strong>JavaScript Best Practices (2026):</strong>
-                • Use <code>const</code> by default, <code>let</code> only for reassignment
-                • Arrow functions: <code>const add = (a,b) => a+b;</code>
-                • Destructuring: <code>const {name, age} = user;</code>
-                • Async/await > .then(): <code>await fetch(url)</code>`;
-            }
-            
-            // ========== GENERAL CODING ==========
-            if(q.includes("debug") || q.includes("error")) {
-                return `<strong>Common Debugging Steps:</strong>
-                1. <code>console.log()</code> everywhere
-                2. Check browser DevTools (F12)
-                3. Verify data types: <code>typeof variable</code>
-                4. Test edge cases (empty, null, undefined)
-                5. Use debugger breakpoint`;
-            }
-            
-            if(q.includes("oop") || q.includes("object") || q.includes("class")) {
-                return `<strong>OOP Principles:</strong>
-                • <strong>Encapsulation:</strong> Data hiding
-                • <strong>Inheritance:</strong> Code reuse  
-                • <strong>Polymorphism:</strong> Method overriding
-                • <strong>Abstraction:</strong> Hide complexity<br>
-                <code>class Animal {
-                  constructor(name) { this.name = name; }
-                  speak() { console.log(`${this.name} makes sound`); }
-                }</code>`;
-            }
-            
-            // ========== UNIVERSAL FALLBACK ==========
-            return `<strong>Intelligent Analysis:</strong> Based on your <strong>${level} level</strong> (${score}% quiz score), you're building a strong foundation! 
-
-            <strong>Recommended Learning Path:</strong>
-            ${level === "Advanced" ? "• Advanced Algorithms (Dynamic Programming)
-            • System Design Patterns
-            • LeetCode Hard problems" : 
-            level === "Intermediate" ? "• Medium LeetCode problems
-            • Hash tables & Trees
-            • Two-pointer techniques" : "• Arrays & HashMaps
-            • Stacks & Queues
-            • Basic sorting/searching"}
-
-            What specific topic would you like deep dive? Try: 'arrays', 'sorting', 'recursion', 'practice problem', or anything else! 💡`;
+            // Default smart response
+            return `Great question "${question}"! Your <strong>${level}</strong> level (${score}%) is perfect for ${level === "Advanced" ? "advanced algorithms" : level === "Intermediate" ? "medium problems" : "data structures"}. Try asking about 'arrays', 'stacks', 'sorting', or 'practice problems'! 💡`;
         }
     </script>
 </body>

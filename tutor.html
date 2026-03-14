@@ -1,253 +1,295 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>🎯 JEE/NEET/EAPCET/GATE + BTech Placements AI Tutor</title>
+    <title>🎯 AI Tutor - Student Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#1e3c72,#2a5298);min-height:100vh;color:#333;}
-        header{background:linear-gradient(135deg,#ff6b6b,#feca57);color:#2c3e50;padding:25px;text-align:center;box-shadow:0 10px 40px rgba(255,107,107,0.3);}
-        .container{max-width:1000px;margin:20px auto;padding:20px;}
-        .card{background:#fff;padding:40px;border-radius:25px;box-shadow:0 25px 70px rgba(0,0,0,0.2);height:85vh;display:flex;flex-direction:column;}
-        #chatbox{flex:1;overflow-y:auto;padding:30px;background:#f8f9fa;border-radius:20px;margin-bottom:20px;max-height:550px;}
-        .message{margin:15px 0;padding:25px;border-radius:25px;box-shadow:0 8px 30px rgba(0,0,0,0.15);line-height:1.8;}
-        .user{background:linear-gradient(135deg,#a8edea,#fed6e3);border-left:6px solid #ff6b6b;max-width:85%;}
-        .ai{background:linear-gradient(135deg,#667eea,#764ba2);color:#ffffff;border-left:6px solid #feca57;}
-        .chat-input{display:flex;gap:20px;align-items:center;}
-        input{flex:1;padding:25px;border:2px solid #e1e5e9;border-radius:40px;font-size:17px;box-shadow:0 8px 25px rgba(0,0,0,0.1);}
-        input:focus{outline:none;border-color:#ff6b6b;box-shadow:0 0 0 5px rgba(255,107,107,0.2);}
-        .btn{padding:25px 45px;background:linear-gradient(135deg,#ff6b6b,#feca57);color:#2c3e50;border:none;border-radius:40px;cursor:pointer;font-size:17px;font-weight:700;box-shadow:0 10px 30px rgba(255,107,107,0.4);}
-        .btn:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(255,107,107,0.5);}
-        .stats{margin:20px 0;font-size:20px;text-align:center;font-weight:600;}
-        .stats span{padding:15px 30px;background:linear-gradient(135deg,#ffecd2,#fcb69f);border-radius:35px;font-weight:700;margin:0 15px;box-shadow:0 10px 25px rgba(252,182,159,0.4);}
-        code{background:#2d3748 !important;color:#63b3ed !important;padding:10px 20px;border-radius:12px;font-family:'Fira Code',monospace;font-size:16px;}
-        strong{font-weight:800;color:#feca57;}
-        h1{font-size:3em;text-shadow:2px 2px 4px rgba(0,0,0,0.3);}
-        .exam-badge{background:#ff6b6b;color:white;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;}
+        body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
+        .header{background:linear-gradient(135deg,#4a6cf7,#5a67d8);color:white;padding:20px;text-align:center;box-shadow:0 10px 40px rgba(74,108,247,0.3);}
+        .container{max-width:1100px;margin:20px auto;padding:20px;}
+        .dashboard{background:white;padding:30px;border-radius:25px;box-shadow:0 25px 70px rgba(0,0,0,0.15);height:85vh;}
+        
+        /* DROPDOWN STYLES */
+        .select-section{display:flex;gap:20px;margin-bottom:25px;flex-wrap:wrap;align-items:center;}
+        .dropdown-group{position:relative;display:flex;flex-direction:column;}
+        label{font-weight:600;color:#4a5568;margin-bottom:8px;font-size:15px;}
+        select{padding:15px 20px;border:2px solid #e2e8f0;border-radius:15px;font-size:16px;background:white;font-weight:500;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
+        select:focus{outline:none;border-color:#4a6cf7;box-shadow:0 0 0 4px rgba(74,108,247,0.15);}
+        select:hover{background:#f7fafc;}
+        
+        /* DASHBOARD SECTIONS */
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:25px;}
+        .stat-card{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:20px;border-radius:20px;text-align:center;box-shadow:0 10px 30px rgba(102,126,234,0.3);}
+        .stat-value{font-size:28px;font-weight:800;margin-bottom:5px;}
+        .stat-label{font-size:14px;opacity:0.9;}
+        
+        /* CHAT & QUIZ */
+        .main-content{display:grid;grid-template-columns:1fr 350px;gap:25px;height:calc(100% - 140px);}
+        #chatbox{height:450px;overflow-y:auto;padding:20px;background:#f8f9fa;border-radius:20px;border:1px solid #e2e8f0;}
+        .message{margin:15px 0;padding:18px;border-radius:20px;box-shadow:0 4px 15px rgba(0,0,0,0.08);line-height:1.6;}
+        .user{background:#e3f2fd;border-left:5px solid #4a6cf7;}
+        .ai{background:linear-gradient(135deg,#2c3e50,#34495e);color:white;border-left:5px solid #ffd700;}
+        
+        .quiz-panel{background:#f8f9fa;padding:20px;border-radius:20px;border:1px solid #e2e8f0;height:100%;}
+        .quiz-header{text-align:center;margin-bottom:20px;}
+        .quiz-question{margin-bottom:20px;padding:15px;background:white;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
+        .quiz-options{display:flex;flex-direction:column;gap:10px;}
+        .quiz-option{padding:12px;background:#f7fafc;border-radius:12px;cursor:pointer;transition:all 0.2s;border:2px solid transparent;}
+        .quiz-option:hover{background:#edf2f7;border-color:#4a6cf7;}
+        .quiz-btns{display:flex;gap:10px;margin-top:20px;}
+        .btn{padding:12px 24px;background:#4a6cf7;color:white;border:none;border-radius:12px;cursor:pointer;font-weight:600;transition:all 0.3s;}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(74,108,247,0.3);}
+        
+        .chat-input{display:flex;gap:15px;margin-top:15px;}
+        input{flex:1;padding:15px;border:2px solid #e2e8f0;border-radius:15px;font-size:16px;}
+        input:focus{outline:none;border-color:#4a6cf7;}
     </style>
 </head>
 <body>
-    <header>
-        <h1>🎯  AI TUTOR</h1>
-        <div class="stats">
-            <span class="exam-badge">JEE | NEET | EAPCET | ECET | GATE</span>
-            Level: <span id="userLevel">JEE Main</span> | 
-            Progress: <span id="quizScore">0%</span>
-        </div>
-    </header>
+    <div class="header">
+        <h1>🎯 AI Tutor Dashboard</h1>
+    </div>
     
     <div class="container">
-        <div class="card">
-            <div id="chatbox">
-                <div class="message ai">
-                    <strong>🎯 AI Tutor:</strong> Your personal tutor for <strong>JEE Main/Advanced, NEET, EAPCET, ECET, GATE, BTech Placements</strong>! Ask about programming, algorithms, data structures, aptitude, C/C++, Java, Python, OS, DBMS, Networks - theory + code + exam questions! 🚀
+        <div class="dashboard">
+            <!-- STUDENT PROFILE DROPDOWNS -->
+            <div class="select-section">
+                <div class="dropdown-group">
+                    <label>🎓 Grade</label>
+                    <select id="gradeSelect">
+                        <option value="">Select Grade</option>
+                        <option value="11th">Grade 11</option>
+                        <option value="12th">Grade 12</option>
+                        <option value="diploma">Diploma</option>
+                        <option value="ug">B.Tech 1-4th Year</option>
+                    </select>
+                </div>
+                
+                <div class="dropdown-group">
+                    <label>📚 Subjects</label>
+                    <select id="subjectSelect">
+                        <option value="">Select Subjects</option>
+                        <option value="programming">Programming (C/Python)</option>
+                        <option value="dsa">Data Structures & Algorithms</option>
+                        <option value="web">Web Development</option>
+                        <option value="aptitude">Aptitude/Reasoning</option>
+                    </select>
+                </div>
+                
+                <div class="dropdown-group">
+                    <label>🎯 Entrance Exam</label>
+                    <select id="examSelect">
+                        <option value="">Select Exam</option>
+                        <option value="jee">JEE Main/Advanced</option>
+                        <option value="eapcet">AP/TS EAPCET</option>
+                        <option value="ecet">AP/TS ECET</option>
+                        <option value="gate">GATE</option>
+                        <option value="placements">Campus Placements</option>
+                    </select>
+                </div>
+                
+                <button class="btn" onclick="updateStudentProfile()" style="padding:15px 30px;">Update Profile</button>
+            </div>
+            
+            <!-- STATS DASHBOARD -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="quizScore">0%</div>
+                    <div class="stat-label">Quiz Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="levelDisplay">Beginner</div>
+                    <div class="stat-label">Current Level</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="questionsAsked">0</div>
+                    <div class="stat-label">Questions Asked</div>
                 </div>
             </div>
             
-            <div class="chat-input">
-                <input id="question" type="text" placeholder="Ask: 'binary search JEE', 'linked list GATE', 'OOP placements', 'sorting EAPCET'..." />
-                <button class="btn" onclick="sendMessage()">Solve Doubt</button>
+            <!-- MAIN CONTENT: CHAT + QUIZ -->
+            <div class="main-content">
+                <div>
+                    <div id="chatbox">
+                        <div class="message ai">
+                            <strong>🤖 AI Tutor:</strong> Welcome! Select your <strong>Grade + Subjects + Exam</strong> above to get personalized content and quizzes. Your dashboard will adapt automatically! 🚀
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input id="questionInput" placeholder="Ask programming doubts..." />
+                        <button class="btn" onclick="sendQuestion()">Ask</button>
+                    </div>
+                </div>
+                
+                <div class="quiz-panel">
+                    <div class="quiz-header">
+                        <h3>📝 Subject Quiz</h3>
+                        <div id="quizTopic" style="font-size:14px;color:#666;margin-top:5px;">Select profile to start quiz</div>
+                    </div>
+                    <div id="quizContent">
+                        <div style="text-align:center;color:#999;padding:40px;">
+                            Select your profile to get <strong>personalized quiz questions</strong>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        // STUDENT PROFILE DATA
+        let studentProfile = JSON.parse(localStorage.getItem('studentProfile')) || {};
+        let quizScore = parseInt(localStorage.getItem('quizScore')) || 0;
+        let questionsAsked = parseInt(localStorage.getItem('questionsAsked')) || 0;
+        
+        // SUBJECT-BASED QUIZZES
+        const quizBank = {
+            programming: [
+                {q: "What is the output of console.log(0.1 + 0.2 == 0.3)?", options: ["true", "false", "undefined"], ans: 1},
+                {q: "Which is block-scoped?", options: ["var", "let", "function"], ans: 1},
+                {q: "Array access time complexity?", options: ["O(n)", "O(1)", "O(log n)"], ans: 1}
+            ],
+            dsa: [
+                {q: "Binary search time complexity?", options: ["O(n)", "O(log n)", "O(n²)"], ans: 1},
+                {q: "Bubble sort time complexity?", options: ["O(n log n)", "O(n²)", "O(1)"], ans: 1},
+                {q: "Linked list insertion?", options: ["O(n)", "O(1)", "O(log n)"], ans: 1}
+            ],
+            web: [
+                {q: "HTML doctype?", options: ["&lt;!DOCTYPE&gt;", "&lt;html&gt;", "&lt;head&gt;"], ans: 0},
+                {q: "CSS box model includes?", options: ["content, padding, border, margin", "only content", "only padding"], ans: 0},
+                {q: "Flexbox property?", options: ["justify-content", "position", "float"], ans: 0}
+            ]
+        };
+        
+        let currentQuiz = {questionIndex: 0, score: 0};
+        
+        // INITIALIZE
         window.onload = function() {
-            let score = localStorage.getItem("quizScore") || 0;
-            let level = localStorage.getItem("userLevel") || "JEE Main";
-            document.getElementById("quizScore").textContent = score + "%";
-            document.getElementById("userLevel").textContent = level;
-            
-            document.getElementById("question").addEventListener("keypress", function(e) {
-                if (e.key === "Enter") sendMessage();
+            updateDisplay();
+            document.getElementById('questionInput').addEventListener('keypress', function(e) {
+                if(e.key === 'Enter') sendQuestion();
             });
         };
-
-        function sendMessage() {
-            let input = document.getElementById("question");
-            let chatbox = document.getElementById("chatbox");
+        
+        function updateStudentProfile() {
+            studentProfile.grade = document.getElementById('gradeSelect').value;
+            studentProfile.subject = document.getElementById('subjectSelect').value;
+            studentProfile.exam = document.getElementById('examSelect').value;
+            
+            localStorage.setItem('studentProfile', JSON.stringify(studentProfile));
+            updateDisplay();
+            generateQuiz();
+            alert('✅ Profile updated! Content personalized for your selection.');
+        }
+        
+        function updateDisplay() {
+            document.getElementById('quizScore').textContent = quizScore + '%';
+            document.getElementById('levelDisplay').textContent = getLevel();
+            document.getElementById('questionsAsked').textContent = questionsAsked;
+            
+            let examDisplay = studentProfile.exam ? studentProfile.exam.toUpperCase() : 'Select Exam';
+            document.getElementById('levelDisplay').textContent = `${studentProfile.grade || 'Grade'} | ${examDisplay}`;
+        }
+        
+        function getLevel() {
+            if(quizScore >= 80) return 'Expert';
+            if(quizScore >= 60) return 'Advanced';
+            if(quizScore >= 40) return 'Intermediate';
+            return 'Beginner';
+        }
+        
+        function generateQuiz() {
+            if(!studentProfile.subject || !quizBank[studentProfile.subject]) {
+                document.getElementById('quizContent').innerHTML = '<div style="text-align:center;color:#999;padding:40px;">Select your profile to start quiz</div>';
+                return;
+            }
+            
+            let subject = studentProfile.subject;
+            let questions = quizBank[subject];
+            let q = questions[currentQuiz.questionIndex % questions.length];
+            
+            document.getElementById('quizTopic').textContent = `${subject.toUpperCase()} - Q${currentQuiz.questionIndex + 1}`;
+            
+            let html = `
+                <div class="quiz-question">
+                    <strong>Q: ${q.q}</strong>
+                </div>
+                <div class="quiz-options">
+                    ${q.options.map((opt, i) => 
+                        `<div class="quiz-option" onclick="selectQuizAnswer(${i})">${String.fromCharCode(65+i)}. ${opt}</div>`
+                    ).join('')}
+                </div>
+                <div class="quiz-btns">
+                    <button class="btn" onclick="nextQuiz()">Next Question</button>
+                    <button class="btn" onclick="showQuizScore()" style="background:#48bb78;">Score</button>
+                </div>
+            `;
+            
+            document.getElementById('quizContent').innerHTML = html;
+        }
+        
+        function selectQuizAnswer(answerIndex) {
+            let questions = quizBank[studentProfile.subject];
+            let q = questions[currentQuiz.questionIndex % questions.length];
+            
+            if(answerIndex === q.ans) {
+                currentQuiz.score++;
+                alert('✅ Correct!');
+            } else {
+                alert(`❌ Wrong! Correct: ${q.options[q.ans]}`);
+            }
+            
+            quizScore = Math.round((currentQuiz.score / (currentQuiz.questionIndex + 1)) * 100);
+            localStorage.setItem('quizScore', quizScore);
+            updateDisplay();
+        }
+        
+        function nextQuiz() {
+            currentQuiz.questionIndex++;
+            generateQuiz();
+        }
+        
+        function showQuizScore() {
+            alert(`📊 Your Score: ${quizScore}% (${currentQuiz.score}/${currentQuiz.questionIndex + 1})`);
+        }
+        
+        function sendQuestion() {
+            let input = document.getElementById('questionInput');
+            let chatbox = document.getElementById('chatbox');
             let q = input.value.trim();
             
-            if (!q) return;
+            if(!q) return;
+            
+            questionsAsked++;
+            localStorage.setItem('questionsAsked', questionsAsked);
             
             chatbox.innerHTML += `<div class="message user"><strong>You:</strong> ${q}</div>`;
-            input.value = "";
+            input.value = '';
             chatbox.scrollTop = chatbox.scrollHeight;
             
-            let typingId = "typing_" + Date.now();
-            chatbox.innerHTML += `<div class="message ai" id="${typingId}"><strong>🎯 AI Tutor:</strong> <em>Solving for ${getExamType(q)}...</em></div>`;
-            chatbox.scrollTop = chatbox.scrollHeight;
-            
+            // SIMPLIFIED AI RESPONSE BASED ON PROFILE
             setTimeout(() => {
-                document.getElementById(typingId).remove();
-                let response = getExamResponse(q);
-                chatbox.innerHTML += `<div class="message ai">${response}</div>`;
+                let response = getPersonalizedResponse(q);
+                chatbox.innerHTML += `<div class="message ai"><strong>🤖 AI Tutor:</strong> ${response}</div>`;
                 chatbox.scrollTop = chatbox.scrollHeight;
-            }, 1200);
+                updateDisplay();
+            }, 800);
         }
-
-        function getExamType(q) {
-            let exam = "exam";
-            if (q.includes("jee") || q.includes("iit")) exam = "JEE";
-            if (q.includes("neet")) exam = "NEET";
-            if (q.includes("eapcet") || q.includes("eamcet")) exam = "EAPCET";
-            if (q.includes("gate")) exam = "GATE";
-            if (q.includes("placement")) exam = "Placement";
-            return exam;
-        }
-
-        function getExamResponse(question) {
-            let q = question.toLowerCase();
+        
+        function getPersonalizedResponse(q) {
+            let subject = studentProfile.subject || 'general';
+            let exam = studentProfile.exam || '';
             
-            // ========== JEE MAIN/ADVANCED PROGRAMMING ==========
-            if (q.includes("binary search") || q.includes("search")) {
-                return `<strong>🔍 BINARY SEARCH (JEE/GATE)</strong><br>
-                <strong>📚 THEORY:</strong> O(log n) algorithm for <em>sorted arrays</em>. Divide and conquer approach.<br><br>
-                <strong>💻 CODE (C++ for JEE):</strong>
-                <code>int binarySearch(int arr[], int n, int key) {
-    int low = 0, high = n-1;
-    while(low <= high) {
-        int mid = low + (high-low)/2;
-        if(arr[mid] == key) return mid;
-        else if(arr[mid] < key) low = mid+1;
-        else high = mid-1;
-    }
-    return -1;
-}</code><br>
-                <strong>🧪 JEE PYQ:</strong> Time complexity? <strong>Ans: O(log n)</strong>`;
-            }
-            
-            if (q.includes("bubble sort") || q.includes("sort")) {
-                return `<strong>🫧 BUBBLE SORT (EAPCET/ECET)</strong><br>
-                <strong>📚 THEORY:</strong> O(n²) comparison-based. Adjacent swaps. Stable algorithm.<br><br>
-                <strong>💻 CODE (C for EAPCET):</strong>
-                <code>void bubbleSort(int arr[], int n) {
-    for(int i = 0; i < n-1; i++) {
-        for(int j = 0; j < n-i-1; j++) {
-            if(arr[j] > arr[j+1]) {
-                int temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
-            }
-        }
-    }
-}</code><br>
-                <strong>🎯 KEY POINT:</strong> <code>n-i-1</code> optimization skips sorted elements.`;
-            }
-            
-            if (q.includes("linked list") || q.includes("list")) {
-                return `<strong>🔗 LINKED LIST (GATE/BTech)</strong><br>
-                <strong>📚 THEORY:</strong> Dynamic memory allocation. O(1) insertion/deletion vs array's O(n).<br><br>
-                <strong>💻 CODE (C++ for GATE):</strong>
-                <code>struct Node {
-    int data;
-    struct Node* next;
-};
-
-void insertAtEnd(Node** head, int data) {
-    Node* newNode = new Node();
-    newNode->data = data;
-    newNode->next = NULL;
-    
-    if(*head == NULL) {
-        *head = newNode;
-        return;
-    }
-    
-    Node* temp = *head;
-    while(temp->next != NULL) temp = temp->next;
-    temp->next = newNode;
+            if(q.toLowerCase().includes('loop') || q.toLowerCase().includes('for')) {
+                return `📚 <strong>Loops (${subject.toUpperCase()})</strong><br>
+                <code>for(let i=0; i<10; i++) {
+  console.log(i); // ${exam === 'jee' ? 'JEE: Iteration count' : ''}
 }</code>`;
             }
             
-            if (q.includes("stack") || q.includes("queue")) {
-                return `<strong>📦 STACK & QUEUE (JEE Advanced)</strong><br>
-                <strong>📚 THEORY:</strong> Stack=LIFO, Queue=FIFO. Array vs LinkedList implementations.<br><br>
-                <strong>💻 CODE (Array Stack):</strong>
-                <code>class Stack {
-    int arr[100], top = -1;
-public:
-    void push(int x) { arr[++top] = x; }
-    int pop() { return arr[top--]; }
-    bool isEmpty() { return top == -1; }
-};</code>`;
-            }
-            
-            if (q.includes("oop") || q.includes("object oriented")) {
-                return `<strong>🧩 OOP CONCEPTS (Placements/BTech)</strong><br>
-                <strong>📚 4 PILLARS:</strong><br>
-                • <strong>Encapsulation:</strong> Data hiding<br>
-                • <strong>Inheritance:</strong> Code reuse<br>
-                • <strong>Polymorphism:</strong> Method override<br>
-                • <strong>Abstraction:</strong> Interface hiding<br><br>
-                <strong>💻 CODE (Java for Placements):</strong>
-                <code>abstract class Shape {
-    abstract double area();
-}
-
-class Circle extends Shape {
-    double radius;
-    Circle(double r) { radius = r; }
-    double area() { return 3.14 * radius * radius; }
-}</code>`;
-            }
-            
-            if (q.includes("tree") || q.includes("binary tree")) {
-                return `<strong>🌳 BINARY TREE (GATE Advanced)</strong><br>
-                <strong>📚 THEORY:</strong> Each node ≤2 children. BST: left<root<right property.<br><br>
-                <strong>💻 CODE (BST Insert):</strong>
-                <code>struct Node {
-    int data;
-    Node* left, *right;
-};
-
-Node* insert(Node* root, int key) {
-    if(root == NULL) {
-        root = new Node();
-        root->data = key;
-        return root;
-    }
-    if(key < root->data)
-        root->left = insert(root->left, key);
-    else
-        root->right = insert(root->right, key);
-    return root;
-}</code>`;
-            }
-            
-            if (q.includes("placement") || q.includes("interview")) {
-                return `<strong>💼 TOP 5 PLACEMENT QUESTIONS:</strong><br>
-                1. <strong>Reverse String:</strong> <code>str.split('').reverse().join('')</code><br>
-                2. <strong>Palindrome:</strong> <code>s === s.split('').reverse().join('')</code><br>
-                3. <strong>Fibonacci:</strong> <code>function fib(n){return n<=1?n: fib(n-1)+fib(n-2);}</code><br>
-                4. <strong>Prime Check:</strong> <code>for(let i=2;i*i<=n;i++)if(n%i==0)return false;</code><br>
-                5. <strong>Array Sum:</strong> <code>arr.reduce((sum,x)=>sum+x,0)</code>`;
-            }
-            
-            // ========== GENERAL COMPETITIVE PREP ==========
-            if (q.includes("jee") || q.includes("eapcet") || q.includes("ecet")) {
-                return `<strong>🎯 JEE/EAPCET/ECET QUICK PREP:</strong><br>
-                <strong>High Weightage Topics:</strong><br>
-                • Arrays (25%) • Sorting (20%) • Searching (15%)<br>
-                • Stacks/Queues (15%) • Linked Lists (10%)<br>
-                • Trees/Graphs (15%)<br><br>
-                <strong>Time Complexities:</strong><br>
-                <code>Array Access: O(1)    LinkedList Insert: O(1)
-Bubble Sort: O(n²)    Binary Search: O(log n)
-QuickSort: O(n log n)</code>`;
-            }
-            
-            // ========== DEFAULT COMPETITIVE HELP ==========
-            return `<strong>🎯 Competitive Exam Programming Guide:</strong><br><br>
-            <strong>JEE Main:</strong> Arrays, Sorting, Searching, Basic DSA<br>
-            <strong>JEE Advanced:</strong> Trees, Graphs, Dynamic Programming<br>
-            <strong>EAPCET/ECET:</strong> C Programming, Basic Algorithms<br>
-            <strong>GATE:</strong> Advanced DSA, OS, DBMS, Networks<br>
-            <strong>BTech Placements:</strong> OOP, System Design, Puzzles<br><br>
-            
-            <strong>🔥 Ask specifically:</strong><br>
-            "binary search JEE" • "linked list GATE" • "OOP placements"<br>
-            "bubble sort EAPCET" • "tree traversal" • "stack implementation"`;
+            return `✅ Great question for <strong>${studentProfile.grade || 'your level'}</strong> ${exam} prep!<br>
+            Try asking: "loops", "arrays", "binary search", "OOP concepts"`;
         }
     </script>
 </body>

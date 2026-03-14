@@ -1,68 +1,218 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quiz - AI Tutor</title>
+    <title>📝 AI Quiz Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
-        .container{max-width:600px;margin:20px auto;padding:20px;}
-        .card{background:white;padding:40px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);}
-        .question{margin:20px 0;}
-        .question h3{margin-bottom:15px;color:#333;}
-        .question label{display:block;padding:15px;margin:5px 0;border:2px solid #eee;border-radius:10px;cursor:pointer;}
-        .question label:hover{background:#f5f5f5;}
-        .btn{padding:15px;background:#4a6cf7;color:white;border:none;border-radius:10px;cursor:pointer;width:100%;font-size:16px;margin:20px 0;font-weight:bold;}
-        .btn:hover{background:#3b55d0;}
+        body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#ff6b6b,#feca57);min-height:100vh;}
+        header{background:linear-gradient(135deg,#ff6b6b,#feca57);color:#2c3e50;padding:20px;text-align:center;}
+        .container{max-width:1100px;margin:20px auto;padding:20px;}
+        .dashboard{background:white;padding:30px;border-radius:25px;box-shadow:0 25px 70px rgba(0,0,0,0.15);height:85vh;}
+        
+        /* DROPDOWN SECTION */
+        .profile-setup{display:flex;gap:20px;margin-bottom:25px;flex-wrap:wrap;align-items:center;}
+        .dropdown-group{position:relative;display:flex;flex-direction:column;}
+        label{font-weight:700;color:#2c3e50;margin-bottom:8px;font-size:15px;}
+        select{padding:15px 20px;border:2px solid #e2e8f0;border-radius:15px;font-size:16px;background:white;font-weight:600;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
+        select:focus{outline:none;border-color:#ff6b6b;box-shadow:0 0 0 4px rgba(255,107,107,0.2);}
+        
+        /* STATS */
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-bottom:25px;}
+        .stat-card{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:25px;border-radius:20px;text-align:center;box-shadow:0 10px 30px rgba(102,126,234,0.3);}
+        .stat-value{font-size:32px;font-weight:800;}
+        .stat-label{font-size:15px;opacity:0.95;}
+        
+        /* QUIZ */
+        .quiz-area{padding:25px;background:#f8f9fa;border-radius:20px;height:400px;overflow-y:auto;border:1px solid #e2e8f0;}
+        .quiz-question{margin-bottom:25px;padding:25px;background:white;border-radius:20px;box-shadow:0 6px 20px rgba(0,0,0,0.1);}
+        .quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
+        .quiz-option{padding:18px;background:#f7fafc;border-radius:15px;cursor:pointer;transition:all 0.3s;border:2px solid transparent;font-weight:500;}
+        .quiz-option:hover{background:#edf2f7;border-color:#ff6b6b;transform:translateY(-2px);}
+        .quiz-btns{display:flex;gap:15px;margin-top:25px;}
+        .btn{padding:15px 30px;background:linear-gradient(135deg,#ff6b6b,#feca57);color:#2c3e50;border:none;border-radius:15px;cursor:pointer;font-weight:700;font-size:16px;transition:all 0.3s;box-shadow:0 6px 20px rgba(255,107,107,0.3);}
+        .btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(255,107,107,0.4);}
+        .back-btn{background:#667eea;color:white;margin-top:20px;}
+        
+        h1{font-size:2.8em;text-shadow:2px 2px 4px rgba(0,0,0,0.2);}
+        code{background:#2d3748;color:#63b3ed;padding:8px 16px;border-radius:8px;font-family:monospace;font-size:15px;}
     </style>
 </head>
 <body>
+    <header>
+        <h1>📝 Quiz Dashboard</h1>
+        <p style="opacity:0.9;font-size:18px;">Setup Profile → Get Personalized Quizzes</p>
+    </header>
+    
     <div class="container">
-        <div class="card">
-            <h1>Skill Assessment</h1>
-            <div class="question">
-                <h3>1. What is an Array?</h3>
-                <label><input type="radio" name="q1" value="correct"> Collection of items in contiguous memory</label>
-                <label><input type="radio" name="q1" value="wrong"> Tree structure</label>
-                <label><input type="radio" name="q1" value="wrong"> Graph</label>
+        <div class="dashboard">
+            <!-- PROFILE DROPDOWNS -->
+            <div class="profile-setup">
+                <div class="dropdown-group">
+                    <label>🎓 Grade/Class</label>
+                    <select id="gradeSelect">
+                        <option value="">Select Grade</option>
+                        <option value="11th">Grade 11th</option>
+                        <option value="12th">Grade 12th</option>
+                        <option value="diploma">Diploma</option>
+                        <option value="btech1">B.Tech 1st Year</option>
+                        <option value="btech2">B.Tech 2nd Year</option>
+                        <option value="btech3">B.Tech 3rd Year</option>
+                        <option value="btech4">B.Tech 4th Year</option>
+                    </select>
+                </div>
+                
+                <div class="dropdown-group">
+                    <label>📚 Main Subject</label>
+                    <select id="subjectSelect">
+                        <option value="">Select Subject</option>
+                        <option value="programming">Programming (C/Python)</option>
+                        <option value="dsa">DSA + Algorithms</option>
+                        <option value="web">Web Development</option>
+                        <option value="aptitude">Aptitude/Reasoning</option>
+                        <option value="theory">Computer Theory</option>
+                    </select>
+                </div>
+                
+                <div class="dropdown-group">
+                    <label>🎯 Target Exam</label>
+                    <select id="examSelect">
+                        <option value="">Select Exam</option>
+                        <option value="jee">JEE Main/Advanced</option>
+                        <option value="eapcet">AP/TS EAPCET</option>
+                        <option value="ecet">AP/TS ECET</option>
+                        <option value="gate">GATE CSE</option>
+                        <option value="placements">Campus Placements</option>
+                    </select>
+                </div>
+                
+                <button class="btn" onclick="setupProfile()">🚀 Start Quiz</button>
             </div>
-            <div class="question">
-                <h3>2. LIFO means?</h3>
-                <label><input type="radio" name="q2" value="correct"> Stack</label>
-                <label><input type="radio" name="q2" value="wrong"> Queue</label>
-                <label><input type="radio" name="q2" value="wrong"> Array</label>
+            
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="quizScore">0%</div>
+                    <div class="stat-label">Quiz Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="currentLevel">Beginner</div>
+                    <div class="stat-label">Your Level</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="quizCount">0</div>
+                    <div class="stat-label">Quizzes Taken</div>
+                </div>
             </div>
-            <div class="question">
-                <h3>3. Array access time?</h3>
-                <label><input type="radio" name="q3" value="correct"> O(1)</label>
-                <label><input type="radio" name="q3" value="wrong"> O(n)</label>
-                <label><input type="radio" name="q3" value="wrong"> O(log n)</label>
+            
+            <!-- QUIZ CONTENT -->
+            <div class="quiz-area" id="quizArea">
+                <div style="text-align:center;padding:60px;color:#999;">
+                    <h3>👆 Select your Profile above</h3>
+                    <p>Get personalized quizzes for your grade + exam + subject!</p>
+                    <button class="btn back-btn" onclick="window.location.href='tutor.html'">← Go to AI Tutor</button>
+                </div>
             </div>
-            <button class="btn" onclick="submitQuiz()">Submit Quiz</button>
-            <div id="quizResult"></div>
-            <a href="dashboard.html" style="display:inline-block;margin-top:20px;color:#4a6cf7;">← Back to Dashboard</a>
         </div>
     </div>
+
     <script>
-    function submitQuiz(){
-        var score = 0;
-        if(document.querySelector('input[name="q1"]:checked') && document.querySelector('input[name="q1"]:checked').value == "correct") score++;
-        if(document.querySelector('input[name="q2"]:checked') && document.querySelector('input[name="q2"]:checked').value == "correct") score++;
-        if(document.querySelector('input[name="q3"]:checked') && document.querySelector('input[name="q3"]:checked').value == "correct") score++;
+        let studentProfile = JSON.parse(localStorage.getItem('studentProfile')) || {};
+        let quizData = {score: 0, total: 0, level: 'Beginner'};
         
-        var percent = Math.round(score/3*100);
-        var level = percent >= 80 ? "Advanced" : percent >= 60 ? "Intermediate" : "Beginner";
+        // SUBJECT QUIZZES
+        const quizBank = {
+            programming: [
+                {q: "Output: console.log(0.1 + 0.2 == 0.3)?", opts: ["true", "false", "0.3"], ans: 1},
+                {q: "Block scope variable?", opts: ["var", "let/const", "function"], ans: 1},
+                {q: "Array access complexity?", opts: ["O(n)", "O(1)", "O(log n)"], ans: 1}
+            ],
+            dsa: [
+                {q: "Binary search complexity?", opts: ["O(n)", "O(log n)", "O(n²)"], ans: 1},
+                {q: "Bubble sort complexity?", opts: ["O(n log n)", "O(n²)", "O(1)"], ans: 1},
+                {q: "LinkedList insert?", opts: ["O(n)", "O(1)", "O(log n)"], ans: 1}
+            ]
+        };
         
-        localStorage.quizScore = percent;
-        localStorage.userLevel = level;
+        function setupProfile() {
+            let grade = document.getElementById('gradeSelect').value;
+            let subject = document.getElementById('subjectSelect').value;
+            let exam = document.getElementById('examSelect').value;
+            
+            if(!grade || !subject || !exam) {
+                alert('⚠️ Please select Grade, Subject AND Exam');
+                return;
+            }
+            
+            studentProfile = {grade, subject, exam};
+            localStorage.setItem('studentProfile', JSON.stringify(studentProfile));
+            startQuiz();
+        }
         
-        document.getElementById("quizResult").innerHTML = 
-            '<div style="padding:30px;background:#d4edda;border-radius:20px;text-align:center;margin:20px 0;box-shadow:0 10px 30px rgba(0,0,0,0.1);">' +
-            '<h2 style="color:#155724;">🎉 ' + percent + '%</h2>' +
-            '<h3 style="color:#155724;">' + level + '</h3>' +
-            '<a href="tutor.html" class="btn" style="width:100%;margin-top:20px;">Continue to AI Tutor →</a>' +
-            '</div>';
-    }
+        function startQuiz() {
+            if(!quizBank[studentProfile.subject]) {
+                document.getElementById('quizArea').innerHTML = '<div style="text-align:center;padding:60px;color:#999;">Subject not available yet</div>';
+                return;
+            }
+            
+            let q = quizBank[studentProfile.subject][Math.floor(Math.random() * quizBank[studentProfile.subject].length)];
+            let html = `
+                <div class="quiz-question">
+                    <h3>📚 ${studentProfile.subject.toUpperCase()} - ${studentProfile.exam.toUpperCase()}</h3>
+                    <p><strong>Q: ${q.q}</strong></p>
+                </div>
+                <div class="quiz-options">
+                    ${q.opts.map((opt, i) => 
+                        `<div class="quiz-option" onclick="selectAnswer(${i}, ${q.ans})">
+                            ${String.fromCharCode(65+i)}. ${opt}
+                        </div>`
+                    ).join('')}
+                </div>
+                <div class="quiz-btns">
+                    <button class="btn" onclick="startQuiz()">➡️ New Question</button>
+                    <button class="btn" onclick="showStats()">📊 Stats</button>
+                </div>
+                <button class="btn back-btn" onclick="window.location.href='tutor.html'" style="margin-top:20px;">← AI Tutor Bot</button>
+            `;
+            
+            document.getElementById('quizArea').innerHTML = html;
+            updateStats();
+        }
+        
+        function selectAnswer(selected, correct) {
+            quizData.total++;
+            if(selected === correct) quizData.score++;
+            
+            let scorePercent = Math.round((quizData.score / quizData.total) * 100);
+            quizData.level = scorePercent >= 80 ? 'Expert' : scorePercent >= 60 ? 'Advanced' : scorePercent >= 40 ? 'Intermediate' : 'Beginner';
+            
+            localStorage.setItem('quizData', JSON.stringify(quizData));
+            updateStats();
+            
+            setTimeout(() => {
+                alert(selected === correct ? '✅ Correct!' : `❌ Wrong! Correct: ${String.fromCharCode(65+correct)}`);
+                startQuiz();
+            }, 100);
+        }
+        
+        function updateStats() {
+            document.getElementById('quizScore').textContent = Math.round((quizData.score / Math.max(quizData.total,1)) * 100) + '%';
+            document.getElementById('currentLevel').textContent = quizData.level;
+            document.getElementById('quizCount').textContent = quizData.total;
+        }
+        
+        function showStats() {
+            let percent = Math.round((quizData.score / Math.max(quizData.total,1)) * 100);
+            alert(`📊 Stats:\nScore: ${quizData.score}/${quizData.total} (${percent}%)\nLevel: ${quizData.level}\nGrade: ${studentProfile.grade}\nExam: ${studentProfile.exam}`);
+        }
+        
+        // LOAD SAVED DATA
+        window.onload = function() {
+            if(localStorage.getItem('quizData')) {
+                quizData = JSON.parse(localStorage.getItem('quizData'));
+                updateStats();
+            }
+        };
     </script>
 </body>
 </html>

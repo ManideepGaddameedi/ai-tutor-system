@@ -1,23 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Register</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - AI Tutor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-<div class="container">
-<div class="login-box">
-<h2>Create Your Account</h2>
-<input id="name" type="text" placeholder="Full Name">
-<input id="email" type="email" placeholder="Email Address">
-<input id="password" type="password" placeholder="Password">
-<button class="btn" onclick="registerUser()">Register</button>
-<p>Already registered?</p>
-<a href="login.html"><button class="btn secondary">Login</button></a>
-</div>
-</div>
-<script src="script.js"></script>
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">AI Tutor</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="login.html">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-card">
+                <div class="auth-content">
+                    <h1>Create Account</h1>
+                    <p>Join thousands learning smarter with AI</p>
+                    
+                    <form onsubmit="registerUser(event)">
+                        <input id="name" type="text" placeholder="Full Name" required>
+                        <input id="email" type="email" placeholder="Email Address" required>
+                        <input id="password" type="password" placeholder="Password" required>
+                        <button type="submit" class="btn-primary full">Create Account</button>
+                    </form>
+                    
+                    <div class="auth-footer">
+                        <p>Already have an account?</p>
+                        <a href="login.html" class="btn-secondary full">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
 </body>
 </html>

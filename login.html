@@ -2,28 +2,21 @@
 <html>
 <head>
 <title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
 <div class="container">
-
 <div class="login-box">
-
 <h2>Student Login</h2>
-
-<input id="loginEmail" type="text" placeholder="Email">
-
+<input id="loginEmail" type="email" placeholder="Email Address">
 <input id="loginPassword" type="password" placeholder="Password">
-
-<button onclick="loginUser()" class="btn">Login</button>
-
+<button class="btn" onclick="loginUser()">Login</button>
+<p>New user?</p>
+<a href="register.html"><button class="btn secondary">Create Account</button></a>
 </div>
-
 </div>
-
 <script src="script.js"></script>
-
 </body>
 </html>

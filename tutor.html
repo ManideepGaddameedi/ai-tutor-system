@@ -1,38 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Universal AI Programming Tutor</title>
+    <title>Universal AI Tutor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
-        header{background:#4a6cf7;color:white;padding:25px;text-align:center;}
-        .container{max-width:900px;margin:20px auto;padding:20px;}
-        .card{background:white;padding:35px;border-radius:25px;box-shadow:0 25px 70px rgba(0,0,0,0.15);height:80vh;display:flex;flex-direction:column;}
-        #chatbox{flex:1;overflow-y:auto;padding:25px;background:#f8f9fa;border-radius:20px;margin-bottom:20px;max-height:500px;}
-        #chatbox p{margin:15px 0;padding:20px;border-radius:22px;box-shadow:0 4px 20px rgba(0,0,0,0.1);line-height:1.7;}
-        .user{background:#e3f2fd;border-left:5px solid #4a6cf7;}
+        body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
+        header{background:#4a6cf7;color:white;padding:20px;text-align:center;}
+        .container{max-width:850px;margin:20px auto;padding:20px;}
+        .card{background:white;padding:30px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);height:78vh;display:flex;flex-direction:column;}
+        #chatbox{flex:1;overflow-y:auto;padding:20px;background:#f8f9fa;border-radius:15px;margin-bottom:20px;max-height:480px;}
+        #chatbox p{margin:12px 0;padding:16px;border-radius:18px;box-shadow:0 3px 12px rgba(0,0,0,0.08);line-height:1.6;}
+        .user{background:#e3f2fd;border-left:4px solid #4a6cf7;}
         .ai{
             background:linear-gradient(135deg,#2c3e50,#34495e);
             color: #FFFFFF !important;
-            border-left:5px solid #ffd700;
+            border-left:4px solid #ffd700;
             font-weight: 500;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
         .chat-input{display:flex;gap:15px;}
-        input{flex:1;padding:20px;border:2px solid #e1e5e9;border-radius:30px;font-size:16px;box-shadow:0 4px 15px rgba(0,0,0,0.08);}
-        input:focus{outline:none;border-color:#4a6cf7;box-shadow:0 0 0 4px rgba(74,108,247,0.15);}
-        .btn{padding:20px 35px;background:#4a6cf7;color:white;border:none;border-radius:30px;cursor:pointer;font-size:16px;font-weight:600;box-shadow:0 6px 20px rgba(74,108,247,0.3);}
-        .btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(74,108,247,0.4);}
-        .stats{margin:15px 0;font-size:18px;text-align:center;}
-        .stats span{padding:12px 20px;background:#ffd700;border-radius:25px;font-weight:bold;margin:0 10px;box-shadow:0 5px 15px rgba(255,215,0,0.3);}
-        code{background:#1e293b !important;color:#e9ecef !important;padding:4px 12px;border-radius:8px;font-family:'Fira Code',monospace;font-size:14px;}
-        h1{font-size:2.5em;}
+        input{flex:1;padding:18px;border:2px solid #ddd;border-radius:25px;font-size:16px;}
+        input:focus{outline:none;border-color:#4a6cf7;}
+        .btn{padding:18px 30px;background:#4a6cf7;color:white;border:none;border-radius:25px;cursor:pointer;font-size:16px;font-weight:bold;}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(74,108,247,0.4);}
+        .stats{margin:10px 0;font-size:18px;text-align:center;}
+        .stats span{padding:8px 15px;background:#ffd700;border-radius:20px;font-weight:bold;margin:0 5px;}
+        code{background:#ecf0f1 !important;padding:3px 8px;border-radius:5px;font-family:monospace;font-size:14px;}
     </style>
 </head>
 <body>
     <header>
-        <h1>🤖 Universal AI Tutor</h1>
+        <h1>🤖 Smart AI Tutor</h1>
         <div class="stats">
             Quiz: <span id="quizScore">0%</span> | 
             Level: <span id="userLevel">Beginner</span>
@@ -42,11 +41,11 @@
     <div class="container">
         <div class="card">
             <div id="chatbox">
-                <p class="ai"><strong>🤖 Universal AI Tutor:</strong> I can answer <strong>ANY</strong> question from programming, math, science, history, or any subject! Just ask naturally - "solve x+5=10", "what is photosynthesis", "Python list methods", "World War 2 summary", "calculate compound interest". No limits! 🚀</p>
+                <p class="ai"><strong>🤖 AI Tutor:</strong> Ask me anything about programming! 🚀</p>
             </div>
             
             <div class="chat-input">
-                <input id="question" type="text" placeholder="Ask ANY question from ANY subject..." />
+                <input id="question" type="text" placeholder="Ask anything..." />
                 <button class="btn" onclick="sendMessage()">Send</button>
             </div>
         </div>
@@ -75,97 +74,211 @@
             input.value = "";
             chatbox.scrollTop = chatbox.scrollHeight;
             
-            chatbox.innerHTML += `<p class="ai" id="typing"><strong>🤖 AI Tutor:</strong> <em>Analyzing & solving... 🔍</em></p>`;
+            chatbox.innerHTML += `<p class="ai" id="typing"><strong>🤖 AI Tutor:</strong> Thinking...</p>`;
             chatbox.scrollTop = chatbox.scrollHeight;
             
             setTimeout(() => {
                 document.getElementById("typing").remove();
-                let response = analyzeAndAnswer(question);
+                let response = getDirectAnswer(question);
                 chatbox.innerHTML += `<p class="ai"><strong>🤖 AI Tutor:</strong> ${response}</p>`;
                 chatbox.scrollTop = chatbox.scrollHeight;
-            }, 1200);
+            }, 800);
         }
 
-        function analyzeAndAnswer(question) {
-            let level = localStorage.getItem("userLevel") || "Beginner";
-            let q = question.toLowerCase();
-            let words = question.toLowerCase().split(" ");
+        function getDirectAnswer(q) {
+            let question = q.toLowerCase();
             
-            // ========== MATH SOLVER ==========
-            if (q.includes("solve") || q.includes("=") || q.includes("+") || q.includes("-") || q.includes("x") || q.includes("*")) {
-                if (q.includes("x+5=10")) return `<strong>Solution:</strong> x + 5 = 10<br>x = 10 - 5<br><strong>x = 5</strong>`;
-                if (q.includes("2x=8")) return `<strong>Solution:</strong> 2x = 8<br>x = 8/2<br><strong>x = 4</strong>`;
-                if (q.includes("x/3=7")) return `<strong>Solution:</strong> x/3 = 7<br>x = 7 × 3<br><strong>x = 21</strong>`;
-                return `<strong>Math Helper:</strong> Show me equation like "solve x+5=10" or "2x=8". I'll solve step-by-step!`;
-            }
-            
-            // ========== PROGRAMMING ==========
-            if (words.some(w => ["code","program","function","loop","array","python","java","javascript","html","css"].includes(w))) {
-                if (q.includes("hello world")) return `<strong>Hello World (All Languages):</strong><br>
-                    <code>JS: console.log("Hello, World!");</code><br>
-                    <code>Python: print("Hello, World!")</code><br>
-                    <code>C++: cout << "Hello, World!";</code>`;
-                    
-                if (q.includes("loop")) return `<strong>All Loops:</strong><br>
-                    <code>for(let i=0; i<10; i++) {}     // Traditional
-                    let i=0; while(i<10) {i++;}     // While
-                    for(let x of array) {}          // For-of</code>`;
-                    
-                if (q.includes("function")) return `<strong>Functions:</strong><br>
-                    <code>function add(a,b){return a+b;}        // Regular
-                    const mult = (a,b) => a*b;                 // Arrow</code>`;
-            }
-            
-            // ========== SCIENCE ==========
-            if (words.some(w => ["science","physics","chemistry","biology"].includes(w)) || q.includes("photosynthesis")) {
-                if (q.includes("photosynthesis")) return `<strong>Photosynthesis:</strong><br>
-                    Plants convert CO₂ + H₂O + sunlight → Glucose + O₂<br>
-                    <code>6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂</code>`;
-                return `<strong>Science:</strong> Photosynthesis, Newton's laws, periodic table, DNA structure, chemical reactions - ask specifically!`;
-            }
-            
-            // ========== HISTORY ==========
-            if (words.some(w => ["history","war","president","king"].includes(w))) {
-                if (q.includes("world war")) return `<strong>World War II:</strong><br>
-                    1939-1945 | Axis (Germany, Japan, Italy) vs Allies (USA, UK, USSR)<br>
-                    Key events: Pearl Harbor, D-Day, Atomic bombs on Hiroshima/Nagasaki`;
-                return `<strong>History:</strong> World Wars, Presidents, Revolutions, Ancient Civilizations - ask any event!`;
-            }
-            
-            // ========== MATH CONCEPTS ==========
-            if (words.some(w => ["triangle","circle","derivative","integral","matrix"].includes(w))) {
-                if (q.includes("triangle")) return `<strong>Triangle Formulas:</strong><br>
-                    Area = ½ × base × height<br>Perimeter = a + b + c`;
-                if (q.includes("derivative")) return `<strong>Derivatives:</strong><br>
-                    <code>d/dx(x²) = 2x    |    d/dx(sin x) = cos x</code>`;
+            // ========== PROGRAMMING BASICS ==========
+            if (question.includes("hello world") || question.includes("hello")) {
+                return `✨ <strong>Hello World Program:</strong><br>
+                <strong>JavaScript:</strong> <code>console.log("Hello, World!");</code><br>
+                <strong>Python:</strong> <code>print("Hello, World!")</code><br>
+                <strong>C++:</strong> <code>#include &lt;iostream&gt;<br>cout &lt;&lt; "Hello, World!";</code>`;
             }
             
             // ========== WEB DEVELOPMENT ==========
-            if (q.includes("html") || q.includes("css")) {
-                return `<strong>HTML/CSS Template:</strong><br>
-                    <code>&lt;!DOCTYPE html&gt;
-                    &lt;html&gt;&lt;head&gt;
-                      &lt;style&gt;.btn{background:#4a6cf7;color:white;}&lt;/style&gt;
-                    &lt;/head&gt;&lt;body&gt;
-                      &lt;button class="btn"&gt;Click Me&lt;/button&gt;
-                    &lt;/body&gt;&lt;/html&gt;</code>`;
+            if (question.includes("html")) {
+                return `<strong>Complete HTML Page:</strong><br>
+                <code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;My Site&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Welcome!&lt;/h1&gt;
+  &lt;p&gt;First website&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code>`;
             }
             
-            // ========== GENERAL KNOWLEDGE ==========
-            if (q.includes("capital")) return `<strong>Capitals:</strong><br>USA: Washington DC | India: New Delhi | France: Paris | Brazil: Brasília`;
-            if (q.includes("pi")) return `<strong>π (Pi) = 3.14159...</strong><br>Used in circles: Circumference = 2πr`;
+            if (question.includes("css")) {
+                return `<strong>CSS Button Styling:</strong><br>
+                <code>.btn {
+  background: #4a6cf7;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+.btn:hover { background: #3b55d0; }</code>`;
+            }
             
-            // ========== ULTIMATE UNIVERSAL ENGINE ==========
-            return `✅ <strong>Analyzed "${question}"</strong> - Perfect question for your <strong>${level}</strong> level!
+            // ========== PROGRAMMING CONSTRUCTS ==========
+            if (question.includes("loop") || question.includes("for") || question.includes("while")) {
+                return `<strong>All JavaScript Loops:</strong><br>
+                <code>for(let i = 0; i < 5; i++) {
+  console.log(i); // 0,1,2,3,4
+}
 
-            <strong>Quick Facts:</strong>
-            • Programming: "hello world", "loops", "arrays", "Python function"
-            • Math: "solve x+5=10", "triangle area", "derivative of x²" 
-            • Science: "photosynthesis", "Newton's laws"
-            • History: "World War 2", "current president"
-            • Any subject works!
+let i = 0;
+while(i < 5) {
+  console.log(i);
+  i++;
+}
 
-            <strong>Just ask naturally</strong> - I'll solve equations, explain concepts, write code, or answer trivia! 🎯`;
+for(let num of [1,2,3]) {
+  console.log(num);
+}</code>`;
+            }
+            
+            if (question.includes("function")) {
+                return `<strong>Function Types:</strong><br>
+                <code>function add(a, b) {
+  return a + b;
+}
+
+const multiply = (a, b) => a * b;
+
+const greet = (name = "Guest") => {
+  return "Hello, " + name;
+};</code>`;
+            }
+            
+            if (question.includes("variable") || question.includes("var")) {
+                return `<strong>Modern Variables:</strong><br>
+                <code>const name = "John";     // Block scope, cannot change
+let age = 25;               // Block scope, can change
+var oldStyle = "avoid";     // Function scope - legacy</code>`;
+            }
+            
+            // ========== DATA STRUCTURES ==========
+            if (question.includes("array")) {
+                return `<strong>Array Methods:</strong><br>
+                <code>let arr = [1, 2, 3];
+arr.push(4);      // [1,2,3,4]
+arr.pop();        // [1,2,3]
+arr[0];           // 1 (O(1) access)
+arr.length;       // 3</code>`;
+            }
+            
+            if (question.includes("object")) {
+                return `<strong>JavaScript Objects:</strong><br>
+                <code>let person = {
+  name: "John",
+  age: 25,
+  greet() {
+    return "Hi " + this.name;
+  }
+};
+console.log(person.name);    // John
+console.log(person.greet()); // Hi John</code>`;
+            }
+            
+            // ========== LANGUAGES ==========
+            if (question.includes("python")) {
+                return `<strong>Python Examples:</strong><br>
+                <code># List
+fruits = ["apple", "banana"]
+fruits.append("orange")
+
+# Function
+def greet(name="World"):
+    return f"Hello, {name}!"
+
+# Loop
+for i in range(5):
+    print(i)</code>`;
+            }
+            
+            if (question.includes("java")) {
+                return `<strong>Java Hello World:</strong><br>
+                <code>public class Main {
+  public static void main(String[] args) {
+    System.out.println("Hello, World!");
+  }
+}</code>`;
+            }
+            
+            // ========== ALGORITHMS ==========
+            if (question.includes("sort") || question.includes("sorting")) {
+                return `<strong>Array Sorting:</strong><br>
+                <code>let nums = [5, 2, 9, 1, 5];
+nums.sort((a, b) => a - b);  // [1,2,5,5,9]
+
+// Manual bubble sort:
+for(let i = 0; i < nums.length; i++) {
+  for(let j = 0; j < nums.length - 1; j++) {
+    if(nums[j] > nums[j+1]) {
+      [nums[j], nums[j+1]] = [nums[j+1], nums[j]];
+    }
+  }
+}</code>`;
+            }
+            
+            if (question.includes("reverse")) {
+                return `<strong>Reverse String:</strong><br>
+                <code>function reverse(str) {
+  return str.split('').reverse().join('');
+}
+
+// Manual:
+function reverseManual(str) {
+  let result = '';
+  for(let i = str.length - 1; i >= 0; i--) {
+    result += str[i];
+  }
+  return result;
+}
+reverse("hello"); // "olleh"</code>`;
+            }
+            
+            // ========== MATH ==========
+            if (question.includes("solve") || question.includes("=")) {
+                if (question.includes("x+5=10")) return `<strong>Solution:</strong><br>x + 5 = 10<br><strong>x = 5</strong>`;
+                if (question.includes("2x")) return `<strong>Solution:</strong><br>2x = [number]<br><strong>x = [number]/2</strong>`;
+                return `<strong>Math Solver:</strong><br>Format: "solve x+5=10" or "2x=8"`;
+            }
+            
+            // ========== CODING PROBLEMS ==========
+            if (question.includes("practice") || question.includes("problem") || question.includes("interview")) {
+                return `<strong>FizzBuzz (Classic Interview):</strong><br>
+                <code>for(let i = 1; i <= 100; i++) {
+  if(i % 3 === 0 && i % 5 === 0) console.log("FizzBuzz");
+  else if(i % 3 === 0) console.log("Fizz");
+  else if(i % 5 === 0) console.log("Buzz");
+  else console.log(i);
+}</code>`;
+            }
+            
+            // ========== DEBUGGING ==========
+            if (question.includes("error") || question.includes("debug") || question.includes("bug")) {
+                return `<strong>Debug Steps:</strong><br>
+                1. <code>console.log(variable)</code> everywhere<br>
+                2. F12 → Console tab<br>
+                3. <code>typeof variable</code><br>
+                4. Check null/undefined<br>
+                5. <code>try {} catch(e) { console.log(e); }</code>`;
+            }
+            
+            // ========== DEFAULT - INTELLIGENT REPLY ==========
+            return `Great question about <strong>"${q}"</strong>! Here's what you need to know:
+
+<strong>Quick Start:</strong>
+• <code>console.log("test")</code> - Print output
+• <code>let x = 5;</code> - Variables  
+• <code>if(x > 3) {}</code> - Conditions
+• <code>for(let i=0; i<10; i++) {}</code> - Loops
+
+Try asking: "hello world", "html page", "css button", "for loop", "array methods", "solve x+5=10"`;
         }
     </script>
 </body>

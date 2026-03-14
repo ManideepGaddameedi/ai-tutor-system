@@ -1,58 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <title>AI Tutor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Tutor - Adaptive Learning Platform</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;}
+        .container{max-width:1200px;margin:0 auto;padding:20px;display:flex;justify-content:center;align-items:center;min-height:80vh;}
+        .card{background:white;padding:40px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.1);width:400px;text-align:center;}
+        .btn{padding:15px;background:#4a6cf7;color:white;border:none;border-radius:10px;cursor:pointer;width:100%;font-size:16px;margin:10px 0;font-weight:bold;}
+        .btn:hover{background:#3b55d0;}
+        .btn.secondary{background:#6c757d;}
+        header{background:#4a6cf7;color:white;padding:20px;text-align:center;}
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="nav-brand">AI Tutor</div>
-            <div class="nav-links">
-                <a href="login.html">Login</a>
-                <a href="register.html">Register</a>
-            </div>
-        </nav>
-    </header>
-
-    <section class="hero">
-        <div class="hero-content">
-            <h1>AI-Powered <span>Personalized</span> Learning</h1>
-            <p>Adaptive platform that analyzes your performance and creates custom lesson plans, practice questions, and study materials in real-time.</p>
-            <div class="hero-buttons">
-                <a href="register.html" class="btn-primary">Get Started Free</a>
-                <a href="#features" class="btn-secondary">Learn More</a>
-            </div>
+    <header><h1>🎓 AI Tutor</h1><p>Personalized Learning Platform</p></header>
+    <div class="container">
+        <div class="card">
+            <h2>Welcome!</h2>
+            <p>AI-powered adaptive learning</p>
+            <a href="register.html"><button class="btn">Create Account</button></a>
+            <a href="login.html"><button class="btn secondary">Login</button></a>
         </div>
-        <div class="hero-image">
-            <div class="gradient-circle"></div>
-        </div>
-    </section>
-
-    <section id="features" class="features">
-        <div class="container">
-            <h2>Why Choose AI Tutor?</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Adaptive Learning</h3>
-                    <p>Automatically adjusts to your pace and learning style</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Real-time Analytics</h3>
-                    <p>Track progress and identify weak areas instantly</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3>AI Tutor Chat</h3>
-                    <p>24/7 personalized guidance and explanations</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>

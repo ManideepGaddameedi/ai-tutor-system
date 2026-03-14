@@ -1,122 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>✨ AI Tutor Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tutor Login</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
-        .login-container{background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85));backdrop-filter:blur(25px);padding:50px;border-radius:30px;box-shadow:0 30px 100px rgba(0,0,0,0.3);max-width:450px;width:100%;text-align:center;}
-        .logo{font-size:3em;margin-bottom:20px;background:linear-gradient(135deg,#4a6cf7,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-        h2{font-size:2.2em;color:#2c3e50;margin-bottom:30px;}
-        input{width:100%;padding:18px;border:2px solid rgba(0,0,0,0.1);border-radius:15px;font-size:16px;margin-bottom:20px;transition:all 0.3s;}
-        input:focus{outline:none;border-color:#4a6cf7;box-shadow:0 0 0 3px rgba(74,108,247,0.1);}
-        .btn{width:100%;padding:20px;border:none;border-radius:15px;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 15px 45px rgba(0,0,0,0.2);transition:all 0.3s;margin:10px 0;color:white;}
-        .login-btn{background:linear-gradient(135deg,#48bb78,#68d391);}
-        .register-btn{background:linear-gradient(135deg,#4a6cf7,#5a67d8);}
-        .btn:hover{transform:translateY(-3px);box-shadow:0 20px 55px rgba(0,0,0,0.3);}
-        .status{margin-top:20px;padding:15px;border-radius:10px;display:none;}
-        .error{background:#fee;color:#c53030;}
-        .success{background:#c6f6d5;color:#22543d;}
+        body{font-family:Arial,sans-serif;background:#f0f2f5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+        .container{background:white;padding:40px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);max-width:400px;width:100%;text-align:center;}
+        h1{font-size:28px;color:#333;margin-bottom:10px;}
+        input{width:100%;padding:15px;margin:10px 0;border:1px solid #ddd;border-radius:10px;font-size:16px;box-sizing:border-box;}
+        .btn{width:100%;padding:15px;margin:10px 0;background:#007bff;color:white;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;}
+        .btn:hover{background:#0056b3;}
+        .btn-success{background:#28a745;}
+        .btn-success:hover{background:#218838;}
+        .error{color:#dc3545;margin:10px 0;font-size:14px;}
+        .success{color:#155724;margin:10px 0;font-size:14px;background:#d4edda;padding:10px;border-radius:5px;}
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="logo">🎯</div>
-        <h2>AI Tutor Master</h2>
-        <p style="color:#666;margin-bottom:30px;">Login to access JEE/NEET dashboard</p>
+    <div class="container">
+        <h1>🎯 AI Tutor</h1>
+        <p>Register or Login</p>
         
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="manideep@example.com" required>
-            <input type="password" id="password" placeholder="password123" required>
-            <div id="status" class="status"></div>
-            <button type="submit" class="btn login-btn">🚀 Login</button>
-        </form>
+        <input type="email" id="email" placeholder="Email" value="manideep@test.com">
+        <input type="password" id="password" placeholder="Password" value="password123">
         
-        <button id="registerBtn" class="btn register-btn">📝 Create Account</button>
+        <button onclick="register()" class="btn btn-success">📝 CREATE ACCOUNT</button>
+        <button onclick="login()" class="btn">🚀 LOGIN</button>
+        
+        <div id="message"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Clean client creation
         const supabaseUrl = 'https://pdegwwddqpnjaranrvvh.supabase.co';
-        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZWd3d2RkcXBuamFyYW5ydnZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODYxNDksImV4cCI6MjA4OTA2MjE0OX0.lg3cONONUcZu4dKpvF4B-z2-B9BNJOUWTl0H6wCtY6c';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZWd3d2RkcXBuamFyYW5ydnZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODYxNDksImV4cCI6MjA4OTA2MjE0OX0.lg3cONONUcZu4dKpvF4B-z2-B9BNJOUWTl0H6wCtY6c';
         
         const { createClient } = supabase;
-        const client = createClient(supabaseUrl, supabaseAnonKey);
+        const client = createClient(supabaseUrl, supabaseKey);
 
-        // LOGIN
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        async function register() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const status = document.getElementById('status');
+            const message = document.getElementById('message');
             
-            status.style.display = 'none';
-            status.className = 'status';
+            message.innerHTML = 'Creating account...';
+            message.className = '';
             
             try {
-                const { data, error } = await client.auth.signInWithPassword({
-                    email: email.trim(),
+                const { data, error } = await client.auth.signUp({
+                    email: email,
                     password: password
                 });
                 
                 if (error) throw error;
                 
-                // Create student profile
-                const { error: profileError } = await client.from('students').insert({
-                    user_id: data.user.id,
-                    name: email.split('@')[0],
-                    email: email,
-                    exams: ['JEE', 'NEET']
-                }).catch(() => {}); // Ignore if exists
+                message.innerHTML = '✅ Account created! Now click LOGIN';
+                message.className = 'success';
                 
-                status.innerHTML = '✅ Success! Redirecting...';
-                status.className = 'status success';
-                status.style.display = 'block';
+            } catch (error) {
+                message.innerHTML = '❌ ' + error.message;
+                message.className = 'error';
+                console.error('Register error:', error);
+            }
+        }
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('message');
+            
+            message.innerHTML = 'Logging in...';
+            message.className = '';
+            
+            try {
+                const { data, error } = await client.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) throw error;
+                
+                message.innerHTML = '✅ Success! Redirecting...';
+                message.className = 'success';
+                
+                // Save login state
+                localStorage.setItem('token', data.session.access_token);
                 
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
                 }, 1000);
                 
             } catch (error) {
-                status.innerHTML = `❌ ${error.message}`;
-                status.className = 'status error';
-                status.style.display = 'block';
+                message.innerHTML = '❌ ' + error.message;
+                message.className = 'error';
+                console.error('Login error:', error);
             }
-        });
-
-        // REGISTER
-        document.getElementById('registerBtn').addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const status = document.getElementById('status');
-            
-            if (password.length < 6) {
-                status.innerHTML = '❌ Password must be 6+ characters';
-                status.className = 'status error';
-                status.style.display = 'block';
-                return;
-            }
-            
-            try {
-                const { error } = await client.auth.signUp({
-                    email: email.trim(),
-                    password: password
-                });
-                
-                if (error) throw error;
-                
-                status.innerHTML = '✅ Account created! Now login above.';
-                status.className = 'status success';
-                status.style.display = 'block';
-                
-            } catch (error) {
-                status.innerHTML = `❌ ${error.message}`;
-                status.className = 'status error';
-                status.style.display = 'block';
-            }
-        });
+        }
     </script>
 </body>
 </html>
